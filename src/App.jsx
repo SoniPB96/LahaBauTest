@@ -3,6 +3,7 @@ import {
   CheckCircle2, MessageCircle, Phone, Mail, Menu, X, Zap, Wrench, Network, Sun, Calculator,
   ClipboardList, Handshake, Gem, Hammer, Upload, MapPin, ShieldCheck
 } from "lucide-react";
+import { Analytics } from "@vercel/analytics/react";
 import { siteConfig } from "./config/siteConfig";
 
 const serviceIconMap = {
@@ -435,6 +436,7 @@ export default function App() {
       {showSticky && (
         <button className="sticky-contact sticky-contact-wide" onClick={() => openTab("anfrage")}>Anfrage stellen</button>
       )}
+      <Analytics />
     </div>
   );
 }
