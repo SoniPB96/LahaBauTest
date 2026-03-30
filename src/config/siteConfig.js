@@ -6,7 +6,7 @@ export const siteConfig = {
     phoneDisplay: "0176 / 820 67 106",
     phoneLink: "tel:+4917682067106",
     whatsappLink: "https://wa.me/4917682067106",
-    region: "Paderborn und Umland",
+    region: "Paderborn und Umgebung",
     primaryArea: "Elektroarbeiten in Paderborn und Umgebung",
   },
 
@@ -17,7 +17,7 @@ export const siteConfig = {
     text:
       "Ich unterstütze Privatkunden bei Sanierung, Modernisierung und Erweiterung elektrischer Anlagen. Der Fokus liegt auf sauberer Ausführung, klarer Abstimmung und einer realistischen unverbindlichen Ersteinschätzung.",
     trustLine:
-      "Elektroarbeiten im Raum Paderborn und Umgebung. Planung und Ausführung in Zusammenarbeit mit Meisterbetrieb.",
+      "Elektroarbeiten im Raum Paderborn und Umgebung. Planung und Ausführung in Intensiver Zusammenarbeit.",
     trustItems: [
       "Saubere Ausführung",
       "Klare Abstimmung",
@@ -58,13 +58,13 @@ export const siteConfig = {
         key: "lighting",
         icon: "sun",
         title: "Beleuchtung",
-        text: "Innen- und Außenbeleuchtung mit sauberer Leitungsführung und passender Schaltlogik.",
+        text: "Innen- und Außenbeleuchtungs Konzepte.",
       },
       {
         key: "network",
         icon: "network",
         title: "Netzwerk & Datenleitungen",
-        text: "Strukturierte Verkabelung für Homeoffice, Medienpunkte und moderne Haustechnik.",
+        text: "Netzwerkerweiterungen für Homeoffice, Medienpunkte und moderner Haustechnik.",
       },
       {
         key: "estimator",
@@ -75,8 +75,8 @@ export const siteConfig = {
       {
         key: "quality",
         icon: "check",
-        title: "Saubere Ausführung",
-        text: "Fokus auf klare Abstimmung, nachvollziehbare Umsetzung und ruhige Kommunikation im Projekt.",
+        title: "All-In-One Lösung",
+        text: "Durch Partnerbetriebe eine vollumfängliche Sanierung und einem Ansprechpartner möglich.",
       },
     ],
   },
@@ -119,11 +119,11 @@ export const siteConfig = {
     ],
 
     projectChoices: [
-      { value: "neuinstallation", label: "Komplette Neuinstallation" },
+      { value: "neuinstallation", label: "Neuinstallation - Neubau" },
       { value: "sanierung", label: "Sanierung / Teilerneuerung" },
       { value: "erweiterung", label: "Erweiterung / einzelne Räume" },
       { value: "unterverteilung", label: "Neue Unterverteilung" },
-      { value: "zaehlerschrank", label: "Zählerschrank / Verteilerarbeiten" },
+      { value: "zaehlerschrank", label: "Zählerschrank erneuern" },
     ],
 
     componentFields: [
@@ -132,27 +132,27 @@ export const siteConfig = {
       { key: "netzwerkdosen", label: "Netzwerkdosen" },
       { key: "lampenauslaesse", label: "Lampenauslässe" },
       { key: "rollladenschalter", label: "Rollladenschalter" },
-      { key: "taster", label: "Taster / Wechsel / Kreuz" },
+      { key: "taster", label: "Taster(bspw. im Flur)" },
     ],
 
     optionChoices: [
-      { key: "fi", label: "FI / RCD-Erweiterung" },
+      { key: "fi", label: "RCD-Erweiterung + DGUV3 Prüfung" },
       { key: "uv", label: "Neue Unterverteilung" },
-      { key: "sicherungskasten", label: "Sicherungskasten ersetzen" },
-      { key: "lan", label: "LAN / Netzwerk mit verlegen" },
+      { key: "sicherungskasten", label: "Zählerschrank erneuern" },
+      { key: "lan", label: "LAN / Netzwerk verlegen" },
       { key: "aussenbereich", label: "Außenbereich" },
-      { key: "kueche", label: "Küche aufwerten" },
-      { key: "bad", label: "Bad modernisieren" },
-      { key: "waermepumpe", label: "Vorbereitung Wärmepumpe" },
-      { key: "wallbox", label: "Vorbereitung Wallbox" },
+      { key: "kueche", label: "Küche Neuinstallieren" },
+      { key: "bad", label: "Bad Neuinstallieren" },
+      { key: "waermepumpe", label: "Vorbereitung für Wärmepumpe" },
+      { key: "wallbox", label: "Vorbereitung für Wallbox" },
     ],
 
     brandChoices: [
-      { value: "standard", label: "standard" },
-      { value: "gira", label: "gira" },
-      { value: "merten", label: "merten" },
+      { value: "standard", label: "Unklar" },
+      { value: "gira", label: "Gira" },
+      { value: "merten", label: "Merten" },
       { value: "schneider", label: "Schneider Electric" },
-      { value: "jung", label: "jung" },
+      { value: "jung", label: "Busch-Jäger" },
     ],
 
     qualityChoices: [
