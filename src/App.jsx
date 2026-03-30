@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   CheckCircle2, MessageCircle, Phone, Mail, Menu, X, Zap, Wrench, Network, Sun, Calculator,
-  ClipboardList, Handshake, Gem, Hammer, Upload, MapPin, ShieldCheck
+  ClipboardList, Handshake, Gem, Hammer, Upload, ArrowUpRight
 } from "lucide-react";
 import { siteConfig } from "./config/siteConfig";
 
@@ -41,104 +41,22 @@ function Logo() {
   );
 }
 
-function HomePage({ cfg, openTab, heroRef }) {
+function FaqSection({ cfg }) {
   return (
-    <main>
-      <section className="hero" ref={heroRef}>
-        <div className="container hero-grid">
-          <div className="hero-copy clean-hero-copy">
-            <div className="badge-row">
-              <span className="badge">{cfg.hero.badgePrimary}</span>
-              <span className="badge muted">{cfg.hero.badgeSecondary}</span>
-            </div>
-
-            <h1>{cfg.hero.headline}</h1>
-            <h2 className="hero-subheadline">{cfg.hero.subheadline}</h2>
-            <p>{cfg.hero.text}</p>
-            <p className="hero-trust">{cfg.hero.trustLine}</p>
-
-            <div className="button-row hero-cta-row">
-              <Button onClick={() => openTab("anfrage")}>Anfrage stellen</Button>
-              <Button outline onClick={() => openTab("ablauf")}>So läuft es ab</Button>
-            </div>
-          </div>
-
-          <div className="hero-side">
-            <div className="card liquid-card glow">
+    <main className="section">
+      <div className="container">
+        <SectionTitle eyebrow={cfg.faq.eyebrow} title={cfg.faq.title} text={cfg.faq.text} />
+        <div className="faq-grid">
+          {cfg.faq.items.map((item) => (
+            <div key={item.q} className="card liquid-card subtle">
               <div className="card-pad">
-                <div className="eyebrow">{cfg.calculatorTeaser.eyebrow}</div>
-                <h3 className="card-title">{cfg.calculatorTeaser.title}</h3>
-                <div className="result-box glass-inset">
-                  <div className="result-top">
-                    <span>Separater Bereich</span>
-                    <span>Kompatibel gehalten</span>
-                  </div>
-                  <div className="hero-price hero-price-strong">Klar getrennt</div>
-                  <p>{cfg.hero.estimatorCardInfo}</p>
-                </div>
-                <div className="hero-mini-boxes">
-                  {cfg.calculatorTeaser.bullets.map((item) => (
-                    <div key={item} className="soft-box liquid-card subtle">{item}</div>
-                  ))}
-                </div>
-                <Button className="full" onClick={() => openTab("rechner")}>
-                  Zur Erste Kosteneinschätzung
-                </Button>
+                <h3 className="card-title faq-title">{item.q}</h3>
+                <p className="body-text">{item.a}</p>
               </div>
             </div>
-          </div>
+          ))}
         </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <SectionTitle eyebrow={cfg.services.eyebrow} title={cfg.services.title} text={cfg.services.text} />
-          <div className="services-grid">
-            {cfg.services.items.map((service) => {
-              const Icon = serviceIconMap[service.icon] || CheckCircle2;
-              return (
-                <div key={service.key} className="card liquid-card subtle">
-                  <div className="card-pad">
-                    <div className="service-icon"><Icon size={22} /></div>
-                    <h3 className="card-title">{service.title}</h3>
-                    <p className="body-text">{service.text}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="section section-tight-top">
-        <div className="container">
-          <SectionTitle eyebrow={cfg.trust.eyebrow} title={cfg.trust.title} text={cfg.trust.text} />
-          <div className="mini-grid trust-grid three-col-grid">
-            {cfg.trust.items.map((item) => (
-              <div key={item.title} className="card liquid-card subtle">
-                <div className="card-pad">
-                  <div className="service-icon small-icon-circle"><ShieldCheck size={18} /></div>
-                  <h3 className="card-title">{item.title}</h3>
-                  <p className="body-text">{item.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section section-tight-top">
-        <div className="container area-strip liquid-card subtle">
-          <div className="card-pad">
-            <SectionTitle eyebrow={cfg.areas.eyebrow} title={cfg.areas.title} text={cfg.areas.text} />
-            <div className="chip-cloud">
-              {cfg.areas.chips.map((chip) => (
-                <div key={chip} className="badge area-chip"><MapPin size={14} /> {chip}</div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
     </main>
   );
 }
@@ -155,7 +73,7 @@ export default function App() {
     if (!heroRef.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const shouldShow = !entry.isIntersecting && !menuOpen && activeTab !== "anfrage";
+        const shouldShow = !entry.isIntersecting && !menuOpen && (activeTab === "start" || activeTab === "begleitung" || activeTab === "faq");
         setShowSticky(shouldShow);
       },
       { threshold: 0.15 }
@@ -171,7 +89,6 @@ export default function App() {
   const openTab = (key) => {
     setActiveTab(key);
     setMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -188,6 +105,7 @@ export default function App() {
             {cfg.navigation.items.map((item) => (
               <button key={item.key} onClick={() => openTab(item.key)}>{item.label}</button>
             ))}
+            <a href={cfg.calculator.href}>{cfg.calculator.label}</a>
           </nav>
 
           <div className="desktop-cta">
@@ -205,40 +123,80 @@ export default function App() {
               {cfg.navigation.items.map((item) => (
                 <button key={item.key} onClick={() => openTab(item.key)}>{item.label}</button>
               ))}
+              <a className="btn btn-outline" href={cfg.calculator.href}>{cfg.calculator.label}</a>
               <Button onClick={() => openTab("anfrage")}>{cfg.navigation.ctaLabel}</Button>
             </div>
           </div>
         )}
       </header>
 
-      {activeTab === "start" && <HomePage cfg={cfg} openTab={openTab} heroRef={heroRef} />}
+      {activeTab === "start" && (
+        <main>
+          <section className="hero" ref={heroRef}>
+            <div className="container hero-grid">
+              <div className="hero-copy clean-hero-copy">
+                <div className="badge-row">
+                  <span className="badge">{cfg.hero.badgePrimary}</span>
+                  <span className="badge muted">{cfg.hero.badgeSecondary}</span>
+                </div>
 
-      {activeTab === "ablauf" && (
-        <main className="section" ref={heroRef}>
-          <div className="container">
-            <SectionTitle eyebrow={cfg.process.eyebrow} title={cfg.process.title} text={cfg.process.text} />
-            <div className="services-grid process-grid">
-              {cfg.process.steps.map((step) => (
-                <div key={step.title} className="card liquid-card glow">
+                <h1>{cfg.hero.headline}</h1>
+                <h2 className="hero-subheadline">{cfg.hero.subheadline}</h2>
+                <p>{cfg.hero.text}</p>
+                <p className="hero-trust">{cfg.hero.trustLine}</p>
+
+                <div className="button-row hero-cta-row">
+                  <Button onClick={() => openTab("anfrage")}>Anfrage stellen</Button>
+                  <Button href={cfg.calculator.href} outline>Zum Kostenrechner</Button>
+                </div>
+              </div>
+
+              <div className="hero-side">
+                <div className="card liquid-card glow">
                   <div className="card-pad">
-                    <h3 className="card-title">{step.title}</h3>
-                    <p className="body-text">{step.text}</p>
+                    <div className="eyebrow">Digitale Ersteinschätzung</div>
+                    <h3 className="card-title">{cfg.calculator.label}</h3>
+                    <div className="result-box glass-inset">
+                      <div className="result-top">
+                        <span>Beispielspanne für typische Sanierung</span>
+                        <span>unverbindlich</span>
+                      </div>
+                      <div className="hero-price hero-price-strong">{cfg.calculator.teaserRange}</div>
+                      <p>{cfg.hero.estimatorCardInfo}</p>
+                    </div>
+                    <div className="hero-mini-boxes">
+                      <div className="soft-box liquid-card subtle">Separate Rechner-Logik</div>
+                      <div className="soft-box liquid-card subtle">Website bleibt stabil getrennt</div>
+                    </div>
+                    <Button className="full" href={cfg.calculator.href}>
+                      Rechner öffnen <ArrowUpRight size={16} />
+                    </Button>
+                    <p className="separation-note">{cfg.calculator.teaserNote}</p>
                   </div>
                 </div>
-              ))}
-            </div>
-            <div className="request-steps liquid-card subtle process-note-box">
-              <div className="eyebrow">Wichtig für normale Privatkunden</div>
-              <div className="feature-list compact-list">
-                {cfg.process.notes.map((item) => (
-                  <div key={item} className="feature-row">
-                    <div className="feature-icon small-icon"><CheckCircle2 size={16} /></div>
-                    <div className="feature-text">{item}</div>
-                  </div>
-                ))}
               </div>
             </div>
-          </div>
+          </section>
+
+          <section className="section">
+            <div className="container">
+              <SectionTitle eyebrow={cfg.services.eyebrow} title={cfg.services.title} text={cfg.services.text} />
+              <div className="services-grid">
+                {cfg.services.items.map((service) => {
+                  const Icon = serviceIconMap[service.icon] || CheckCircle2;
+                  return (
+                    <div key={service.key} className="card liquid-card subtle">
+                      <div className="card-pad">
+                        <div className="service-icon"><Icon size={22} /></div>
+                        <h3 className="card-title">{service.title}</h3>
+                        <p className="body-text">{service.text}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
         </main>
       )}
 
@@ -263,7 +221,7 @@ export default function App() {
                   })}
                 </div>
                 <div className="button-row feature-cta-row">
-                  <Button onClick={() => openTab("anfrage")}>Projekt anfragen</Button>
+                  <Button onClick={() => openTab("anfrage")}>Anfrage stellen</Button>
                 </div>
               </div>
             </div>
@@ -282,58 +240,7 @@ export default function App() {
         </main>
       )}
 
-      {activeTab === "faq" && (
-        <main className="section" ref={heroRef}>
-          <div className="container">
-            <SectionTitle eyebrow={cfg.faq.eyebrow} title={cfg.faq.title} text={cfg.faq.text} />
-            <div className="faq-stack">
-              {cfg.faq.items.map((item) => (
-                <div key={item.question} className="card liquid-card subtle faq-card">
-                  <div className="card-pad">
-                    <h3 className="card-title faq-question">{item.question}</h3>
-                    <p className="body-text">{item.answer}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </main>
-      )}
-
-      {activeTab === "rechner" && (
-        <main className="section" ref={heroRef}>
-          <div className="container">
-            <SectionTitle eyebrow={cfg.calculatorTeaser.eyebrow} title={cfg.calculatorTeaser.title} text={cfg.calculatorTeaser.text} />
-            <div className="estimator-layout">
-              <div className="card liquid-card glow">
-                <div className="card-pad stack">
-                  <div className="result-box glass-inset big">
-                    <div className="eyebrow">Status</div>
-                    <h3 className="card-title">Rechner separat geführt</h3>
-                    <p className="body-text">Dieser Workspace baut den Rechner bewusst nicht um. Die restliche Website bleibt dadurch klar, stabil und mit der separaten Rechner-Weiterentwicklung kompatibel.</p>
-                  </div>
-                  <div className="summary-list">
-                    {cfg.calculatorTeaser.bullets.map((item) => (
-                      <div key={item} className="feature-row compact-feature-row">
-                        <div className="feature-icon small-icon"><CheckCircle2 size={16} /></div>
-                        <div className="feature-text">{item}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="card liquid-card subtle">
-                <div className="card-pad stack">
-                  <div className="eyebrow">Nächster Schritt für den Kunden</div>
-                  <p className="summary-direct-note">Für Interessenten ist der logischste Ablauf: kurz orientieren, Anfrage stellen oder direkt in die Erste Kosteneinschätzung wechseln.</p>
-                  <Button onClick={() => openTab("anfrage")}>Anfrage stellen</Button>
-                  <Button outline onClick={() => openTab("start")}>Zur Startseite</Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </main>
-      )}
+      {activeTab === "faq" && <FaqSection cfg={cfg} />}
 
       {activeTab === "anfrage" && (
         <main className="section" ref={heroRef}>
@@ -363,7 +270,7 @@ export default function App() {
                       <div className="request-option-text"><span>E-Mail</span></div>
                     </button>
                     <button className={`request-option ${requestMode==="form" ? "active" : ""}`} onClick={() => setRequestMode("form")}>
-                      <Calculator size={18} />
+                      <ClipboardList size={18} />
                       <div className="request-option-text"><span>Formular</span></div>
                     </button>
                   </div>
@@ -414,7 +321,7 @@ export default function App() {
                     <div><label className="field-label">Telefon</label><input className="input glass-input" placeholder="Telefon" /></div>
                   </div>
                   <div><label className="field-label">PLZ / Ort</label><input className="input glass-input" placeholder="PLZ / Ort" /></div>
-                  <div><label className="field-label">Projektart / Thema</label><input className="input glass-input" placeholder="z. B. Sanierung, Erweiterung, Unterverteilung, Baubegleitung" /></div>
+                  <div><label className="field-label">Projektart / Thema</label><input className="input glass-input" placeholder="z. B. Sanierung / Altbau, Baubegleitung, Erweiterung" /></div>
                   <div>
                     <label className="field-label">Unterlagen / Grundriss</label>
                     <label className="upload-box glass-input">

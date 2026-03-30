@@ -9,132 +9,49 @@ export const siteConfig = {
     region: "Paderborn und Umland",
   },
 
+  calculator: {
+    label: "Erste Kosteneinschätzung Elektrik",
+    href: "/elektro-kostenrechner",
+    teaserRange: "ca. 7.630 € – 10.114 €",
+    teaserNote:
+      "Der Rechner wird separat weiterentwickelt und ist bewusst nicht Teil dieser Website-Datei. Der Einstieg bleibt aber kompatibel.",
+  },
+
   navigation: {
     items: [
       { key: "start", label: "Start" },
-      { key: "ablauf", label: "Ablauf" },
       { key: "begleitung", label: "Baubegleitung" },
       { key: "faq", label: "FAQ" },
-      { key: "rechner", label: "Erste Kosteneinschätzung" },
     ],
     ctaLabel: "Anfrage stellen",
   },
 
   hero: {
     badgePrimary: "Elektroarbeiten in Paderborn und Umgebung",
-    badgeSecondary: "Für Privatkunden",
-    headline: "Klare Elektroarbeiten für Sanierung, Modernisierung und Ausbau.",
-    subheadline: "Verständliche Abstimmung. Saubere Ausführung. Ein fester Ansprechpartner.",
+    badgeSecondary: "Klare Erstorientierung für Privatkunden",
+    headline: "Saubere Elektroarbeiten ohne Chaos auf der Baustelle.",
+    subheadline: "Ein Ansprechpartner. Klare Planung. Saubere Umsetzung.",
     text:
-      "Ich unterstütze Privatkunden bei Elektroarbeiten rund um Wohnung, Haus und Umbau. Der Fokus liegt auf nachvollziehbarer Planung, ruhiger Kommunikation und einer sauberen Umsetzung ohne unnötiges Baustellenchaos.",
+      "Ich unterstütze Privatkunden bei Sanierung, Modernisierung und Erweiterung elektrischer Anlagen – mit sauberer Ausführung, klarer Abstimmung und realistischer Ersteinschätzung.",
     trustLine:
       "Elektroarbeiten im Raum Paderborn und Umgebung. Planung und Ausführung in Zusammenarbeit mit Meisterbetrieb.",
     estimatorCardInfo:
-      "Der Rechner bleibt separat weiterentwickelbar. Von hier aus wird er nur sauber eingebunden und als nächster logischer Schritt geführt.",
+      "Für eine erste Orientierung gibt es einen separaten Kostenrechner. Diese Website bleibt bewusst unabhängig davon, damit Inhalte und Seitenlogik stabil bleiben.",
   },
 
   services: {
     eyebrow: "Leistungen",
-    title: "Typische Projekte für Privatkunden",
+    title: "Leistungsbereiche mit klarem Fokus auf Privatkunden",
     text:
-      "Die Website soll für normale Kunden sofort verständlich sein. Deshalb sind die Leistungen bewusst nach realen Anliegen formuliert und nicht nach interner Fachlogik.",
+      "Von der einzelnen Erweiterung bis zur strukturierten Sanierung ganzer Wohneinheiten: Die Leistungen sind bewusst klar, sachlich und handwerklich formuliert.",
     items: [
-      {
-        key: "installation",
-        icon: "zap",
-        title: "Elektroinstallation bei Sanierung",
-        text: "Neuaufbau oder Erneuerung der Elektrik bei Altbau, Wohnungssanierung, Hausmodernisierung oder Umbau.",
-      },
-      {
-        key: "distribution",
-        icon: "wrench",
-        title: "Unterverteilungen & Schutztechnik",
-        text: "Erweiterung, Erneuerung und sinnvolle Anpassung von Unterverteilungen, Sicherungen und Schutztechnik.",
-      },
-      {
-        key: "lighting",
-        icon: "sun",
-        title: "Licht & Schaltkonzepte",
-        text: "Beleuchtung innen und außen mit praxisgerechter Schaltlogik statt unnötig komplizierter Lösungen.",
-      },
-      {
-        key: "network",
-        icon: "network",
-        title: "Netzwerk & Datenleitungen",
-        text: "Saubere Verkabelung für Homeoffice, TV, Access Points, Medienwände oder einzelne Datenpunkte.",
-      },
-      {
-        key: "estimator",
-        icon: "calculator",
-        title: "Erste Kosteneinschätzung",
-        text: "Digitale Ersteinschätzung mit realistischer Preisspanne als Einstieg für passende Projekte.",
-      },
-      {
-        key: "quality",
-        icon: "check",
-        title: "Saubere Projektabwicklung",
-        text: "Klare Abstimmung, nachvollziehbare Schritte und ein Auftreten, das Vertrauen statt Unsicherheit erzeugt.",
-      },
+      { key: "installation", icon: "zap", title: "Elektroinstallation", text: "Neuinstallation, Modernisierung und strukturierte Elektroarbeiten für Wohnung, Haus und kleinere Einheiten." },
+      { key: "distribution", icon: "wrench", title: "Unterverteilungen & Schutztechnik", text: "Erweiterung, Erneuerung und sinnvolle Anpassung bestehender Unterverteilungen und Sicherungstechnik." },
+      { key: "lighting", icon: "sun", title: "Beleuchtung", text: "Innen- und Außenbeleuchtung mit sauberer Leitungsführung und passender Schaltlogik." },
+      { key: "network", icon: "network", title: "Netzwerk & Datenleitungen", text: "Strukturierte Verkabelung für Homeoffice, Medienpunkte und moderne Haustechnik." },
+      { key: "estimator", icon: "calculator", title: "Digitale Ersteinschätzung", text: "Separater Kostenrechner für eine grobe Preisspanne vor der eigentlichen Anfrage." },
+      { key: "quality", icon: "check", title: "Saubere Ausführung", text: "Fokus auf klare Abstimmung, nachvollziehbare Umsetzung und ruhige Kommunikation im Projekt." },
     ],
-  },
-
-  trust: {
-    eyebrow: "Warum Kunden sich sicher fühlen",
-    title: "Nicht laut, sondern klar und verlässlich",
-    text:
-      "Privatkunden wollen meist keine technische Show, sondern das Gefühl, dass jemand ihr Projekt sauber führt. Genau darauf ist der Aufbau dieser Website ausgerichtet.",
-    items: [
-      {
-        title: "Verständliche Sprache",
-        text: "Kein unnötiges Fachchinesisch. Die Inhalte erklären, worum es praktisch geht und welcher Schritt als Nächstes sinnvoll ist.",
-      },
-      {
-        title: "Sauberer Ablauf",
-        text: "Vom Erstkontakt bis zur Umsetzung soll der Nutzer jederzeit wissen, was gerade passiert und was als Nächstes kommt.",
-      },
-      {
-        title: "Reale Zusammenarbeit",
-        text: "Bei meisterpflichtigen Themen erfolgt Planung und Ausführung in Zusammenarbeit mit Meisterbetrieb und lokalen Partnern.",
-      },
-    ],
-  },
-
-  process: {
-    eyebrow: "Ablauf",
-    title: "So läuft ein Projekt typischerweise ab",
-    text:
-      "Diese Seite beantwortet die stille Kernfrage vieler Privatkunden: Was passiert eigentlich nach der ersten Nachricht?",
-    steps: [
-      {
-        title: "1. Anfrage senden",
-        text: "Per WhatsApp, Telefon, E-Mail oder über das Formular mit kurzer Beschreibung des Vorhabens.",
-      },
-      {
-        title: "2. Projekt grob einordnen",
-        text: "Ich prüfe, worum es geht, ob Unterlagen sinnvoll wären und ob der Rechner als Ersteinstieg passt.",
-      },
-      {
-        title: "3. Rückmeldung erhalten",
-        text: "Du erhältst eine erste Einordnung zum Projekt, zum möglichen Rahmen und zum nächsten sinnvollen Schritt.",
-      },
-      {
-        title: "4. Besichtigung oder weitere Abstimmung",
-        text: "Wenn das Projekt passt, folgt die genauere Abstimmung, Besichtigung oder Vorbereitung der Umsetzung.",
-      },
-    ],
-    notes: [
-      "Nicht jede Anfrage braucht sofort einen Vor-Ort-Termin.",
-      "Mit Fotos, Grundrissen oder kurzer Beschreibung wird die erste Einordnung meist deutlich leichter.",
-      "Der Rechner dient als Einstieg, ersetzt aber keine konkrete Projektprüfung.",
-    ],
-  },
-
-  areas: {
-    eyebrow: "Einsatzgebiet",
-    title: "Für Paderborn und das nähere Umland ausgerichtet",
-    text:
-      "Die Website spricht gezielt Privatkunden aus Paderborn und Umgebung an. Das schafft Nähe, wirkt glaubwürdig und passt besser als ein zu breit formulierter Auftritt.",
-    chips: ["Paderborn", "Bad Lippspringe", "Delbrück", "Borchen", "Salzkotten", "Büren", "Hövelhof"],
   },
 
   begleitung: {
@@ -163,45 +80,32 @@ export const siteConfig = {
       },
       {
         title: "Hochwertige Sanierung",
-        text: "Für anspruchsvolle Projekte mit höherem Qualitätsanspruch, feiner Materialauswahl und enger Abstimmung aller Beteiligten.",
+        text: "Für anspruchsvollere Projekte mit höherem Qualitätsanspruch, feiner Materialauswahl und enger Abstimmung aller Beteiligten.",
       },
     ],
   },
 
   faq: {
     eyebrow: "FAQ",
-    title: "Häufige Fragen vor der ersten Anfrage",
-    text:
-      "Die häufigsten Unsicherheiten werden direkt abgefangen. Das reduziert Reibung und stärkt Vertrauen, bevor ein Kunde überhaupt Kontakt aufnimmt.",
+    title: "Häufige Fragen von Privatkunden",
+    text: "Die wichtigsten Punkte vor einer Anfrage kurz und verständlich beantwortet.",
     items: [
       {
-        question: "Ist die erste Anfrage unverbindlich?",
-        answer: "Ja. Die erste Kontaktaufnahme und eine grobe Einordnung des Vorhabens sind unverbindlich.",
+        q: "Arbeitest du nur in Paderborn?",
+        a: "Der Schwerpunkt liegt auf Paderborn und Umgebung. Je nach Projektgröße ist auch das Umland möglich.",
       },
       {
-        question: "Muss ich schon alle Details kennen?",
-        answer: "Nein. Für den Start reicht meist eine kurze Beschreibung, ein Foto oder ein Grundriss.",
+        q: "Kann ich erst einmal nur eine grobe Einschätzung bekommen?",
+        a: "Ja. Dafür ist der separate Kostenrechner gedacht. Er liefert eine grobe Preisspanne und ersetzt keine Besichtigung oder verbindliche Kalkulation.",
       },
       {
-        question: "Ist der Online-Rechner ein Festpreis?",
-        answer: "Nein. Er dient als erste Orientierung mit Preisspanne und ersetzt keine konkrete Projektprüfung.",
+        q: "Ist auch Zusammenarbeit mit Meisterbetrieb möglich?",
+        a: "Ja. Planung und Ausführung erfolgen je nach Projekt in Zusammenarbeit mit Meisterbetrieb und lokalen Partnern.",
       },
       {
-        question: "Sind auch größere Sanierungen möglich?",
-        answer: "Ja, größere Projekte können in Zusammenarbeit mit lokalen Partnern und Meisterbetrieb begleitet und umgesetzt werden.",
+        q: "Was sollte ich bei einer Anfrage direkt mitsenden?",
+        a: "Am hilfreichsten sind Fotos, kurze Beschreibung, Ort des Projekts und falls vorhanden ein Grundriss oder bestehende Unterlagen.",
       },
-    ],
-  },
-
-  calculatorTeaser: {
-    eyebrow: "Rechner",
-    title: "Die Erste Kosteneinschätzung bleibt ein eigenes Tool",
-    text:
-      "Der Rechner wird separat weiterentwickelt. Auf der Website dient er nur als sauber eingebundener Einstieg in den Anfrageprozess, ohne die restlichen Seiten technisch zu verkomplizieren.",
-    bullets: [
-      "Saubere Trennung zwischen Website-Inhalten und Rechnerlogik",
-      "Später weiterhin separat pflegbar",
-      "Für Kunden als normaler nächster Schritt verständlich",
     ],
   },
 
