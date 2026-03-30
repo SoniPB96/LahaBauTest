@@ -1,12 +1,12 @@
-# Laha Vercel Version mit Konfigurationsdatei
+# Laha V2 – Logic First + Liquid Glass Style
 
 Wichtig:
 - Die zentrale Datei für Inhalte und Preise ist:
   src/config/siteConfig.js
 
-Dort kannst du ändern:
-- Kontaktdaten
-- Hero-Texte
-- Leistungen
-- Preislogik des Kostenschätzers
-- Optionen, Faktoren und Standards
+Neu in V2:
+- Projektlogik angepasst
+- Erweiterung und Zählerschrank führen direkt zur Anfrage
+- Ausstattung ohne Küche und Bad
+- Zusatzoptionen nach echterer Handwerkerlogik
+- Liquid-Glass-inspiriertes Design, ohne die Lesbarkeit kaputt zu machen

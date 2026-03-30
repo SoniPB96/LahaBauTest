@@ -6,25 +6,7 @@ export const siteConfig = {
     phoneDisplay: "0176 / 820 67 106",
     phoneLink: "tel:+4917682067106",
     whatsappLink: "https://wa.me/4917682067106",
-    region: "Paderborn und Umgebung",
-    primaryArea: "Elektroarbeiten in Paderborn und Umgebung",
-  },
-
-  hero: {
-    badgePrimary: "Elektroarbeiten in Paderborn und Umgebung",
-    badgeSecondary: "Unverbindliche Ersteinschätzung",
-    headline: "Saubere Elektroarbeiten. Klare Kommunikation. Verlässliche Ausführung.",
-    text:
-      "Ich unterstütze Privatkunden bei Sanierung, Modernisierung und Erweiterung elektrischer Anlagen. Der Fokus liegt auf sauberer Ausführung, klarer Abstimmung und einer realistischen unverbindlichen Ersteinschätzung.",
-    trustLine:
-      "Elektroarbeiten im Raum Paderborn und Umgebung. Planung und Ausführung in Intensiver Zusammenarbeit.",
-    trustItems: [
-      "Saubere Ausführung",
-      "Klare Abstimmung",
-      "Realistische Ersteinschätzung",
-      "Paderborn und Umland",
-    ],
-    estimatorCardInfo: "Unverbindliche Preisspanne auf Basis von Fläche, Ausstattung und Zusatzoptionen.",
+    region: "Paderborn und Umland",
   },
 
   navigation: {
@@ -36,48 +18,36 @@ export const siteConfig = {
     ctaLabel: "Anfrage stellen",
   },
 
+  hero: {
+    badgePrimary: "Elektroarbeiten in Paderborn und Umgebung",
+    badgeSecondary: "Unverbindliche Ersteinschätzung",
+    headline: "Saubere Elektroarbeiten. Klare Kommunikation. Verlässliche Ausführung.",
+    text:
+      "Ich unterstütze Privatkunden bei Sanierung, Modernisierung und Erweiterung elektrischer Anlagen. Der Fokus liegt auf sauberer Ausführung, klarer Abstimmung und einer realistischen unverbindlichen Ersteinschätzung.",
+    trustLine:
+      "Elektroarbeiten im Raum Paderborn und Umgebung. Planung und Ausführung in Zusammenarbeit mit Meisterbetrieb.",
+    trustItems: [
+      "Saubere Ausführung",
+      "Klare Abstimmung",
+      "Realistische Ersteinschätzung",
+      "Paderborn und Umland",
+    ],
+    estimatorCardInfo:
+      "Unverbindliche Preisspanne auf Basis von Projektart, Ausstattung, Zusatzoptionen und Material.",
+  },
+
   services: {
     eyebrow: "Leistungen",
     title: "Leistungsbereiche mit klarem Fokus auf Privatkunden",
     text:
       "Von der einzelnen Erweiterung bis zur strukturierten Sanierung ganzer Wohneinheiten: Die Leistungen sind bewusst klar, sachlich und handwerklich formuliert.",
     items: [
-      {
-        key: "installation",
-        icon: "zap",
-        title: "Elektroinstallation",
-        text: "Neuinstallation, Modernisierung und strukturierte Elektroarbeiten für Wohnung, Haus und kleinere Einheiten.",
-      },
-      {
-        key: "distribution",
-        icon: "wrench",
-        title: "Unterverteilungen & Schutztechnik",
-        text: "Erweiterung, Erneuerung und sinnvolle Anpassung bestehender Unterverteilungen und Sicherungstechnik.",
-      },
-      {
-        key: "lighting",
-        icon: "sun",
-        title: "Beleuchtung",
-        text: "Innen- und Außenbeleuchtungs Konzepte.",
-      },
-      {
-        key: "network",
-        icon: "network",
-        title: "Netzwerk & Datenleitungen",
-        text: "Netzwerkerweiterungen für Homeoffice, Medienpunkte und moderner Haustechnik.",
-      },
-      {
-        key: "estimator",
-        icon: "calculator",
-        title: "Digitale Ersteinschätzung",
-        text: "Mehrstufige Ersteinschätzung mit Preisspanne statt ungenauem Festpreisversprechen.",
-      },
-      {
-        key: "quality",
-        icon: "check",
-        title: "All-In-One Lösung",
-        text: "Durch Partnerbetriebe eine vollumfängliche Sanierung und einem Ansprechpartner möglich.",
-      },
+      { key: "installation", icon: "zap", title: "Elektroinstallation", text: "Neuinstallation, Modernisierung und strukturierte Elektroarbeiten für Wohnung, Haus und kleinere Einheiten." },
+      { key: "distribution", icon: "wrench", title: "Unterverteilungen & Schutztechnik", text: "Erweiterung, Erneuerung und sinnvolle Anpassung bestehender Unterverteilungen und Sicherungstechnik." },
+      { key: "lighting", icon: "sun", title: "Beleuchtung", text: "Innen- und Außenbeleuchtung mit sauberer Leitungsführung und passender Schaltlogik." },
+      { key: "network", icon: "network", title: "Netzwerk & Datenleitungen", text: "Strukturierte Verkabelung für Homeoffice, Medienpunkte und moderne Haustechnik." },
+      { key: "estimator", icon: "calculator", title: "Digitale Ersteinschätzung", text: "Mehrstufige Ersteinschätzung mit Preisspanne statt ungenauem Festpreisversprechen." },
+      { key: "quality", icon: "check", title: "Saubere Ausführung", text: "Fokus auf klare Abstimmung, nachvollziehbare Umsetzung und ruhige Kommunikation im Projekt." },
     ],
   },
 
@@ -100,45 +70,40 @@ export const siteConfig = {
     sidebarTitle: "Kurzübersicht",
     resultFactorsTitle: "Wovon der Endpreis abhängt",
     resultFactors: [
+      "Projektart und Umfang",
       "Bestand und Zustand der Anlage",
-      "Leitungswege und bauliche Gegebenheiten",
-      "Verteilertechnik und Schutzmaßnahmen",
-      "Materiallinie und Ausstattungsniveau",
-      "Zusätzliche Arbeiten vor Ort",
+      "Ausstattung ohne Küche und Bad",
+      "Zusatzoptionen wie Unterverteilung, Küche, Bad oder Außenbereich",
+      "Materiallinie und gewünschtes Niveau",
     ],
     requestNote:
       "Frontend-Stand: Das Formular ist bewusst nur visuell vorbereitet und noch nicht an einen echten Versand angebunden.",
-
     wizardLabels: ["Objekt", "Projekt", "Ausstattung", "Optionen", "Material", "Ergebnis", "Anfrage"],
-
     objectChoices: [
       { value: "wohnung", label: "Wohnung", icon: "home" },
       { value: "einfamilienhaus", label: "Einfamilienhaus", icon: "home" },
       { value: "mehrfamilienhaus", label: "Einheit im Mehrfamilienhaus", icon: "building" },
-      { value: "gewerbe", label: "Kleingewerbe", icon: "building" },
+      { value: "gewerbe", label: "Gewerbe", icon: "building" },
     ],
-
     projectChoices: [
-      { value: "neuinstallation", label: "Neuinstallation - Neubau" },
-      { value: "sanierung", label: "Sanierung / Teilerneuerung" },
-      { value: "erweiterung", label: "Erweiterung / einzelne Räume" },
-      { value: "unterverteilung", label: "Neue Unterverteilung" },
+      { value: "neuinstallation", label: "Neuinstallation" },
+      { value: "neubau", label: "Neubau" },
+      { value: "sanierung", label: "Sanierung" },
+      { value: "erweiterung", label: "Erweiterung" },
       { value: "zaehlerschrank", label: "Zählerschrank erneuern" },
     ],
-
+    componentHint: "Ausstattung ohne Küche und Bad",
     componentFields: [
       { key: "steckdosen", label: "Steckdosen" },
       { key: "schalter", label: "Lichtschalter" },
       { key: "netzwerkdosen", label: "Netzwerkdosen" },
       { key: "lampenauslaesse", label: "Lampenauslässe" },
       { key: "rollladenschalter", label: "Rollladenschalter" },
-      { key: "taster", label: "Taster(bspw. im Flur)" },
     ],
-
     optionChoices: [
-      { key: "fi", label: "RCD-Erweiterung + DGUV3 Prüfung" },
+      { key: "rcd_dguv", label: "RCD-Erweiterung + DGUV3 Prüfung" },
       { key: "uv", label: "Neue Unterverteilung" },
-      { key: "sicherungskasten", label: "Zählerschrank erneuern" },
+      { key: "zaehlerschrank", label: "Zählerschrank erneuern" },
       { key: "lan", label: "LAN / Netzwerk verlegen" },
       { key: "aussenbereich", label: "Außenbereich" },
       { key: "kueche", label: "Küche Neuinstallieren" },
@@ -146,21 +111,18 @@ export const siteConfig = {
       { key: "waermepumpe", label: "Vorbereitung für Wärmepumpe" },
       { key: "wallbox", label: "Vorbereitung für Wallbox" },
     ],
-
     brandChoices: [
-      { value: "standard", label: "Unklar" },
+      { value: "standard", label: "Standard" },
       { value: "gira", label: "Gira" },
       { value: "merten", label: "Merten" },
       { value: "schneider", label: "Schneider Electric" },
-      { value: "jung", label: "Busch-Jäger" },
+      { value: "jung", label: "JUNG" },
     ],
-
     qualityChoices: [
       { value: "einfach", label: "Einfach" },
       { value: "standard", label: "Standard" },
       { value: "hochwertig", label: "Hochwertig" },
     ],
-
     defaults: {
       objectType: "wohnung",
       sqm: "85",
@@ -170,13 +132,12 @@ export const siteConfig = {
       netzwerkdosen: 2,
       lampenauslaesse: 6,
       rollladenschalter: 0,
-      taster: 0,
       brand: "standard",
       quality: "standard",
       options: {
-        fi: false,
+        rcd_dguv: false,
         uv: false,
-        sicherungskasten: false,
+        zaehlerschrank: false,
         lan: false,
         aussenbereich: false,
         kueche: false,
@@ -191,21 +152,16 @@ export const siteConfig = {
       zip: "",
       message: "",
     },
-
     priceConfig: {
       projectBase: {
         neuinstallation: 2400,
+        neubau: 2600,
         sanierung: 1600,
-        erweiterung: 750,
-        unterverteilung: 1350,
-        zaehlerschrank: 2800,
       },
       sqm: {
         neuinstallation: 72,
+        neubau: 75,
         sanierung: 46,
-        erweiterung: 20,
-        unterverteilung: 0,
-        zaehlerschrank: 0,
       },
       components: {
         steckdosen: 98,
@@ -213,16 +169,15 @@ export const siteConfig = {
         netzwerkdosen: 149,
         lampenauslaesse: 92,
         rollladenschalter: 136,
-        taster: 86,
       },
       options: {
-        fi: 450,
+        rcd_dguv: 850,
         uv: 1450,
-        sicherungskasten: 2550,
+        zaehlerschrank: 3200,
         lan: 820,
         aussenbereich: 990,
-        kueche: 1350,
-        bad: 1050,
+        kueche: 2600,
+        bad: 2200,
         waermepumpe: 920,
         wallbox: 1180,
       },
