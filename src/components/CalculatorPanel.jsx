@@ -1,18 +1,20 @@
 import React from "react";
 import {
-  CheckCircle2, Home, Building2, Upload, ArrowRight, ChevronRight
+  CheckCircle2, Home, Building2, Upload, ArrowRight
 } from "lucide-react";
 import { calculatorConfig } from "../config/calculatorConfig";
-import { estimatePrice, formatEUR, getVisibleComponentFields, isDirectInquiryProject, getWizardLabels } from "./calculatorLogic";
+import { estimatePrice, formatEUR, getVisibleComponentFields, isDirectInquiryProject } from "./calculatorLogic";
+import { getNextStep, getPreviousStep, getStepPosition, getWizardLabelsForFlow } from "../calculator/flow";
+import { validateStep } from "../calculator/validation";
 
 const iconMap = { home: Home, building: Building2 };
 
-function Button({ children, href, outline = false, onClick, type = "button", className = "", target }) {
+function Button({ children, href, outline = false, onClick, type = "button", className = "", target, disabled = false }) {
   const cls = `btn ${outline ? "btn-outline" : ""} ${className}`.trim();
   if (href) {
     return <a className={cls} href={href} target={target} rel={target === "_blank" ? "noreferrer" : undefined}>{children}</a>;
   }
-  return <button className={cls} onClick={onClick} type={type}>{children}</button>;
+  return <button className={cls} onClick={onClick} type={type} disabled={disabled}>{children}</button>;
 }
 
 function ChoiceIcon({ iconName, size = 16 }) {
@@ -28,25 +30,51 @@ function SummaryLabel({ value, choices }) {
 export default function CalculatorPanel({ onOpenRequestPage }) {
   const [step, setStep] = React.useState(1);
   const [form, setForm] = React.useState(calculatorConfig.defaults);
+  const [stepError, setStepError] = React.useState("");
 
   const result = React.useMemo(() => estimatePrice(form), [form]);
   const skipsCalculator = isDirectInquiryProject(form.projectType);
-  const wizardLabels = React.useMemo(() => getWizardLabels(form), [form]);
-  const visibleComponentFields = getVisibleComponentFields(form);
+  const wizardLabels = React.useMemo(() => getWizardLabelsForFlow(form), [form]);
+  const visibleComponentFields = React.useMemo(() => getVisibleComponentFields(form), [form]);
+  const { index: stepIndex, total: totalSteps, sequence } = React.useMemo(() => getStepPosition(step, form), [step, form]);
+  const progress = Math.round((((stepIndex >= 0 ? stepIndex : 0) + 1) / totalSteps) * 100);
+
   const selectedOptions = Object.entries(form.options)
     .filter(([, enabled]) => enabled)
     .map(([key]) => calculatorConfig.options.find((item) => item.key === key)?.label || key);
 
-  const updateField = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
-  const updateOption = (key, value) => setForm((prev) => ({ ...prev, options: { ...prev.options, [key]: value } }));
+  const updateField = (key, value) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+    setStepError("");
+  };
+
+  const updateOption = (key, value) => {
+    setForm((prev) => ({ ...prev, options: { ...prev.options, [key]: value } }));
+    setStepError("");
+  };
+
+  React.useEffect(() => {
+    if (!sequence.includes(step)) {
+      setStep(sequence[sequence.length - 1]);
+      setStepError("");
+    }
+  }, [sequence, step]);
 
   const nextStep = () => {
-    if (step === 2 && skipsCalculator) return setStep(7);
-    if (step < wizardLabels.length) setStep((s) => s + 1);
+    const error = validateStep(step, form, { skipsCalculator });
+    if (error) {
+      setStepError(error);
+      return;
+    }
+    setStepError("");
+    const next = getNextStep(step, form);
+    if (next !== step) setStep(next);
   };
+
   const prevStep = () => {
-    if (step === 7 && skipsCalculator) return setStep(2);
-    if (step > 1) setStep((s) => s - 1);
+    setStepError("");
+    const previous = getPreviousStep(step, form);
+    if (previous !== step) setStep(previous);
   };
 
   return (
@@ -55,17 +83,16 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
         <div className="card-pad">
           <div className="wizard-top">
             <div className="wizard-meta">
-              <span>Schritt {step} von {wizardLabels.length}</span>
-              <span>{Math.round((step / wizardLabels.length) * 100)}%</span>
+              <span>Schritt {stepIndex + 1} von {totalSteps}</span>
+              <span>{progress}%</span>
             </div>
             <div className="progress glass-inset">
-              <div className="progress-bar" style={{ width: `${(step / wizardLabels.length) * 100}%` }} />
+              <div className="progress-bar" style={{ width: `${progress}%` }} />
             </div>
             <div className="chip-row">
-              {wizardLabels.map((label, index) => {
-                const n = index + 1;
-                return <div key={label} className={`step-chip ${n === step ? "active" : ""} ${n < step ? "done" : ""}`}>{label}</div>;
-              })}
+              {wizardLabels.map((label, index) => (
+                <div key={label} className={`step-chip ${index === stepIndex ? "active" : ""} ${index < stepIndex ? "done" : ""}`}>{label}</div>
+              ))}
             </div>
           </div>
 
@@ -76,7 +103,7 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
                 <div className="choice-grid">
                   {calculatorConfig.objectChoices.map((item) => (
                     <button key={item.value} className={`choice ${form.objectType === item.value ? "active" : ""}`} onClick={() => updateField("objectType", item.value)}>
-                      <div><ChoiceIcon iconName={item.icon} size={16} /></div>
+                      <ChoiceIcon iconName={item.icon} size={17} />
                       <div>{item.label}</div>
                     </button>
                   ))}
@@ -84,7 +111,7 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
               </div>
               <div>
                 <label className="field-label">Wohnfläche / Nutzfläche in m²</label>
-                <input className="input glass-input" value={form.sqm} onChange={(e) => updateField("sqm", e.target.value)} />
+                <input className="input glass-input" inputMode="numeric" value={form.sqm} onChange={(e) => updateField("sqm", e.target.value)} placeholder="z. B. 120" />
               </div>
             </div>
           )}
@@ -101,7 +128,7 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
               </div>
               {skipsCalculator && (
                 <div className="soft-box liquid-card subtle flow-note">
-                  Für diese Projektart wird keine automatische Kostenschätzung ausgegeben. Nach „Weiter“ gelangst du direkt zur Anfrage.
+                  Für diese Projektart wird keine automatische Kostenschätzung angezeigt. Im nächsten Schritt kannst du direkt deine Anfrage vorbereiten.
                 </div>
               )}
             </div>
@@ -134,7 +161,7 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
               <div className="room-first-block">
                 <div>
                   <label className="field-label small">{visibleComponentFields[0]?.label || "Raumanzahl"}</label>
-                  <input className="input glass-input room-input" value={form.rooms} onChange={(e) => updateField("rooms", e.target.value)} />
+                  <input className="input glass-input room-input" inputMode="numeric" value={form.rooms} onChange={(e) => updateField("rooms", e.target.value)} />
                 </div>
               </div>
 
@@ -142,7 +169,7 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
                 {visibleComponentFields.slice(1).map((field) => (
                   <div key={field.key}>
                     <label className="field-label small">{field.label}</label>
-                    <input className="input glass-input" value={form[field.key]} onChange={(e) => updateField(field.key, e.target.value)} />
+                    <input className="input glass-input" inputMode="numeric" value={form[field.key]} onChange={(e) => updateField(field.key, e.target.value)} />
                   </div>
                 ))}
               </div>
@@ -233,12 +260,22 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
             </div>
           )}
 
+          {stepError && <div className="soft-box liquid-card subtle flow-note">{stepError}</div>}
+
           <div className="wizard-actions">
-            <Button outline onClick={prevStep}>Zurück</Button>
-            {step < wizardLabels.length ? (
+            <Button outline onClick={prevStep} disabled={stepIndex <= 0}>Zurück</Button>
+            {stepIndex < totalSteps - 1 ? (
               <Button onClick={nextStep}>Weiter <ArrowRight size={15} /></Button>
             ) : (
-              <Button onClick={onOpenRequestPage}>Zur Anfrageseite</Button>
+              <Button onClick={() => {
+                const error = validateStep(step, form, { skipsCalculator });
+                if (error) {
+                  setStepError(error);
+                  return;
+                }
+                setStepError("");
+                onOpenRequestPage();
+              }}>Zur Anfrageseite</Button>
             )}
           </div>
         </div>

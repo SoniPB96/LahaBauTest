@@ -16,7 +16,17 @@ export const calculatorConfig = {
     "Schalterprogramm und gewünschtes Niveau",
   ],
   requestNote:
-    "Frontend-Stand: Das Formular ist bewusst nur visuell vorbereitet und noch nicht an einen echten Versand angebunden.",
+    "Die Anfrage wird aktuell noch nicht direkt aus dem Rechner versendet. Nach dem letzten Schritt gelangst du zur Anfrageseite und kannst dort den Kontaktweg wählen.",
+
+  stepDefinitions: {
+    1: { label: "Objekt" },
+    2: { label: "Projekt" },
+    3: { label: "Optionen" },
+    4: { label: "Ausstattung" },
+    5: { label: "Material" },
+    6: { label: "Ergebnis" },
+    7: { label: "Anfrage" },
+  },
 
   wizardLabels: ["Objekt", "Projekt", "Optionen", "Ausstattung", "Material", "Ergebnis", "Anfrage"],
   directInquiryWizardLabels: ["Objekt", "Projekt", "Anfrage"],
