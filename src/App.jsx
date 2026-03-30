@@ -49,7 +49,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("start");
   const [menuOpen, setMenuOpen] = useState(false);
   const [requestMode, setRequestMode] = useState("whatsapp");
-  const [showSticky, setShowSticky] = useState(False) if False else useState(False)
+  const [showSticky, setShowSticky] = useState(false);
   const heroRef = useRef(null);
 
   const heroExampleResult = useMemo(() => estimatePrice(calculatorConfig.defaults), []);

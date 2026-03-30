@@ -19,6 +19,7 @@ export const calculatorConfig = {
     "Frontend-Stand: Das Formular ist bewusst nur visuell vorbereitet und noch nicht an einen echten Versand angebunden.",
 
   wizardLabels: ["Objekt", "Projekt", "Optionen", "Ausstattung", "Material", "Ergebnis", "Anfrage"],
+  directInquiryWizardLabels: ["Objekt", "Projekt", "Anfrage"],
 
   objectChoices: [
     { value: "wohnung", label: "Wohnung", icon: "home" },
@@ -28,49 +29,49 @@ export const calculatorConfig = {
   ],
 
   projectChoices: [
-    { value: "neubau_neuinstallation", label: "Neubau / Neuinstallation" },
-    { value: "sanierung_altbau", label: "Sanierung / Altbau" },
-    { value: "erweiterung", label: "Erweiterung" },
-    { value: "zaehlerschrank", label: "Zählerschrank erneuern" },
+    { value: "neubau_neuinstallation", label: "Neubau / Neuinstallation", basePrice: 2600, sqmPrice: 75 },
+    { value: "sanierung_altbau", label: "Sanierung / Altbau", basePrice: 1600, sqmPrice: 46 },
+    { value: "erweiterung", label: "Erweiterung", directInquiry: true },
+    { value: "zaehlerschrank", label: "Zählerschrank erneuern", directInquiry: true },
   ],
 
   optionsTitle: "Zusatzoptionen",
   optionsHint:
     "Wähle hier aus, welche Zusatzbereiche oder Vorbereitungen im Projekt berücksichtigt werden sollen.",
-  optionChoices: [
-    { key: "uv", label: "Neue Unterverteilung" },
-    { key: "zaehlerschrank", label: "Zählerschrank erneuern" },
-    { key: "lan", label: "LAN / Netzwerk verlegen" },
-    { key: "aussenbereich", label: "Außenbereich" },
-    { key: "kueche", label: "Küche neu installieren" },
-    { key: "bad", label: "Bad neu installieren" },
-    { key: "fussbodenheizung", label: "Fußbodenheizung" },
-    { key: "waermepumpe", label: "Vorbereitung für Wärmepumpe" },
-    { key: "wallbox", label: "Vorbereitung für Wallbox" },
+  options: [
+    { key: "uv", label: "Neue Unterverteilung", price: 1450 },
+    { key: "zaehlerschrank", label: "Zählerschrank erneuern", price: 3200 },
+    { key: "lan", label: "LAN / Netzwerk verlegen", price: 820 },
+    { key: "aussenbereich", label: "Außenbereich", price: 990 },
+    { key: "kueche", label: "Küche neu installieren", price: 2600 },
+    { key: "bad", label: "Bad neu installieren", price: 2200 },
+    { key: "fussbodenheizung", label: "Fußbodenheizung", price: 1250 },
+    { key: "waermepumpe", label: "Vorbereitung für Wärmepumpe", price: 920 },
+    { key: "wallbox", label: "Vorbereitung für Wallbox", price: 1180 },
   ],
 
   roomInfoTitle: "Ausstattung ohne Küche und Badezimmer",
   roomInfoText:
     "Bitte gib hier zuerst an, wie viele Räume das Objekt ohne Küche und Badezimmer hat. Erst danach folgt die Ausstattung für diese übrigen Räume.",
   componentFields: [
-    { key: "rooms", label: "Raumanzahl ohne Küche und Badezimmer" },
-    { key: "steckdosen", label: "Steckdosen" },
-    { key: "schalter", label: "Lichtschalter" },
-    { key: "netzwerkdosen", label: "Netzwerkdosen", requiresOption: "lan" },
-    { key: "lampenauslaesse", label: "Lampenauslässe" },
-    { key: "rollladenschalter", label: "Rollladenschalter" },
-    { key: "raumthermostate", label: "Raumthermostate für Fußbodenheizung", requiresOption: "fussbodenheizung" },
+    { key: "rooms", label: "Raumanzahl ohne Küche und Badezimmer", unitPrice: 220 },
+    { key: "steckdosen", label: "Steckdosen", unitPrice: 98 },
+    { key: "schalter", label: "Lichtschalter", unitPrice: 82 },
+    { key: "netzwerkdosen", label: "Netzwerkdosen", unitPrice: 149, requiresOption: "lan" },
+    { key: "lampenauslaesse", label: "Lampenauslässe", unitPrice: 92 },
+    { key: "rollladenschalter", label: "Rollladenschalter", unitPrice: 136 },
+    { key: "raumthermostate", label: "Raumthermostate für Fußbodenheizung", unitPrice: 210, requiresOption: "fussbodenheizung" },
   ],
 
   materialTitle: "Schalterprogramm / Materiallinie",
   materialInfo:
     "Hier wählst du das gewünschte Schalterprogramm. Die Auswahl beeinflusst vor allem das Materialniveau und den späteren Preisbereich.",
   brandChoices: [
-    { value: "gira", label: "Gira", badge: "Hausmarke", accentClass: "accent-gold" },
-    { value: "merten", label: "Merten", accentClass: "accent-silver" },
-    { value: "schneider", label: "Schneider Electric", accentClass: "accent-blue" },
-    { value: "jung", label: "JUNG", accentClass: "accent-violet" },
-    { value: "buschjaeger", label: "Busch-Jaeger", accentClass: "accent-green" },
+    { value: "gira", label: "Gira", badge: "Hausmarke", accentClass: "accent-gold", factor: 1.12 },
+    { value: "merten", label: "Merten", accentClass: "accent-silver", factor: 1.08 },
+    { value: "schneider", label: "Schneider Electric", accentClass: "accent-blue", factor: 1.1 },
+    { value: "jung", label: "JUNG", accentClass: "accent-violet", factor: 1.13 },
+    { value: "buschjaeger", label: "Busch-Jaeger", accentClass: "accent-green", factor: 1.09 },
   ],
 
   defaults: {
@@ -105,41 +106,6 @@ export const calculatorConfig = {
   },
 
   pricing: {
-    projectBase: {
-      neubau_neuinstallation: 2600,
-      sanierung_altbau: 1600,
-    },
-    sqm: {
-      neubau_neuinstallation: 75,
-      sanierung_altbau: 46,
-    },
-    components: {
-      rooms: 220,
-      steckdosen: 98,
-      schalter: 82,
-      netzwerkdosen: 149,
-      lampenauslaesse: 92,
-      rollladenschalter: 136,
-      raumthermostate: 210,
-    },
-    options: {
-      uv: 1450,
-      zaehlerschrank: 3200,
-      lan: 820,
-      aussenbereich: 990,
-      kueche: 2600,
-      bad: 2200,
-      fussbodenheizung: 1250,
-      waermepumpe: 920,
-      wallbox: 1180,
-    },
-    brandFactor: {
-      gira: 1.12,
-      merten: 1.08,
-      schneider: 1.1,
-      jung: 1.13,
-      buschjaeger: 1.09,
-    },
     objectFactor: {
       wohnung: 1,
       einfamilienhaus: 1.05,
@@ -149,6 +115,7 @@ export const calculatorConfig = {
     range: 0.14,
     laborShare: 0.56,
     materialShare: 0.31,
-    extraShare: 0.13,
   },
 };
+
+calculatorConfig.optionChoices = calculatorConfig.options;

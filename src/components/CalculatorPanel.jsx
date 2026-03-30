@@ -3,7 +3,7 @@ import {
   CheckCircle2, Home, Building2, Upload, ArrowRight, ChevronRight
 } from "lucide-react";
 import { calculatorConfig } from "../config/calculatorConfig";
-import { estimatePrice, formatEUR, getVisibleComponentFields, isDirectInquiryProject } from "./calculatorLogic";
+import { estimatePrice, formatEUR, getVisibleComponentFields, isDirectInquiryProject, getWizardLabels } from "./calculatorLogic";
 
 const iconMap = { home: Home, building: Building2 };
 
@@ -31,17 +31,18 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
 
   const result = React.useMemo(() => estimatePrice(form), [form]);
   const skipsCalculator = isDirectInquiryProject(form.projectType);
+  const wizardLabels = React.useMemo(() => getWizardLabels(form), [form]);
   const visibleComponentFields = getVisibleComponentFields(form);
   const selectedOptions = Object.entries(form.options)
     .filter(([, enabled]) => enabled)
-    .map(([key]) => calculatorConfig.optionChoices.find((item) => item.key === key)?.label || key);
+    .map(([key]) => calculatorConfig.options.find((item) => item.key === key)?.label || key);
 
   const updateField = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
   const updateOption = (key, value) => setForm((prev) => ({ ...prev, options: { ...prev.options, [key]: value } }));
 
   const nextStep = () => {
     if (step === 2 && skipsCalculator) return setStep(7);
-    if (step < calculatorConfig.wizardLabels.length) setStep((s) => s + 1);
+    if (step < wizardLabels.length) setStep((s) => s + 1);
   };
   const prevStep = () => {
     if (step === 7 && skipsCalculator) return setStep(2);
@@ -54,14 +55,14 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
         <div className="card-pad">
           <div className="wizard-top">
             <div className="wizard-meta">
-              <span>Schritt {step} von {calculatorConfig.wizardLabels.length}</span>
-              <span>{Math.round((step / calculatorConfig.wizardLabels.length) * 100)}%</span>
+              <span>Schritt {step} von {wizardLabels.length}</span>
+              <span>{Math.round((step / wizardLabels.length) * 100)}%</span>
             </div>
             <div className="progress glass-inset">
-              <div className="progress-bar" style={{ width: `${(step / calculatorConfig.wizardLabels.length) * 100}%` }} />
+              <div className="progress-bar" style={{ width: `${(step / wizardLabels.length) * 100}%` }} />
             </div>
             <div className="chip-row">
-              {calculatorConfig.wizardLabels.map((label, index) => {
+              {wizardLabels.map((label, index) => {
                 const n = index + 1;
                 return <div key={label} className={`step-chip ${n === step ? "active" : ""} ${n < step ? "done" : ""}`}>{label}</div>;
               })}
@@ -114,7 +115,7 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
                 <div className="room-info-text">{calculatorConfig.optionsHint}</div>
               </div>
               <div className="choice-grid wide">
-                {calculatorConfig.optionChoices.map((item) => (
+                {calculatorConfig.options.map((item) => (
                   <button key={item.key} className={`choice ${form.options[item.key] ? "active" : ""}`} onClick={() => updateOption(item.key, !form.options[item.key])}>
                     {item.label}
                   </button>
@@ -180,7 +181,7 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
                 <div className="mini-grid result-grid">
                   <div className="soft-box liquid-card subtle"><div className="meta-label">Material</div><div className="meta-value">{formatEUR(result.material)}</div></div>
                   <div className="soft-box liquid-card subtle"><div className="meta-label">Arbeitszeit</div><div className="meta-value">{formatEUR(result.labor)}</div></div>
-                  <div className="soft-box liquid-card subtle"><div className="meta-label">Zusatzoptionen</div><div className="meta-value">{formatEUR(result.extras)}</div></div>
+                  <div className="soft-box liquid-card subtle"><div className="meta-label">Zusatzoptionen</div><div className="meta-value">{formatEUR(result.optionTotal)}</div></div>
                 </div>
               </div>
               <div className="soft-box liquid-card strong">
@@ -234,7 +235,7 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
 
           <div className="wizard-actions">
             <Button outline onClick={prevStep}>Zurück</Button>
-            {step < calculatorConfig.wizardLabels.length ? (
+            {step < wizardLabels.length ? (
               <Button onClick={nextStep}>Weiter <ArrowRight size={15} /></Button>
             ) : (
               <Button onClick={onOpenRequestPage}>Zur Anfrageseite</Button>
