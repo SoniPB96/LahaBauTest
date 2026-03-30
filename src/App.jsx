@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from "react";
 import {
-  CheckCircle2, Home, Building2, UserCheck, ShieldCheck, MessageCircle,
-  Phone, Mail, MapPin, ChevronRight, Calculator, Upload, Zap, Wrench, Network, Sun, ArrowRight,
-  ClipboardList, Handshake, Gem, Hammer
+  CheckCircle2, Home, Building2, MessageCircle, Phone, Mail, MapPin, ChevronRight,
+  Calculator, Upload, Zap, Wrench, Network, Sun, ArrowRight, ClipboardList,
+  Handshake, Gem, Hammer, Menu, X
 } from "lucide-react";
 import { siteConfig } from "./config/siteConfig";
 
@@ -78,11 +78,30 @@ function SummaryLabel({ value, choices }) {
   return found?.label || value || "—";
 }
 
+function Logo() {
+  return (
+    <div className="logo-lockup">
+      <div className="logo-mark" aria-hidden="true">
+        <span className="logo-line l1" />
+        <span className="logo-line l2" />
+        <span className="logo-line l3" />
+        <span className="logo-line l4" />
+        <span className="logo-zap" />
+      </div>
+      <div className="logo-text">
+        <div className="brand-name">LAHA</div>
+        <div className="brand-sub">BAUDIENSTLEISTUNGEN</div>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const cfg = siteConfig;
   const [activeTab, setActiveTab] = useState("start");
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(cfg.estimator.defaults);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const result = useMemo(() => estimatePrice(form, cfg), [form]);
   const updateField = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
@@ -111,6 +130,11 @@ export default function App() {
     if (step > 1) setStep((s) => s - 1);
   };
 
+  const openTab = (key) => {
+    setActiveTab(key);
+    setMenuOpen(false);
+  };
+
   return (
     <div className="page">
       <div className="bg-orb orb-1" />
@@ -119,19 +143,35 @@ export default function App() {
 
       <header className="header">
         <div className="container header-inner">
-          <button className="brand" onClick={() => setActiveTab("start")} aria-label="Startseite">
-            <div className="brand-name">{cfg.company.name}</div>
-            <div className="brand-sub">{cfg.company.subtitle}</div>
+          <button className="brand" onClick={() => openTab("start")} aria-label="Startseite">
+            <Logo />
           </button>
 
-          <nav className="nav">
+          <nav className="nav desktop-nav">
             {cfg.navigation.items.map((item) => (
-              <button key={item.key} onClick={() => setActiveTab(item.key)}>{item.label}</button>
+              <button key={item.key} onClick={() => openTab(item.key)}>{item.label}</button>
             ))}
           </nav>
 
-          <Button onClick={() => setActiveTab("kontakt")}>{cfg.navigation.ctaLabel}</Button>
+          <div className="desktop-cta">
+            <Button onClick={() => openTab("kontakt")}>{cfg.navigation.ctaLabel}</Button>
+          </div>
+
+          <button className="menu-toggle" onClick={() => setMenuOpen((v) => !v)} aria-label="Menü">
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
         </div>
+
+        {menuOpen && (
+          <div className="mobile-menu">
+            <div className="container mobile-menu-inner">
+              {cfg.navigation.items.map((item) => (
+                <button key={item.key} onClick={() => openTab(item.key)}>{item.label}</button>
+              ))}
+              <Button onClick={() => openTab("kontakt")}>{cfg.navigation.ctaLabel}</Button>
+            </div>
+          </div>
+        )}
       </header>
 
       {activeTab === "start" && (
@@ -148,8 +188,8 @@ export default function App() {
                 <p>{cfg.hero.text}</p>
                 <p className="hero-trust">{cfg.hero.trustLine}</p>
 
-                <div className="button-row">
-                  <Button onClick={() => setActiveTab("rechner")}>Kostenschätzung starten</Button>
+                <div className="button-row hero-cta-row">
+                  <Button onClick={() => openTab("rechner")}>Kostenschätzung starten</Button>
                   <Button outline href={cfg.company.whatsappLink} target="_blank">WhatsApp</Button>
                 </div>
               </div>
@@ -171,20 +211,12 @@ export default function App() {
                       <div className="soft-box liquid-card subtle">Mehrstufige Eingabe</div>
                       <div className="soft-box liquid-card subtle">Richtpreis statt Festpreis</div>
                     </div>
-                    <Button className="full" onClick={() => setActiveTab("rechner")}>
+                    <Button className="full" onClick={() => openTab("rechner")}>
                       Rechner öffnen <ChevronRight size={16} />
                     </Button>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-
-          <section className="contact-strip">
-            <div className="container contact-strip-grid">
-              <div className="soft-box liquid-card subtle">Telefon: {cfg.company.phoneDisplay}</div>
-              <div className="soft-box liquid-card subtle">E-Mail: {cfg.company.email}</div>
-              <div className="soft-box liquid-card subtle">Einsatzgebiet: {cfg.company.region}</div>
             </div>
           </section>
 
@@ -213,12 +245,13 @@ export default function App() {
       {activeTab === "begleitung" && (
         <main className="section">
           <div className="container">
-            <SectionTitle eyebrow={cfg.begleitsung.eyebrow} title={cfg.begleitsung.title} text={cfg.begleitsung.text} />
+            <SectionTitle eyebrow={cfg.begleitung.eyebrow} title={cfg.begleitung.title} text={cfg.begleitung.text} />
+            <p className="begleitung-subline">{cfg.begleitung.subline}</p>
             <div className="begleitung-hero liquid-card glow">
               <div className="begleitung-main">
-                <p className="begleitung-intro">{cfg.begleitsung.intro}</p>
+                <p className="begleitung-intro">{cfg.begleitung.intro}</p>
                 <div className="begleitung-points">
-                  {cfg.begleitsung.points.map((point, i) => {
+                  {cfg.begleitung.points.map((point, i) => {
                     const icons = [ClipboardList, Handshake, Hammer, Gem];
                     const Icon = icons[i] || CheckCircle2;
                     return (
@@ -230,14 +263,14 @@ export default function App() {
                   })}
                 </div>
                 <div className="button-row">
-                  <Button onClick={() => setActiveTab("kontakt")}>{cfg.begleitsung.cta}</Button>
+                  <Button onClick={() => openTab("kontakt")}>{cfg.begleitung.cta}</Button>
                   <Button outline href={cfg.company.whatsappLink} target="_blank">Per WhatsApp anfragen</Button>
                 </div>
               </div>
             </div>
 
             <div className="begleitung-cards">
-              {cfg.begleitsung.cards.map((card) => (
+              {cfg.begleitung.cards.map((card) => (
                 <div key={card.title} className="card liquid-card subtle">
                   <div className="card-pad">
                     <h3 className="card-title">{card.title}</h3>
@@ -429,7 +462,7 @@ export default function App() {
                     {step < cfg.estimator.wizardLabels.length ? (
                       <Button onClick={nextStep}>Weiter <ArrowRight size={15} /></Button>
                     ) : (
-                      <Button onClick={() => setActiveTab("kontakt")}>Zum Kontakt</Button>
+                      <Button onClick={() => openTab("kontakt")}>Zum Kontakt</Button>
                     )}
                   </div>
                 </div>
@@ -489,7 +522,9 @@ export default function App() {
         </main>
       )}
 
-      <button className="sticky-contact" onClick={() => setActiveTab("kontakt")}>Kontakt</button>
+      {activeTab !== "rechner" && activeTab !== "kontakt" && (
+        <button className="sticky-contact" onClick={() => openTab("kontakt")}>Kontakt</button>
+      )}
     </div>
   );
 }

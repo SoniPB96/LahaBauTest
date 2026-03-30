@@ -47,7 +47,7 @@ a { color: inherit; text-decoration: none; }
 .header {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 60;
   border-bottom: 1px solid rgba(255,255,255,0.08);
   background: rgba(8, 9, 12, 0.62);
   backdrop-filter: blur(18px) saturate(140%);
@@ -58,7 +58,7 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 20px;
   min-height: 86px;
   position: relative;
   z-index: 2;
@@ -66,6 +66,33 @@ a { color: inherit; text-decoration: none; }
 
 .brand { text-align: left; transition: opacity .2s ease, transform .2s ease; }
 .brand:hover { opacity: 0.92; transform: translateY(-1px); }
+
+.logo-lockup { display: flex; align-items: center; gap: 12px; }
+.logo-mark {
+  position: relative;
+  width: 34px;
+  height: 46px;
+}
+.logo-line {
+  position: absolute;
+  bottom: 2px;
+  width: 2px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 2px;
+}
+.logo-line.l1 { left: 0; height: 26px; }
+.logo-line.l2 { left: 8px; height: 34px; }
+.logo-line.l3 { left: 16px; height: 42px; }
+.logo-line.l4 { left: 24px; height: 30px; }
+.logo-zap {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 10px;
+  height: 24px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(215,221,230,0.85));
+  clip-path: polygon(45% 0, 100% 0, 62% 44%, 100% 44%, 26% 100%, 40% 58%, 0 58%);
+}
 
 .brand-name {
   font-size: 1.72rem;
@@ -86,6 +113,25 @@ a { color: inherit; text-decoration: none; }
 .nav { display: flex; align-items: center; gap: 24px; }
 .nav button { color: #d4d8e3; transition: color .2s ease, opacity .2s ease; }
 .nav button:hover { color: #ffffff; }
+.desktop-nav { display: flex; }
+.desktop-cta { display: flex; }
+.menu-toggle { display: none; color: #fff; }
+
+.mobile-menu {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  background: rgba(8, 9, 12, 0.88);
+  backdrop-filter: blur(18px);
+}
+.mobile-menu-inner {
+  display: grid;
+  gap: 10px;
+  padding: 14px 0 16px;
+}
+.mobile-menu-inner button {
+  text-align: left;
+  color: #fff;
+  padding: 8px 0;
+}
 
 .btn {
   display: inline-flex;
@@ -149,7 +195,6 @@ a { color: inherit; text-decoration: none; }
 
 .badge-row,
 .button-row,
-.cta-row,
 .submit-row {
   display: flex;
   flex-wrap: wrap;
@@ -157,10 +202,10 @@ a { color: inherit; text-decoration: none; }
   gap: 10px;
 }
 .button-row { margin-top: 18px; }
+.hero-cta-row .btn:first-child { min-width: 260px; }
 
 .mini-grid,
 .services-grid,
-.contact-strip-grid,
 .form-grid,
 .contact-layout,
 .begleitung-cards {
@@ -274,13 +319,6 @@ a { color: inherit; text-decoration: none; }
 
 .section { padding: 68px 0; position: relative; z-index: 1; }
 
-.contact-strip {
-  border-top: 1px solid rgba(255,255,255,0.06);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.02);
-}
-.contact-strip-grid { grid-template-columns: repeat(3, 1fr); padding: 22px 0; }
-
 .section-title { max-width: 860px; margin-bottom: 34px; }
 .section-title h2 { font-size: clamp(2rem, 3vw, 3rem); line-height: 1.04; }
 
@@ -306,6 +344,13 @@ a { color: inherit; text-decoration: none; }
   margin: 14px 0;
 }
 
+.begleitung-subline {
+  margin: -10px 0 22px;
+  color: #fff;
+  font-weight: 500;
+  line-height: 1.65;
+  max-width: 860px;
+}
 .begleitung-hero { border-radius: 32px; margin-bottom: 22px; }
 .begleitung-main { padding: 30px; }
 .begleitung-intro { font-size: 1.05rem; line-height: 1.8; color: #f0f2f7; }
@@ -490,7 +535,7 @@ a { color: inherit; text-decoration: none; }
 .sticky-contact {
   position: fixed;
   right: 16px;
-  bottom: 16px;
+  bottom: 84px;
   z-index: 30;
   min-height: 48px;
   padding: 0 18px;
@@ -510,25 +555,26 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 900px) {
-  .nav { gap: 14px; }
-  .contact-strip-grid,
+  .services-grid,
+  .begleitung-cards,
+  .begleitung-points,
+  .material-grid,
+  .project-grid,
   .contact-layout,
   .result-grid,
   .form-grid.two,
   .form-grid.three,
   .choice-grid,
-  .choice-grid.wide,
-  .services-grid,
-  .begleitung-cards,
-  .begleitung-points,
-  .material-grid,
-  .project-grid {
+  .choice-grid.wide {
     grid-template-columns: 1fr;
   }
   .header-inner {
     min-height: 78px;
     gap: 12px;
   }
+  .desktop-nav,
+  .desktop-cta { display: none; }
+  .menu-toggle { display: inline-flex; }
   .brand-name { font-size: 1.5rem; }
   .brand-sub { font-size: 0.62rem; letter-spacing: 0.2em; }
   .hero-copy h1,
@@ -543,28 +589,10 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 720px) {
   .container { width: min(100% - 20px, 1180px); }
-  .header-inner {
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 10px 0;
-  }
-  .nav {
-    order: 3;
-    width: 100%;
-    justify-content: space-between;
-    gap: 8px;
-    overflow-x: auto;
-    padding-bottom: 2px;
-  }
-  .nav button {
-    white-space: nowrap;
-    font-size: 0.92rem;
-  }
-  .hero-grid { padding: 38px 0 42px; gap: 24px; }
+  .hero-grid { padding: 34px 0 40px; gap: 24px; }
   .section { padding: 44px 0; }
   .card-pad { padding: 20px; }
   .begleitung-main { padding: 20px; }
-  .contact-strip-grid { padding: 16px 0; }
   .soft-box, .point-item { padding: 16px; }
   .badge-row { gap: 8px; }
   .badge {
@@ -583,7 +611,6 @@ a { color: inherit; text-decoration: none; }
     width: auto;
     flex: 1 1 0;
   }
-  .hero-mini-boxes { margin: 12px 0; }
   .result-top {
     flex-direction: column;
     gap: 6px;

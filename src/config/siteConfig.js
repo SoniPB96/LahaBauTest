@@ -24,7 +24,7 @@ export const siteConfig = {
     badgeSecondary: "Unverbindliche Ersteinschätzung",
     headline: "Saubere Elektroarbeiten mit klarer Kommunikation und verlässlicher Ausführung.",
     text:
-      "Ich unterstütze Privatkunden bei Sanierung, Modernisierung und Erweiterung elektrischer Anlagen. Der Fokus liegt auf sauberer Ausführung, klarer Abstimmung und einer realistischen unverbindlichen Ersteinschätzung.",
+      "Ich unterstütze Privatkunden bei Sanierung, Modernisierung und Erweiterung elektrischer Anlagen – mit sauberer Ausführung, klarer Abstimmung und realistischer Ersteinschätzung.",
     trustLine:
       "Elektroarbeiten im Raum Paderborn und Umgebung. Planung und Ausführung in Zusammenarbeit mit Meisterbetrieb.",
     estimatorCardInfo:
@@ -46,11 +46,13 @@ export const siteConfig = {
     ],
   },
 
-  begleitsung: {
+  begleitung: {
     eyebrow: "Baubegleitung",
     title: "Vollumfängliche Baubegleitung mit lokalen Partnern",
     text:
       "Für umfangreichere Sanierungsprojekte kann ich die technische Begleitung und Koordination gemeinsam mit lokalen Partnerbetrieben übernehmen. Die Ausführung erfolgt abgestimmt, strukturiert und mit klarem Ansprechpartner.",
+    subline:
+      "Ein Ansprechpartner, klare Koordination und ein sauberes Ergebnis – statt Chaos durch mehrere unkoordinierte Gewerke.",
     intro:
       "Je nach Projektumfang kann die Baubegleitung von einer einfachen, zweckmäßigen Sanierung bis hin zur hochwertigen oder luxuriösen Ausführung organisiert werden.",
     points: [
