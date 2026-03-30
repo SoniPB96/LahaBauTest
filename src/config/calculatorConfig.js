@@ -49,8 +49,10 @@ export const calculatorConfig = {
     range: calculatorAdmin.priceLogic.range,
     laborShare: calculatorAdmin.priceLogic.laborShare,
     materialShare: calculatorAdmin.priceLogic.materialShare,
-    brandImpactShare: calculatorAdmin.priceLogic.brandImpactShare,
-    brandAffectsMaterialOnly: calculatorAdmin.priceLogic.brandAffectsMaterialOnly,
+    defaultBaseMaterialShare: calculatorAdmin.priceLogic.defaultBaseMaterialShare ?? 0.18,
+    defaultSqmMaterialShare: calculatorAdmin.priceLogic.defaultSqmMaterialShare ?? 0.24,
+    defaultComponentMaterialShare: calculatorAdmin.priceLogic.defaultComponentMaterialShare ?? calculatorAdmin.priceLogic.materialShare,
+    defaultOptionMaterialShare: calculatorAdmin.priceLogic.defaultOptionMaterialShare ?? 0.45,
   },
 };
 

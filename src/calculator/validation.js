@@ -29,6 +29,38 @@ function validatePhone(phone) {
   return digits.length >= 6 ? "" : "Bitte gib eine erreichbare Telefonnummer ein.";
 }
 
+function validateEquipmentPlausibility(form) {
+  const sqm = toNumber(form.sqm);
+  const rooms = toNumber(form.rooms);
+  const sockets = toNumber(form.steckdosen);
+  const switches = toNumber(form.schalter);
+  const thermostats = toNumber(form.raumthermostate);
+
+  if (Number.isFinite(sqm) && Number.isFinite(rooms)) {
+    if (sqm >= 120 && rooms <= 1) {
+      return "Die Kombination aus großer Fläche und sehr wenigen Räumen wirkt unplausibel. Bitte prüfe die Raumanzahl.";
+    }
+
+    if (rooms > Math.floor(sqm / 8) && sqm >= 40) {
+      return "Die Raumanzahl wirkt im Verhältnis zur Fläche sehr hoch. Bitte prüfe die Eingabe.";
+    }
+  }
+
+  if (Number.isFinite(rooms) && Number.isFinite(sockets) && rooms >= 2 && sockets < rooms * 2) {
+    return "Die Anzahl der Steckdosen wirkt für die angegebene Raumanzahl sehr niedrig. Bitte prüfe die Eingabe.";
+  }
+
+  if (Number.isFinite(sockets) && Number.isFinite(switches) && switches > sockets + 5) {
+    return "Es sind deutlich mehr Schalter als Steckdosen angegeben. Bitte prüfe, ob die Mengen realistisch sind.";
+  }
+
+  if (form.options?.fussbodenheizung && Number.isFinite(rooms) && rooms > 0 && thermostats < 1) {
+    return "Bei aktivierter Fußbodenheizung sollte in der Regel mindestens ein Raumthermostat angegeben werden.";
+  }
+
+  return "";
+}
+
 export function validateStep(step, form, { skipsCalculator } = {}) {
   if (step === 1) {
     if (!form.objectType) return "Bitte wähle zuerst die Objektart.";
@@ -60,6 +92,9 @@ export function validateStep(step, form, { skipsCalculator } = {}) {
         return `Die Angabe bei „${field.label}“ wirkt zu hoch. Bitte prüfe den Wert.`;
       }
     }
+
+    const plausibilityError = validateEquipmentPlausibility(form);
+    if (plausibilityError) return plausibilityError;
 
     const project = calculatorConfig.projectChoices.find((item) => item.value === form.projectType);
     const sqm = toNumber(form.sqm);

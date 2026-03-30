@@ -6,6 +6,25 @@ function toNumber(value) {
   return numeric;
 }
 
+function clampShare(value, fallback = 0) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return fallback;
+  if (numeric < 0) return 0;
+  if (numeric > 1) return 1;
+  return numeric;
+}
+
+function splitLineItem(total, materialShare = 0) {
+  const safeTotal = toNumber(total);
+  const safeShare = clampShare(materialShare, 0);
+  const material = safeTotal * safeShare;
+  return {
+    total: safeTotal,
+    material,
+    labor: safeTotal - material,
+  };
+}
+
 function getProjectDefinition(projectType) {
   return calculatorConfig.projectChoices.find((item) => item.value === projectType);
 }
@@ -77,48 +96,52 @@ export function estimatePrice(data) {
     };
   }
 
-  const baseTotal = project.basePrice || 0;
-  const sqmTotal = (project.sqmPrice || 0) * form.sqm;
+  const baseLine = splitLineItem(project.basePrice || 0, project.baseMaterialShare ?? pricing.defaultBaseMaterialShare);
+  const sqmLine = splitLineItem((project.sqmPrice || 0) * form.sqm, project.sqmMaterialShare ?? pricing.defaultSqmMaterialShare);
 
-  const componentTotal = getVisibleComponentFields(form).reduce((sum, field) => {
-    return sum + toNumber(form[field.key]) * (field.unitPrice || 0);
-  }, 0);
+  const componentLines = getVisibleComponentFields(form).map((field) => {
+    const total = toNumber(form[field.key]) * (field.unitPrice || 0);
+    return {
+      key: field.key,
+      ...splitLineItem(total, field.materialShare ?? pricing.defaultComponentMaterialShare),
+    };
+  });
 
-  const optionTotal = getSelectedOptions(form).reduce((sum, option) => sum + (option.price || 0), 0);
+  const optionLines = getSelectedOptions(form).map((option) => ({
+    key: option.key,
+    ...splitLineItem(option.price || 0, option.materialShare ?? pricing.defaultOptionMaterialShare),
+  }));
 
-  const subtotal = baseTotal + sqmTotal + componentTotal + optionTotal;
+  const componentTotal = componentLines.reduce((sum, item) => sum + item.total, 0);
+  const optionTotal = optionLines.reduce((sum, item) => sum + item.total, 0);
+  const subtotal = baseLine.total + sqmLine.total + componentTotal + optionTotal;
+
+  const materialBeforeBrand = baseLine.material + sqmLine.material
+    + componentLines.reduce((sum, item) => sum + item.material, 0)
+    + optionLines.reduce((sum, item) => sum + item.material, 0);
+
+  const laborBeforeBrand = subtotal - materialBeforeBrand;
   const brandFactor = brand?.factor || 1;
   const objectFactor = pricing.objectFactor[form.objectType] || 1;
-  const brandImpactShare = pricing.brandAffectsMaterialOnly
-    ? pricing.brandImpactShare || pricing.materialShare || 0
-    : 1;
-
-  const brandRelevantBase = subtotal * brandImpactShare;
-  const brandNeutralBase = subtotal - brandRelevantBase;
-  const totalBeforeObjectFactor = brandNeutralBase + (brandRelevantBase * brandFactor);
+  const materialAfterBrand = materialBeforeBrand * brandFactor;
+  const totalBeforeObjectFactor = laborBeforeBrand + materialAfterBrand;
   const total = totalBeforeObjectFactor * objectFactor;
 
-  const materialBeforeObjectFactor = pricing.brandAffectsMaterialOnly
-    ? brandRelevantBase * brandFactor
-    : totalBeforeObjectFactor * (pricing.materialShare || 0);
-  const laborBeforeObjectFactor = totalBeforeObjectFactor - materialBeforeObjectFactor;
-
   return {
-    baseTotal: Math.round(baseTotal),
-    sqmTotal: Math.round(sqmTotal),
+    baseTotal: Math.round(baseLine.total),
+    sqmTotal: Math.round(sqmLine.total),
     componentTotal: Math.round(componentTotal),
     optionTotal: Math.round(optionTotal),
     subtotal: Math.round(subtotal),
-    brandRelevantBase: Math.round(brandRelevantBase),
-    brandNeutralBase: Math.round(brandNeutralBase),
+    materialBeforeBrand: Math.round(materialBeforeBrand),
+    laborBeforeBrand: Math.round(laborBeforeBrand),
     totalBeforeObjectFactor: Math.round(totalBeforeObjectFactor),
     total: Math.round(total),
     low: Math.round(total * (1 - pricing.range)),
     high: Math.round(total * (1 + pricing.range)),
-    labor: Math.round(laborBeforeObjectFactor * objectFactor),
-    material: Math.round(materialBeforeObjectFactor * objectFactor),
+    labor: Math.round(laborBeforeBrand * objectFactor),
+    material: Math.round(materialAfterBrand * objectFactor),
     brandFactor,
     objectFactor,
-    brandImpactShare,
   };
 }
