@@ -72,70 +72,75 @@ export const siteConfig = {
     resultFactors: [
       "Projektart und Umfang",
       "Bestand und Zustand der Anlage",
-      "Ausstattung ohne Küche und Bad",
+      "Anzahl der Räume ohne Küche und Badezimmer",
+      "Ausstattung in den übrigen Räumen",
       "Zusatzoptionen wie Unterverteilung, Küche, Bad oder Außenbereich",
-      "Materiallinie und gewünschtes Niveau",
+      "Schalterprogramm und gewünschtes Niveau",
     ],
     requestNote:
       "Frontend-Stand: Das Formular ist bewusst nur visuell vorbereitet und noch nicht an einen echten Versand angebunden.",
     wizardLabels: ["Objekt", "Projekt", "Ausstattung", "Optionen", "Material", "Ergebnis", "Anfrage"],
+
     objectChoices: [
       { value: "wohnung", label: "Wohnung", icon: "home" },
       { value: "einfamilienhaus", label: "Einfamilienhaus", icon: "home" },
       { value: "mehrfamilienhaus", label: "Einheit im Mehrfamilienhaus", icon: "building" },
       { value: "gewerbe", label: "Gewerbe", icon: "building" },
     ],
+
     projectChoices: [
-      { value: "neuinstallation", label: "Neuinstallation" },
-      { value: "neubau", label: "Neubau" },
-      { value: "sanierung", label: "Sanierung" },
+      { value: "neubau_neuinstallation", label: "Neubau / Neuinstallation" },
+      { value: "sanierung_altbau", label: "Sanierung / Altbau" },
       { value: "erweiterung", label: "Erweiterung" },
       { value: "zaehlerschrank", label: "Zählerschrank erneuern" },
     ],
-    componentHint: "Ausstattung ohne Küche und Bad",
+
+    roomInfoTitle: "Ausstattung ohne Küche und Badezimmer",
+    roomInfoText:
+      "Bitte gib hier zuerst an, wie viele Räume das Objekt ohne Küche und Badezimmer hat. Erst danach folgt die Ausstattung für diese übrigen Räume.",
     componentFields: [
+      { key: "rooms", label: "Raumanzahl ohne Küche und Badezimmer" },
       { key: "steckdosen", label: "Steckdosen" },
       { key: "schalter", label: "Lichtschalter" },
       { key: "netzwerkdosen", label: "Netzwerkdosen" },
       { key: "lampenauslaesse", label: "Lampenauslässe" },
       { key: "rollladenschalter", label: "Rollladenschalter" },
     ],
+
     optionChoices: [
-      { key: "rcd_dguv", label: "RCD-Erweiterung + DGUV3 Prüfung" },
       { key: "uv", label: "Neue Unterverteilung" },
       { key: "zaehlerschrank", label: "Zählerschrank erneuern" },
       { key: "lan", label: "LAN / Netzwerk verlegen" },
       { key: "aussenbereich", label: "Außenbereich" },
-      { key: "kueche", label: "Küche Neuinstallieren" },
-      { key: "bad", label: "Bad Neuinstallieren" },
+      { key: "kueche", label: "Küche neu installieren" },
+      { key: "bad", label: "Bad neu installieren" },
       { key: "waermepumpe", label: "Vorbereitung für Wärmepumpe" },
       { key: "wallbox", label: "Vorbereitung für Wallbox" },
     ],
+
+    materialTitle: "Schalterprogramm / Materiallinie",
+    materialInfo:
+      "Hier wählst du das gewünschte Schalterprogramm. Die Auswahl beeinflusst vor allem das Materialniveau und den späteren Preisbereich.",
     brandChoices: [
-      { value: "standard", label: "Standard" },
       { value: "gira", label: "Gira" },
       { value: "merten", label: "Merten" },
       { value: "schneider", label: "Schneider Electric" },
       { value: "jung", label: "JUNG" },
+      { value: "buschjaeger", label: "Busch-Jaeger" },
     ],
-    qualityChoices: [
-      { value: "einfach", label: "Einfach" },
-      { value: "standard", label: "Standard" },
-      { value: "hochwertig", label: "Hochwertig" },
-    ],
+
     defaults: {
       objectType: "wohnung",
       sqm: "85",
-      projectType: "sanierung",
+      projectType: "sanierung_altbau",
+      rooms: 3,
       steckdosen: 12,
       schalter: 8,
       netzwerkdosen: 2,
       lampenauslaesse: 6,
       rollladenschalter: 0,
-      brand: "standard",
-      quality: "standard",
+      brand: "gira",
       options: {
-        rcd_dguv: false,
         uv: false,
         zaehlerschrank: false,
         lan: false,
@@ -152,18 +157,18 @@ export const siteConfig = {
       zip: "",
       message: "",
     },
+
     priceConfig: {
       projectBase: {
-        neuinstallation: 2400,
-        neubau: 2600,
-        sanierung: 1600,
+        neubau_neuinstallation: 2600,
+        sanierung_altbau: 1600,
       },
       sqm: {
-        neuinstallation: 72,
-        neubau: 75,
-        sanierung: 46,
+        neubau_neuinstallation: 75,
+        sanierung_altbau: 46,
       },
       components: {
+        rooms: 220,
         steckdosen: 98,
         schalter: 82,
         netzwerkdosen: 149,
@@ -171,7 +176,6 @@ export const siteConfig = {
         rollladenschalter: 136,
       },
       options: {
-        rcd_dguv: 850,
         uv: 1450,
         zaehlerschrank: 3200,
         lan: 820,
@@ -182,16 +186,11 @@ export const siteConfig = {
         wallbox: 1180,
       },
       brandFactor: {
-        standard: 1,
         gira: 1.12,
         merten: 1.08,
         schneider: 1.1,
         jung: 1.13,
-      },
-      qualityFactor: {
-        einfach: 0.93,
-        standard: 1,
-        hochwertig: 1.18,
+        buschjaeger: 1.09,
       },
       objectFactor: {
         wohnung: 1,
