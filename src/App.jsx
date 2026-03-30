@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import {
   CheckCircle2, MessageCircle, Phone, Mail, Menu, X, Zap, Wrench, Network, Sun, Calculator,
-  ClipboardList, Handshake, Gem, Hammer
+  ClipboardList, Handshake, Gem, Hammer, Upload
 } from "lucide-react";
 import { siteConfig } from "./config/siteConfig";
 import { calculatorConfig } from "./config/calculatorConfig";
