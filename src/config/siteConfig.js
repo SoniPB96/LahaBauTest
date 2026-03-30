@@ -12,8 +12,8 @@ export const siteConfig = {
   navigation: {
     items: [
       { key: "start", label: "Start" },
-      { key: "baubegleitung", label: "Baubegleitung" },
       { key: "rechner", label: "Kostenschätzer" },
+      { key: "begleitung", label: "Baubegleitung" },
       { key: "kontakt", label: "Kontakt" },
     ],
     ctaLabel: "Anfrage stellen",
@@ -22,43 +22,13 @@ export const siteConfig = {
   hero: {
     badgePrimary: "Elektroarbeiten in Paderborn und Umgebung",
     badgeSecondary: "Unverbindliche Ersteinschätzung",
-    headline: "Saubere Elektroarbeiten. Klare Kommunikation. Verlässliche Ausführung.",
+    headline: "Saubere Elektroarbeiten mit klarer Kommunikation und verlässlicher Ausführung.",
     text:
       "Ich unterstütze Privatkunden bei Sanierung, Modernisierung und Erweiterung elektrischer Anlagen. Der Fokus liegt auf sauberer Ausführung, klarer Abstimmung und einer realistischen unverbindlichen Ersteinschätzung.",
     trustLine:
       "Elektroarbeiten im Raum Paderborn und Umgebung. Planung und Ausführung in Zusammenarbeit mit Meisterbetrieb.",
-    trustItems: [
-      "Saubere Ausführung",
-      "Klare Abstimmung",
-      "Realistische Ersteinschätzung",
-      "Paderborn und Umland",
-    ],
     estimatorCardInfo:
       "Unverbindliche Preisspanne auf Basis von Projektart, Ausstattung, Zusatzoptionen und Material.",
-  },
-
-  baubegleitung: {
-    eyebrow: "Alles aus einer Hand",
-    title: "Vollumfängliche Baubegleitung & Sanierung",
-    text: "Sanieren kostet Nerven – wenn man es alleine macht. Als Ihr Bauleiter steuere ich nicht nur die Elektrotechnik, sondern koordiniere Ihr gesamtes Sanierungsprojekt im Raum Paderborn. Mit einem festen Netzwerk aus erfahrenen Handwerkspartnern setzen wir Ihr Vorhaben stressfrei um.",
-    features: [
-      { 
-        icon: "building", 
-        title: "Von Zweckmäßig bis Luxus", 
-        text: "Egal, ob es um eine solide, zweckgebundene Basis-Sanierung für eine Mietwohnung geht oder um einen hochwertigen Luxus-Ausbau für Ihr Eigenheim – unser Netzwerk deckt genau das Qualitäts- und Budgetniveau ab, das Sie benötigen." 
-      },
-      { 
-        icon: "check", 
-        title: "Ein zentraler Ansprechpartner", 
-        text: "Sie müssen nicht mit fünf verschiedenen Firmen telefonieren. Sie kommunizieren nur mit mir. Ich übersetze Ihre Wünsche für die Gewerke, kontrolliere die Ausführung und sorge für einen reibungslosen Ablauf." 
-      },
-      { 
-        icon: "shield", 
-        title: "Geprüfte Partnerbetriebe", 
-        text: "Qualität kommt von Erfahrung. Ich arbeite ausschließlich mit regionalen Handwerkern zusammen, deren Zuverlässigkeit und saubere Arbeitsweise ich aus jahrelanger gemeinsamer Erfahrung auf Baustellen kenne." 
-      }
-    ],
-    ctaText: "Klingt gut? Lassen Sie uns über Ihr Projekt sprechen."
   },
 
   services: {
@@ -74,6 +44,36 @@ export const siteConfig = {
       { key: "estimator", icon: "calculator", title: "Digitale Ersteinschätzung", text: "Mehrstufige Ersteinschätzung mit Preisspanne statt ungenauem Festpreisversprechen." },
       { key: "quality", icon: "check", title: "Saubere Ausführung", text: "Fokus auf klare Abstimmung, nachvollziehbare Umsetzung und ruhige Kommunikation im Projekt." },
     ],
+  },
+
+  begleitsung: {
+    eyebrow: "Baubegleitung",
+    title: "Vollumfängliche Baubegleitung mit lokalen Partnern",
+    text:
+      "Für umfangreichere Sanierungsprojekte kann ich die technische Begleitung und Koordination gemeinsam mit lokalen Partnerbetrieben übernehmen. Die Ausführung erfolgt abgestimmt, strukturiert und mit klarem Ansprechpartner.",
+    intro:
+      "Je nach Projektumfang kann die Baubegleitung von einer einfachen, zweckmäßigen Sanierung bis hin zur hochwertigen oder luxuriösen Ausführung organisiert werden.",
+    points: [
+      "Koordination mit lokalen Partnern aus der Sanierung",
+      "Ein fester Ansprechpartner mit mir als Bauleiter",
+      "Geeignet für einfache, gehobene und hochwertige Sanierungsstandards",
+      "Abgestimmte Umsetzung statt vieler unkoordinierter Einzelgewerke",
+    ],
+    cards: [
+      {
+        title: "Zweckmäßige Sanierung",
+        text: "Für Projekte mit klarem Kostenfokus und sauberer, funktionaler Umsetzung ohne unnötige Extras.",
+      },
+      {
+        title: "Gehobene Modernisierung",
+        text: "Für Eigentümer, die Wert auf bessere Materialien, sauberere Details und eine koordinierte Umsetzung legen.",
+      },
+      {
+        title: "Hochwertige / Luxus-Sanierung",
+        text: "Für anspruchsvolle Projekte mit höherem Qualitätsanspruch, feiner Materialauswahl und enger Abstimmung aller Beteiligten.",
+      },
+    ],
+    cta: "Baubegleitung anfragen",
   },
 
   contactSection: {

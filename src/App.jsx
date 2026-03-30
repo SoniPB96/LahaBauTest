@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from "react";
 import {
-  CheckCircle2, Clock3, Home, Building2, UserCheck, ShieldCheck, Shield, MessageCircle,
+  CheckCircle2, Home, Building2, UserCheck, ShieldCheck, MessageCircle,
   Phone, Mail, MapPin, ChevronRight, Calculator, Upload, Zap, Wrench, Network, Sun, ArrowRight,
+  ClipboardList, Handshake, Gem, Hammer
 } from "lucide-react";
 import { siteConfig } from "./config/siteConfig";
 
@@ -125,13 +126,7 @@ export default function App() {
 
           <nav className="nav">
             {cfg.navigation.items.map((item) => (
-              <button 
-                key={item.key} 
-                className={activeTab === item.key ? "active-nav" : ""} 
-                onClick={() => setActiveTab(item.key)}
-              >
-                {item.label}
-              </button>
+              <button key={item.key} onClick={() => setActiveTab(item.key)}>{item.label}</button>
             ))}
           </nav>
 
@@ -140,7 +135,7 @@ export default function App() {
       </header>
 
       {activeTab === "start" && (
-        <main className="step-content">
+        <main>
           <section className="hero">
             <div className="container hero-grid">
               <div className="hero-copy clean-hero-copy">
@@ -155,7 +150,7 @@ export default function App() {
 
                 <div className="button-row">
                   <Button onClick={() => setActiveTab("rechner")}>Kostenschätzung starten</Button>
-                  <Button outline onClick={() => setActiveTab("kontakt")}>Unverbindlich anfragen</Button>
+                  <Button outline href={cfg.company.whatsappLink} target="_blank">WhatsApp</Button>
                 </div>
               </div>
 
@@ -195,29 +190,12 @@ export default function App() {
 
           <section className="section">
             <div className="container">
-              <div className="trust-grid">
-                {cfg.hero.trustItems.map((item, index) => {
-                  const icons = [CheckCircle2, UserCheck, ShieldCheck, Clock3];
-                  const Icon = icons[index] || CheckCircle2;
-                  return (
-                    <div key={item} className="mini-card liquid-card subtle">
-                      <div className="mini-icon"><Icon size={16} /></div>
-                      {item}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-
-          <section className="section">
-            <div className="container">
               <SectionTitle eyebrow={cfg.services.eyebrow} title={cfg.services.title} text={cfg.services.text} />
               <div className="services-grid">
                 {cfg.services.items.map((service) => {
                   const Icon = iconMap[service.icon] || CheckCircle2;
                   return (
-                    <div key={service.key} className="card liquid-card subtle choice-hover">
+                    <div key={service.key} className="card liquid-card subtle">
                       <div className="card-pad">
                         <div className="service-icon"><Icon size={22} /></div>
                         <h3 className="card-title">{service.title}</h3>
@@ -232,38 +210,48 @@ export default function App() {
         </main>
       )}
 
-      {activeTab === "baubegleitung" && (
-        <main className="section step-content">
+      {activeTab === "begleitung" && (
+        <main className="section">
           <div className="container">
-            <div className="hero-grid" style={{ paddingTop: 0, alignItems: "center" }}>
-              <div className="hero-copy">
-                <SectionTitle eyebrow={cfg.baubegleitung.eyebrow} title={cfg.baubegleitung.title} text={cfg.baubegleitung.text} />
-                <Button onClick={() => setActiveTab("kontakt")}>{cfg.baubegleitung.ctaText}</Button>
-              </div>
-              <div className="stack">
-                {cfg.baubegleitung.features.map((feature, idx) => {
-                  const icons = { building: Building2, check: CheckCircle2, shield: ShieldCheck };
-                  const Icon = icons[feature.icon] || CheckCircle2;
-                  return (
-                    <div key={idx} className="card liquid-card subtle choice-hover">
-                      <div className="card-pad" style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
-                        <div className="service-icon" style={{ flexShrink: 0, marginBottom: 0 }}><Icon size={24} /></div>
-                        <div>
-                          <h3 className="card-title" style={{ fontSize: '1.2rem', marginBottom: '8px' }}>{feature.title}</h3>
-                          <p className="body-text" style={{ margin: 0 }}>{feature.text}</p>
-                        </div>
+            <SectionTitle eyebrow={cfg.begleitsung.eyebrow} title={cfg.begleitsung.title} text={cfg.begleitsung.text} />
+            <div className="begleitung-hero liquid-card glow">
+              <div className="begleitung-main">
+                <p className="begleitung-intro">{cfg.begleitsung.intro}</p>
+                <div className="begleitung-points">
+                  {cfg.begleitsung.points.map((point, i) => {
+                    const icons = [ClipboardList, Handshake, Hammer, Gem];
+                    const Icon = icons[i] || CheckCircle2;
+                    return (
+                      <div key={point} className="point-item liquid-card subtle">
+                        <div className="point-icon"><Icon size={18} /></div>
+                        <div>{point}</div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+                <div className="button-row">
+                  <Button onClick={() => setActiveTab("kontakt")}>{cfg.begleitsung.cta}</Button>
+                  <Button outline href={cfg.company.whatsappLink} target="_blank">Per WhatsApp anfragen</Button>
+                </div>
               </div>
+            </div>
+
+            <div className="begleitung-cards">
+              {cfg.begleitsung.cards.map((card) => (
+                <div key={card.title} className="card liquid-card subtle">
+                  <div className="card-pad">
+                    <h3 className="card-title">{card.title}</h3>
+                    <p className="body-text">{card.text}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </main>
       )}
 
       {activeTab === "rechner" && (
-        <main className="section step-content">
+        <main className="section">
           <div className="container">
             <SectionTitle eyebrow={cfg.estimator.titleEyebrow} title={cfg.estimator.title} text={cfg.estimator.text} />
 
@@ -287,7 +275,7 @@ export default function App() {
                   </div>
 
                   {step === 1 && (
-                    <div className="form-grid two step-content">
+                    <div className="form-grid two">
                       <div>
                         <label className="field-label">Objektart</label>
                         <div className="choice-grid">
@@ -301,15 +289,15 @@ export default function App() {
                       </div>
                       <div>
                         <label className="field-label">Wohnfläche / Nutzfläche in m²</label>
-                        <input type="number" className="input glass-input" value={form.sqm} onChange={(e) => updateField("sqm", e.target.value)} />
+                        <input className="input glass-input" value={form.sqm} onChange={(e) => updateField("sqm", e.target.value)} />
                       </div>
                     </div>
                   )}
 
                   {step === 2 && (
-                    <div className="step-content">
+                    <div>
                       <label className="field-label">Projektart</label>
-                      <div className="choice-grid wide">
+                      <div className="choice-grid wide project-grid">
                         {cfg.estimator.projectChoices.map((item) => (
                           <button key={item.value} className={`choice ${form.projectType === item.value ? "active" : ""}`} onClick={() => updateField("projectType", item.value)}>
                             {item.label}
@@ -325,16 +313,22 @@ export default function App() {
                   )}
 
                   {step === 3 && !skipsCalculator && (
-                    <div className="step-content">
+                    <div>
                       <div className="room-info-block liquid-card subtle">
                         <div className="room-info-title">{cfg.estimator.roomInfoTitle}</div>
                         <div className="room-info-text">{cfg.estimator.roomInfoText}</div>
                       </div>
+                      <div className="room-first-block">
+                        <div>
+                          <label className="field-label small">{cfg.estimator.componentFields[0].label}</label>
+                          <input className="input glass-input room-input" value={form.rooms} onChange={(e) => updateField("rooms", e.target.value)} />
+                        </div>
+                      </div>
                       <div className="form-grid three room-grid">
-                        {cfg.estimator.componentFields.map((field) => (
+                        {cfg.estimator.componentFields.slice(1).map((field) => (
                           <div key={field.key}>
                             <label className="field-label small">{field.label}</label>
-                            <input type="number" className="input glass-input" value={form[field.key]} onChange={(e) => updateField(field.key, e.target.value)} />
+                            <input className="input glass-input" value={form[field.key]} onChange={(e) => updateField(field.key, e.target.value)} />
                           </div>
                         ))}
                       </div>
@@ -342,7 +336,7 @@ export default function App() {
                   )}
 
                   {step === 4 && !skipsCalculator && (
-                    <div className="step-content">
+                    <div>
                       <label className="field-label">Zusatzoptionen</label>
                       <div className="choice-grid wide">
                         {cfg.estimator.optionChoices.map((item) => (
@@ -355,12 +349,12 @@ export default function App() {
                   )}
 
                   {step === 5 && !skipsCalculator && (
-                    <div className="step-content">
+                    <div>
                       <div className="room-info-block liquid-card subtle material-info">
                         <div className="room-info-title">{cfg.estimator.materialTitle}</div>
                         <div className="room-info-text">{cfg.estimator.materialInfo}</div>
                       </div>
-                      <div className="choice-grid wide">
+                      <div className="choice-grid wide material-grid">
                         {cfg.estimator.brandChoices.map((item) => (
                           <button key={item.value} className={`choice ${form.brand === item.value ? "active" : ""}`} onClick={() => updateField("brand", item.value)}>
                             {item.label}
@@ -371,8 +365,8 @@ export default function App() {
                   )}
 
                   {step === 6 && !skipsCalculator && (
-                    <div className="form-grid two step-content">
-                      <div className="result-box big glass-inset glow-result">
+                    <div className="form-grid two">
+                      <div className="result-box big glass-inset">
                         <div className="eyebrow">Ergebnis</div>
                         <div className="hero-price">{formatEUR(result.low)} – {formatEUR(result.high)}</div>
                         <p className="body-text">{cfg.estimator.disclaimer}</p>
@@ -392,7 +386,7 @@ export default function App() {
                   )}
 
                   {step === 7 && (
-                    <div className="form-grid two step-content">
+                    <div className="form-grid two">
                       <div className="stack">
                         <div><label className="field-label">Name</label><input className="input glass-input" value={form.name} onChange={(e) => updateField("name", e.target.value)} /></div>
                         <div><label className="field-label">Telefon</label><input className="input glass-input" value={form.phone} onChange={(e) => updateField("phone", e.target.value)} /></div>
@@ -465,7 +459,7 @@ export default function App() {
       )}
 
       {activeTab === "kontakt" && (
-        <main className="section step-content">
+        <main className="section">
           <div className="container">
             <SectionTitle eyebrow={cfg.contactSection.eyebrow} title={cfg.contactSection.title} text={cfg.contactSection.text} />
             <div className="contact-layout">
