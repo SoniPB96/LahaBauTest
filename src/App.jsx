@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import {
   CheckCircle2, Home, Building2, MessageCircle, Phone, Mail, MapPin, ChevronRight,
   Calculator, Upload, Zap, Wrench, Network, Sun, ArrowRight, ClipboardList,
-  Handshake, Gem, Hammer, Menu, X
+  Handshake, Gem, Hammer, Menu, X, FileText, SendHorizonal
 } from "lucide-react";
 import { siteConfig } from "./config/siteConfig";
 
@@ -82,11 +82,13 @@ function Logo() {
   return (
     <div className="logo-lockup">
       <div className="logo-mark" aria-hidden="true">
-        <span className="logo-line l1" />
-        <span className="logo-line l2" />
-        <span className="logo-line l3" />
-        <span className="logo-line l4" />
-        <span className="logo-zap" />
+        <span className="logo-bar b1" />
+        <span className="logo-bar b2" />
+        <span className="logo-bar b3" />
+        <span className="logo-bar b4" />
+        <span className="logo-cut c1" />
+        <span className="logo-cut c2" />
+        <span className="logo-cut c3" />
       </div>
       <div className="logo-text">
         <div className="brand-name">LAHA</div>
@@ -154,7 +156,7 @@ export default function App() {
           </nav>
 
           <div className="desktop-cta">
-            <Button onClick={() => openTab("kontakt")}>{cfg.navigation.ctaLabel}</Button>
+            <Button onClick={() => openTab("anfrage")}>{cfg.navigation.ctaLabel}</Button>
           </div>
 
           <button className="menu-toggle" onClick={() => setMenuOpen((v) => !v)} aria-label="Menü">
@@ -168,7 +170,7 @@ export default function App() {
               {cfg.navigation.items.map((item) => (
                 <button key={item.key} onClick={() => openTab(item.key)}>{item.label}</button>
               ))}
-              <Button onClick={() => openTab("kontakt")}>{cfg.navigation.ctaLabel}</Button>
+              <Button onClick={() => openTab("anfrage")}>{cfg.navigation.ctaLabel}</Button>
             </div>
           </div>
         )}
@@ -189,8 +191,7 @@ export default function App() {
                 <p className="hero-trust">{cfg.hero.trustLine}</p>
 
                 <div className="button-row hero-cta-row">
-                  <Button onClick={() => openTab("rechner")}>Kostenschätzung starten</Button>
-                  <Button outline href={cfg.company.whatsappLink} target="_blank">WhatsApp</Button>
+                  <Button onClick={() => openTab("anfrage")}>Anfrage stellen</Button>
                 </div>
               </div>
 
@@ -250,21 +251,17 @@ export default function App() {
             <div className="begleitung-hero liquid-card glow">
               <div className="begleitung-main">
                 <p className="begleitung-intro">{cfg.begleitung.intro}</p>
-                <div className="begleitung-points">
+                <div className="feature-list">
                   {cfg.begleitung.points.map((point, i) => {
                     const icons = [ClipboardList, Handshake, Hammer, Gem];
                     const Icon = icons[i] || CheckCircle2;
                     return (
-                      <div key={point} className="point-item liquid-card subtle">
-                        <div className="point-icon"><Icon size={18} /></div>
-                        <div>{point}</div>
+                      <div key={point} className="feature-row">
+                        <div className="feature-icon"><Icon size={18} /></div>
+                        <div className="feature-text">{point}</div>
                       </div>
                     );
                   })}
-                </div>
-                <div className="button-row">
-                  <Button onClick={() => openTab("kontakt")}>{cfg.begleitung.cta}</Button>
-                  <Button outline href={cfg.company.whatsappLink} target="_blank">Per WhatsApp anfragen</Button>
                 </div>
               </div>
             </div>
@@ -462,7 +459,7 @@ export default function App() {
                     {step < cfg.estimator.wizardLabels.length ? (
                       <Button onClick={nextStep}>Weiter <ArrowRight size={15} /></Button>
                     ) : (
-                      <Button onClick={() => openTab("kontakt")}>Zum Kontakt</Button>
+                      <Button onClick={() => openTab("anfrage")}>Zur Anfrageseite</Button>
                     )}
                   </div>
                 </div>
@@ -491,30 +488,73 @@ export default function App() {
         </main>
       )}
 
-      {activeTab === "kontakt" && (
+      {activeTab === "anfrage" && (
         <main className="section">
           <div className="container">
-            <SectionTitle eyebrow={cfg.contactSection.eyebrow} title={cfg.contactSection.title} text={cfg.contactSection.text} />
-            <div className="contact-layout">
-              <div className="card liquid-card subtle">
-                <div className="card-pad stack">
-                  <a className="contact-item" href={cfg.company.phoneLink}><Phone size={16} /> {cfg.company.phoneDisplay}</a>
-                  <a className="contact-item" href={`mailto:${cfg.company.email}`}><Mail size={16} /> {cfg.company.email}</a>
-                  <div className="contact-item"><MapPin size={16} /> {cfg.company.region}</div>
-                  <a className="contact-item" href={cfg.company.whatsappLink} target="_blank" rel="noreferrer"><MessageCircle size={16} /> WhatsApp schreiben</a>
+            <SectionTitle eyebrow={cfg.requestPage.eyebrow} title={cfg.requestPage.title} text={cfg.requestPage.text} />
+            <div className="request-layout">
+              <div className="card liquid-card glow">
+                <div className="card-pad">
+                  <div className="eyebrow">{cfg.requestPage.quickTitle}</div>
+                  <h3 className="card-title">Direkte Wege für die erste Abstimmung</h3>
+                  <p className="body-text">{cfg.requestPage.quickText}</p>
+                  <div className="request-actions">
+                    <Button href={cfg.company.whatsappLink} target="_blank"><MessageCircle size={16} /> WhatsApp schreiben</Button>
+                    <Button outline href={`mailto:${cfg.company.email}`}><Mail size={16} /> E-Mail senden</Button>
+                    <Button outline href={cfg.company.phoneLink}><Phone size={16} /> Jetzt anrufen</Button>
+                  </div>
+
+                  <div className="request-steps liquid-card subtle">
+                    <div className="eyebrow">{cfg.requestPage.listTitle}</div>
+                    <div className="feature-list compact-list">
+                      {cfg.requestPage.listItems.map((item) => (
+                        <div key={item} className="feature-row">
+                          <div className="feature-icon small-icon"><CheckCircle2 size={16} /></div>
+                          <div className="feature-text">{item}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div className="card liquid-card subtle">
                 <div className="card-pad stack">
-                  <div><label className="field-label">Name</label><input className="input glass-input" placeholder="Name" /></div>
-                  <div className="form-grid two">
-                    <div><label className="field-label">E-Mail</label><input className="input glass-input" placeholder="E-Mail" /></div>
-                    <div><label className="field-label">Telefon</label><input className="input glass-input" placeholder="Telefon" /></div>
+                  <div>
+                    <label className="field-label">Name</label>
+                    <input className="input glass-input" placeholder="Name" />
                   </div>
-                  <div><label className="field-label">PLZ / Ort</label><input className="input glass-input" placeholder="PLZ / Ort" /></div>
-                  <div><label className="field-label">Kurze Beschreibung Ihres Projekts</label><textarea className="input textarea glass-input" placeholder="Beschreibung" /></div>
-                  <div className="soft-box liquid-card subtle">{cfg.contactSection.formNote}</div>
+                  <div className="form-grid two">
+                    <div>
+                      <label className="field-label">E-Mail</label>
+                      <input className="input glass-input" placeholder="E-Mail" />
+                    </div>
+                    <div>
+                      <label className="field-label">Telefon</label>
+                      <input className="input glass-input" placeholder="Telefon" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="field-label">PLZ / Ort</label>
+                    <input className="input glass-input" placeholder="PLZ / Ort" />
+                  </div>
+                  <div>
+                    <label className="field-label">Projektart / Thema</label>
+                    <input className="input glass-input" placeholder="z. B. Sanierung / Altbau, Baubegleitung, Erweiterung" />
+                  </div>
+                  <div>
+                    <label className="field-label">Unterlagen / Grundriss</label>
+                    <label className="upload-box glass-input">
+                      <Upload size={16} />
+                      <span>Datei auswählen</span>
+                      <input hidden type="file" accept=".pdf,.jpg,.jpeg,.png" />
+                    </label>
+                  </div>
+                  <div>
+                    <label className="field-label">Beschreibung</label>
+                    <textarea className="input textarea glass-input" placeholder="Kurze Beschreibung des Projekts" />
+                  </div>
+                  <div className="soft-box liquid-card subtle">{cfg.requestPage.formNote}</div>
                 </div>
               </div>
             </div>
@@ -522,8 +562,8 @@ export default function App() {
         </main>
       )}
 
-      {activeTab !== "rechner" && activeTab !== "kontakt" && (
-        <button className="sticky-contact" onClick={() => openTab("kontakt")}>Kontakt</button>
+      {(activeTab === "start" || activeTab === "begleitung") && (
+        <button className="sticky-contact" onClick={() => openTab("anfrage")}>Anfrage</button>
       )}
     </div>
   );

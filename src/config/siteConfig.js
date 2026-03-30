@@ -14,7 +14,6 @@ export const siteConfig = {
       { key: "start", label: "Start" },
       { key: "rechner", label: "Kostenschätzer" },
       { key: "begleitung", label: "Baubegleitung" },
-      { key: "kontakt", label: "Kontakt" },
     ],
     ctaLabel: "Anfrage stellen",
   },
@@ -75,16 +74,25 @@ export const siteConfig = {
         text: "Für anspruchsvolle Projekte mit höherem Qualitätsanspruch, feiner Materialauswahl und enger Abstimmung aller Beteiligten.",
       },
     ],
-    cta: "Baubegleitung anfragen",
   },
 
-  contactSection: {
-    eyebrow: "Kontakt",
-    title: "Unverbindlich anfragen",
+  requestPage: {
+    eyebrow: "Anfrage",
+    title: "Anfrage stellen",
     text:
-      "Die Kontaktseite ist bewusst einfach gehalten. Für den Frontend-Stand reichen direkte Kontaktwege und ein sauberer erster Eindruck.",
+      "Hier läuft alles zusammen: direkte Kontaktwege, strukturierte Erstangaben und die Möglichkeit, Unterlagen oder Grundrisse bereitzustellen.",
+    quickTitle: "Direkte Kontaktwege",
+    quickText:
+      "Für schnelle Abstimmung eignet sich WhatsApp meist am besten. Für strukturierte Anfragen kannst du alternativ E-Mail oder das Formular nutzen.",
+    listTitle: "So läuft die Anfrage ab",
+    listItems: [
+      "Kurze Beschreibung des Projekts oder des Vorhabens",
+      "Optional Grundriss, Fotos oder Unterlagen mitsenden",
+      "Erste Rückmeldung zur Einordnung und zum nächsten Schritt",
+      "Falls sinnvoll: Termin, Besichtigung oder weitere Abstimmung",
+    ],
     formNote:
-      "Frontend-Stand: Das Kontaktformular ist aktuell visuell vorbereitet, aber noch nicht an einen Versand angebunden.",
+      "Frontend-Stand: Das Formular ist aktuell visuell vorbereitet, aber noch nicht an einen Versand angebunden.",
   },
 
   estimator: {

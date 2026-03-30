@@ -70,29 +70,32 @@ a { color: inherit; text-decoration: none; }
 .logo-lockup { display: flex; align-items: center; gap: 12px; }
 .logo-mark {
   position: relative;
-  width: 34px;
-  height: 46px;
+  width: 30px;
+  height: 42px;
 }
-.logo-line {
+.logo-bar {
   position: absolute;
-  bottom: 2px;
+  bottom: 0;
   width: 2px;
-  background: rgba(255,255,255,0.92);
+  background: rgba(255,255,255,0.96);
   border-radius: 2px;
 }
-.logo-line.l1 { left: 0; height: 26px; }
-.logo-line.l2 { left: 8px; height: 34px; }
-.logo-line.l3 { left: 16px; height: 42px; }
-.logo-line.l4 { left: 24px; height: 30px; }
-.logo-zap {
+.logo-bar.b1 { left: 2px; height: 20px; }
+.logo-bar.b2 { left: 10px; height: 28px; }
+.logo-bar.b3 { left: 18px; height: 34px; }
+.logo-bar.b4 { left: 26px; height: 24px; }
+.logo-cut {
   position: absolute;
-  left: 10px;
-  top: 10px;
-  width: 10px;
-  height: 24px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(215,221,230,0.85));
-  clip-path: polygon(45% 0, 100% 0, 62% 44%, 100% 44%, 26% 100%, 40% 58%, 0 58%);
+  width: 8px;
+  height: 2px;
+  background: rgba(255,255,255,0.96);
+  transform: rotate(-55deg);
+  border-radius: 2px;
+  transform-origin: left center;
 }
+.logo-cut.c1 { left: 0px; top: 25px; }
+.logo-cut.c2 { left: 8px; top: 18px; }
+.logo-cut.c3 { left: 16px; top: 12px; }
 
 .brand-name {
   font-size: 1.72rem;
@@ -195,7 +198,8 @@ a { color: inherit; text-decoration: none; }
 
 .badge-row,
 .button-row,
-.submit-row {
+.submit-row,
+.request-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
@@ -208,7 +212,8 @@ a { color: inherit; text-decoration: none; }
 .services-grid,
 .form-grid,
 .contact-layout,
-.begleitung-cards {
+.begleitung-cards,
+.request-layout {
   display: grid;
   gap: 18px;
 }
@@ -324,19 +329,20 @@ a { color: inherit; text-decoration: none; }
 
 .services-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .service-icon,
-.point-icon {
+.feature-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 54px;
   height: 54px;
-  margin-bottom: 16px;
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 18px;
   background: rgba(255,255,255,0.05);
   color: #ffffff;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
 }
+.service-icon { margin-bottom: 16px; }
+.small-icon { width: 40px; height: 40px; border-radius: 14px; }
 
 .hero-mini-boxes {
   display: grid;
@@ -354,17 +360,26 @@ a { color: inherit; text-decoration: none; }
 .begleitung-hero { border-radius: 32px; margin-bottom: 22px; }
 .begleitung-main { padding: 30px; }
 .begleitung-intro { font-size: 1.05rem; line-height: 1.8; color: #f0f2f7; }
-.begleitung-points {
+
+.feature-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 16px;
-  margin: 22px 0;
+  gap: 14px;
+  margin: 22px 0 0;
 }
-.point-item {
-  border-radius: 22px;
-  padding: 18px;
-  color: #e4e8f1;
+.feature-row {
+  display: grid;
+  grid-template-columns: 54px minmax(0,1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
 }
+.feature-row:first-child { border-top: 0; padding-top: 0; }
+.feature-text {
+  color: #e8edf7;
+  line-height: 1.6;
+}
+
 .begleitung-cards { grid-template-columns: repeat(3, minmax(0,1fr)); }
 
 .estimator-layout {
@@ -524,12 +539,17 @@ a { color: inherit; text-decoration: none; }
 }
 
 .stack { display: flex; flex-direction: column; gap: 16px; }
-.contact-layout { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.contact-layout, .request-layout { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .contact-item {
   display: flex;
   align-items: center;
   gap: 10px;
   color: #d4dbe9;
+}
+.request-steps {
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 24px;
 }
 
 .sticky-contact {
@@ -550,22 +570,22 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 1180px) {
   .hero-grid,
-  .estimator-layout { grid-template-columns: 1fr; }
+  .estimator-layout,
+  .request-layout { grid-template-columns: 1fr; }
   .begleitung-cards { grid-template-columns: repeat(2, minmax(0,1fr)); }
 }
 
 @media (max-width: 900px) {
   .services-grid,
   .begleitung-cards,
-  .begleitung-points,
-  .material-grid,
-  .project-grid,
   .contact-layout,
   .result-grid,
   .form-grid.two,
   .form-grid.three,
   .choice-grid,
-  .choice-grid.wide {
+  .choice-grid.wide,
+  .material-grid,
+  .project-grid {
     grid-template-columns: 1fr;
   }
   .header-inner {
@@ -582,7 +602,8 @@ a { color: inherit; text-decoration: none; }
     font-size: clamp(2rem, 8vw, 3rem);
     max-width: 100%;
   }
-  .button-row { display: grid; grid-template-columns: 1fr; }
+  .button-row,
+  .request-actions { display: grid; grid-template-columns: 1fr; }
   .room-first-block { max-width: 100%; }
   .sticky-contact { display: inline-flex; }
 }
@@ -593,7 +614,7 @@ a { color: inherit; text-decoration: none; }
   .section { padding: 44px 0; }
   .card-pad { padding: 20px; }
   .begleitung-main { padding: 20px; }
-  .soft-box, .point-item { padding: 16px; }
+  .soft-box { padding: 16px; }
   .badge-row { gap: 8px; }
   .badge {
     font-size: .82rem;
@@ -615,4 +636,19 @@ a { color: inherit; text-decoration: none; }
     flex-direction: column;
     gap: 6px;
   }
+  .feature-row {
+    grid-template-columns: 40px minmax(0,1fr);
+    gap: 12px;
+  }
+  .logo-mark {
+    width: 24px;
+    height: 34px;
+  }
+  .logo-bar.b1 { left: 1px; height: 16px; }
+  .logo-bar.b2 { left: 7px; height: 22px; }
+  .logo-bar.b3 { left: 13px; height: 28px; }
+  .logo-bar.b4 { left: 19px; height: 20px; }
+  .logo-cut.c1 { left: -1px; top: 19px; width: 7px; }
+  .logo-cut.c2 { left: 5px; top: 14px; width: 7px; }
+  .logo-cut.c3 { left: 11px; top: 9px; width: 7px; }
 }

@@ -1,9 +1,9 @@
-# Laha V5 Final
+# Laha V6
 
-Neu in V5:
-- vertikal inspiriertes neues Logo im Header
-- mobile Navigation als Menü statt gedrängter Leiste
-- Sticky Kontaktbutton nicht mehr im Rechner
-- Kontaktleiste auf Startseite entfernt
-- Hero-Funnel klarer
-- Baubegleitung weiter geschärft
+Neu in V6:
+- klare strukturierte Anfrageseite
+- Header ohne Kontakt-Reiter
+- Hero nur noch mit einem Haupt-CTA
+- Baubegleitung ohne Button-Überladung
+- Mittelblock der Baubegleitung als geordnete Feature-Liste
+- Icon im Header näher an der Vertical-Idee
