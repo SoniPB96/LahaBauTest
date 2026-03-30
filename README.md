@@ -1,8 +1,12 @@
-# Laha Final mit Kostenschätzer
+# Laha Vercel Version mit Konfigurationsdatei
 
-Frontend-only Version.
-- starke Hero-Sektion
-- finaler Header
-- integrierter Kostenschätzer
-- Kontaktbereich
-- keine Versandlogik, nur Frontend
+Wichtig:
+- Die zentrale Datei für Inhalte und Preise ist:
+  src/config/siteConfig.js
+
+Dort kannst du ändern:
+- Kontaktdaten
+- Hero-Texte
+- Leistungen
+- Preislogik des Kostenschätzers
+- Optionen, Faktoren und Standards
