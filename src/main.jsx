@@ -1,10 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.jsx';
-import './styles.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import CalculatorPanel from "./components/CalculatorPanel";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+function handleOpenRequestPage() {
+  const target = "/kontakt";
+  if (window.location.pathname !== target) {
+    window.location.href = target;
+    return;
+  }
+  window.location.hash = "anfrage";
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <CalculatorPanel onOpenRequestPage={handleOpenRequestPage} />
   </React.StrictMode>
 );
