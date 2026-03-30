@@ -10,3 +10,8 @@ Neu in V8:
 - farbliche Material-Akzente zentral änderbar
 - Hero und Anfrage-Seite conversion-stärker
 - mobiler Sticky-CTA als Full-Width Button
+
+
+## Rechner pflegen
+Die zentrale Datei für Preise, Optionen und Materiallinien ist `src/config/calculatorAdmin.js`.
+Dort kannst du Werte an einer Stelle ändern, ohne in mehrere Rechner-Dateien zu müssen.
