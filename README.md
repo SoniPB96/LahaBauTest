@@ -1,9 +1,12 @@
-# Laha V7 Full Files
+# Laha V8 High-End
 
-Neu in V7:
-- vollständige Datei-Version
-- Anfrage-Seite neu strukturiert
-- Hero nur noch mit einem Haupt-CTA
-- Header ohne Kontakt-Reiter
-- Baubegleitung ruhiger und geordneter
-- Logo-Icon beibehalten und integriert
+Neu in V8:
+- Rechner entkoppelt in eigene Dateien
+- eigene Preis- und Optionskonfiguration
+- Reihenfolge im Rechner: Objekt → Projekt → Optionen → Ausstattung → Material
+- Fußbodenheizung + Raumthermostate integriert
+- Netzwerkdosen nur sichtbar bei aktivem LAN / Netzwerk
+- Gira als Hausmarke hervorgehoben
+- farbliche Material-Akzente zentral änderbar
+- Hero und Anfrage-Seite conversion-stärker
+- mobiler Sticky-CTA als Full-Width Button
