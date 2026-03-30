@@ -1,9 +1,9 @@
-# Laha V6
+# Laha V7 Full Files
 
-Neu in V6:
-- klare strukturierte Anfrageseite
-- Header ohne Kontakt-Reiter
+Neu in V7:
+- vollständige Datei-Version
+- Anfrage-Seite neu strukturiert
 - Hero nur noch mit einem Haupt-CTA
-- Baubegleitung ohne Button-Überladung
-- Mittelblock der Baubegleitung als geordnete Feature-Liste
-- Icon im Header näher an der Vertical-Idee
+- Header ohne Kontakt-Reiter
+- Baubegleitung ruhiger und geordneter
+- Logo-Icon beibehalten und integriert
