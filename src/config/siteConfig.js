@@ -12,6 +12,7 @@ export const siteConfig = {
   navigation: {
     items: [
       { key: "start", label: "Start" },
+      { key: "baubegleitung", label: "Baubegleitung" },
       { key: "rechner", label: "Kostenschätzer" },
       { key: "kontakt", label: "Kontakt" },
     ],
@@ -34,6 +35,30 @@ export const siteConfig = {
     ],
     estimatorCardInfo:
       "Unverbindliche Preisspanne auf Basis von Projektart, Ausstattung, Zusatzoptionen und Material.",
+  },
+
+  baubegleitung: {
+    eyebrow: "Alles aus einer Hand",
+    title: "Vollumfängliche Baubegleitung & Sanierung",
+    text: "Sanieren kostet Nerven – wenn man es alleine macht. Als Ihr Bauleiter steuere ich nicht nur die Elektrotechnik, sondern koordiniere Ihr gesamtes Sanierungsprojekt im Raum Paderborn. Mit einem festen Netzwerk aus erfahrenen Handwerkspartnern setzen wir Ihr Vorhaben stressfrei um.",
+    features: [
+      { 
+        icon: "building", 
+        title: "Von Zweckmäßig bis Luxus", 
+        text: "Egal, ob es um eine solide, zweckgebundene Basis-Sanierung für eine Mietwohnung geht oder um einen hochwertigen Luxus-Ausbau für Ihr Eigenheim – unser Netzwerk deckt genau das Qualitäts- und Budgetniveau ab, das Sie benötigen." 
+      },
+      { 
+        icon: "check", 
+        title: "Ein zentraler Ansprechpartner", 
+        text: "Sie müssen nicht mit fünf verschiedenen Firmen telefonieren. Sie kommunizieren nur mit mir. Ich übersetze Ihre Wünsche für die Gewerke, kontrolliere die Ausführung und sorge für einen reibungslosen Ablauf." 
+      },
+      { 
+        icon: "shield", 
+        title: "Geprüfte Partnerbetriebe", 
+        text: "Qualität kommt von Erfahrung. Ich arbeite ausschließlich mit regionalen Handwerkern zusammen, deren Zuverlässigkeit und saubere Arbeitsweise ich aus jahrelanger gemeinsamer Erfahrung auf Baustellen kenne." 
+      }
+    ],
+    ctaText: "Klingt gut? Lassen Sie uns über Ihr Projekt sprechen."
   },
 
   services: {
