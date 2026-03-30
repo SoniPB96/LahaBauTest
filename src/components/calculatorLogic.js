@@ -89,7 +89,19 @@ export function estimatePrice(data) {
   const subtotal = baseTotal + sqmTotal + componentTotal + optionTotal;
   const brandFactor = brand?.factor || 1;
   const objectFactor = pricing.objectFactor[form.objectType] || 1;
-  const total = subtotal * brandFactor * objectFactor;
+  const brandImpactShare = pricing.brandAffectsMaterialOnly
+    ? pricing.brandImpactShare || pricing.materialShare || 0
+    : 1;
+
+  const brandRelevantBase = subtotal * brandImpactShare;
+  const brandNeutralBase = subtotal - brandRelevantBase;
+  const totalBeforeObjectFactor = brandNeutralBase + (brandRelevantBase * brandFactor);
+  const total = totalBeforeObjectFactor * objectFactor;
+
+  const materialBeforeObjectFactor = pricing.brandAffectsMaterialOnly
+    ? brandRelevantBase * brandFactor
+    : totalBeforeObjectFactor * (pricing.materialShare || 0);
+  const laborBeforeObjectFactor = totalBeforeObjectFactor - materialBeforeObjectFactor;
 
   return {
     baseTotal: Math.round(baseTotal),
@@ -97,12 +109,16 @@ export function estimatePrice(data) {
     componentTotal: Math.round(componentTotal),
     optionTotal: Math.round(optionTotal),
     subtotal: Math.round(subtotal),
+    brandRelevantBase: Math.round(brandRelevantBase),
+    brandNeutralBase: Math.round(brandNeutralBase),
+    totalBeforeObjectFactor: Math.round(totalBeforeObjectFactor),
     total: Math.round(total),
     low: Math.round(total * (1 - pricing.range)),
     high: Math.round(total * (1 + pricing.range)),
-    labor: Math.round(total * pricing.laborShare),
-    material: Math.round(total * pricing.materialShare),
+    labor: Math.round(laborBeforeObjectFactor * objectFactor),
+    material: Math.round(materialBeforeObjectFactor * objectFactor),
     brandFactor,
     objectFactor,
+    brandImpactShare,
   };
 }

@@ -359,3 +359,21 @@ a { color: inherit; text-decoration: none; }
   .logo-cut.c2 { left: 5px; top: 14px; width: 7px; }
   .logo-cut.c3 { left: 11px; top: 9px; width: 7px; }
 }
+
+
+.three-col-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.process-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 20px; }
+.process-note-box { margin-top: 6px; }
+.faq-stack { display: grid; gap: 18px; }
+.faq-card { border-radius: 28px; }
+.faq-question { font-size: 1.2rem; margin-bottom: 10px; }
+.section-tight-top { padding-top: 0; }
+.area-strip { border-radius: 32px; }
+.chip-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+.area-chip { gap: 8px; }
+.small-icon-circle { border-radius: 16px; }
+.compact-feature-row { grid-template-columns: 40px minmax(0,1fr); padding: 8px 0; border-top: 0; }
+
+@media (max-width: 900px) {
+  .three-col-grid, .process-grid { grid-template-columns: 1fr; }
+}

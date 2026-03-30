@@ -1,4 +1,5 @@
 import { getVisibleComponentFields } from "../components/calculatorLogic";
+import { calculatorConfig } from "../config/calculatorConfig";
 
 function toNumber(value) {
   const numeric = Number(value);
@@ -41,14 +42,30 @@ export function validateStep(step, form, { skipsCalculator } = {}) {
 
   if (step === 4 && !skipsCalculator) {
     const visibleFields = getVisibleComponentFields(form);
-    const rooms = toNumber(form.rooms);
-    if (!Number.isFinite(rooms) || rooms < 1) return "Bitte gib mindestens einen Raum an.";
-    if (rooms > 100) return "Bitte prüfe die Raumanzahl. Für sehr große Projekte ist eine direkte Anfrage sinnvoller.";
 
-    for (const field of visibleFields.slice(1)) {
+    for (const field of visibleFields) {
       const value = toNumber(form[field.key]);
-      if (!Number.isFinite(value) || value < 0) return `Bitte prüfe das Feld „${field.label}“.`;
-      if (value > 500) return `Die Angabe bei „${field.label}“ wirkt zu hoch. Bitte prüfe den Wert.`;
+      if (!Number.isFinite(value)) return `Bitte prüfe das Feld „${field.label}“.`;
+
+      const min = Number.isFinite(field.min) ? field.min : 0;
+      const max = Number.isFinite(field.max) ? field.max : 500;
+
+      if (value < min) {
+        if (field.key === "rooms") return "Bitte gib mindestens einen Raum an.";
+        return `Bitte gib bei „${field.label}“ mindestens ${min} an.`;
+      }
+
+      if (value > max) {
+        if (field.key === "rooms") return "Bitte prüfe die Raumanzahl. Für sehr große Projekte ist eine direkte Anfrage sinnvoller.";
+        return `Die Angabe bei „${field.label}“ wirkt zu hoch. Bitte prüfe den Wert.`;
+      }
+    }
+
+    const project = calculatorConfig.projectChoices.find((item) => item.value === form.projectType);
+    const sqm = toNumber(form.sqm);
+    const rooms = toNumber(form.rooms);
+    if (project?.value === "sanierung_altbau" && sqm >= 120 && rooms <= 1) {
+      return "Die Kombination aus großer Fläche und sehr wenigen Räumen wirkt unplausibel. Bitte prüfe die Raumanzahl.";
     }
   }
 

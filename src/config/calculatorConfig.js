@@ -49,6 +49,8 @@ export const calculatorConfig = {
     range: calculatorAdmin.priceLogic.range,
     laborShare: calculatorAdmin.priceLogic.laborShare,
     materialShare: calculatorAdmin.priceLogic.materialShare,
+    brandImpactShare: calculatorAdmin.priceLogic.brandImpactShare,
+    brandAffectsMaterialOnly: calculatorAdmin.priceLogic.brandAffectsMaterialOnly,
   },
 };
 

@@ -148,6 +148,9 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
                   </button>
                 ))}
               </div>
+              <div className="soft-box liquid-card subtle flow-note">
+                Zusatzoptionen sind pauschale Mehrbereiche. Die Markenwahl im nächsten Schritt beeinflusst später nur den materialrelevanten Anteil, nicht den kompletten Projektpreis.
+              </div>
             </div>
           )}
 
@@ -172,6 +175,9 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
                     <input className="input glass-input" inputMode="numeric" value={form[field.key]} onChange={(e) => updateField(field.key, e.target.value)} />
                   </div>
                 ))}
+              </div>
+              <div className="soft-box liquid-card subtle flow-note">
+                Gib lieber realistische Mengen an als Maximalwerte. Der Rechner soll eine glaubwürdige Erstschätzung liefern und keine künstlich aufgeblähte Summe erzeugen.
               </div>
             </div>
           )}
@@ -210,6 +216,7 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
                   <div className="soft-box liquid-card subtle"><div className="meta-label">Arbeitszeit</div><div className="meta-value">{formatEUR(result.labor)}</div></div>
                   <div className="soft-box liquid-card subtle"><div className="meta-label">Zusatzoptionen</div><div className="meta-value">{formatEUR(result.optionTotal)}</div></div>
                 </div>
+                <p className="body-text">Die Markenwahl verändert nur den materialrelevanten Anteil der Schätzung. Arbeitszeit und Grundaufwand werden dadurch nicht künstlich mitverteuert.</p>
               </div>
               <div className="soft-box liquid-card strong">
                 <div className="field-label">{calculatorConfig.resultFactorsTitle}</div>
