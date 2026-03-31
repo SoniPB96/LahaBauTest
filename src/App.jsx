@@ -149,11 +149,6 @@ export default function App() {
           <section className="hero" ref={heroRef}>
             <div className="container hero-grid">
               <div className="hero-copy clean-hero-copy">
-                <div className="badge-row">
-                  <span className="badge">{cfg.hero.badgePrimary}</span>
-                  <span className="badge muted">{cfg.hero.badgeSecondary}</span>
-                </div>
-
                 <div className="hero-copy-panel">
                   <h1>{cfg.hero.headline}</h1>
                   <h2 className="hero-subheadline">{cfg.hero.subheadline}</h2>
