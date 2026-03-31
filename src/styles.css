@@ -462,37 +462,3 @@ a { color: inherit; text-decoration: none; }
   .logo-cut.c2 { left: 5px; top: 14px; width: 7px; }
   .logo-cut.c3 { left: 11px; top: 9px; width: 7px; }
 }
-
-/* =========================================
-   Zusätzliche Live-Version Optimierungen 
-   ========================================= */
-
-/* Barrierefreiheit: Sichtbarer Fokus bei Tastaturnavigation */
-button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visible {
-  outline: 2px solid var(--blue);
-  outline-offset: 2px;
-  border-radius: inherit; /* Passt sich runden Buttons/Inputs an */
-}
-
-/* UX: Weiche Einblendung für Tab-Wechsel und Formular */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.fade-in {
-  animation: fadeIn 0.3s ease forwards;
-}
-
-/* Margin-Utility für Abstände (im JSX verwendet) */
-.mt-2 {
-  margin-top: 12px;
-}
-
-/* Formular-Verbesserungen */
-form.stack {
-  width: 100%;
-}
-.upload-box:hover {
-  background: rgba(255,255,255,0.08);
-}
