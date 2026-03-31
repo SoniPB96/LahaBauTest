@@ -37,10 +37,10 @@ export const siteConfig = {
   hero: {
     badgePrimary: "Elektroarbeiten in Paderborn und Umgebung",
     badgeSecondary: "Unverbindliche Ersteinschätzung",
-    headline: "Elektroarbeiten für Sanierung, Modernisierung und Erweiterung – klar geplant und sauber umgesetzt.",
-    subheadline: "Für Privatkunden im Raum Paderborn, die Verlässlichkeit statt Baustellenchaos wollen.",
+    headline: "Elektroarbeiten für Sanierung und Modernisierung – klar geplant, sauber umgesetzt.",
+    subheadline: "Für Privatkunden im Raum Paderborn – von der Erweiterung im Bestand bis zur strukturierten Modernisierung.",
     text:
-      "Von der Wohnungsmodernisierung bis zur Erweiterung im Bestand: Du bekommst eine realistische Ersteinschätzung, klare Abstimmung und eine saubere Umsetzung ohne unnötiges Durcheinander.",
+      "Realistische Ersteinschätzung, klare Abstimmung und saubere Umsetzung – ohne unnötiges Durcheinander auf der Baustelle.",
     trustLine:
       "Planung und Ausführung in Zusammenarbeit mit Meisterbetrieb – nachvollziehbar abgestimmt für Privatkunden, Eigentümer und Sanierungsprojekte im Raum Paderborn.",
     estimatorCardInfo:

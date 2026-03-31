@@ -274,17 +274,12 @@ export default function App() {
                   </div>
                   <h1>{cfg.hero.headline}</h1>
                   <p className="hero-lead hero-lead-compact">{cfg.hero.subheadline}</p>
-                  <p className="hero-support-text">{cfg.hero.text}</p>
+                  <p className="hero-support-text hero-support-text-compact">{cfg.hero.text}</p>
 
-                  <div className="hero-proof-row" aria-label="Vorteile auf einen Blick">
-                    <div className="hero-proof-chip glass-inset">
-                      <span className="hero-proof-label">Ansprechpartner</span>
-                      <strong>{cfg.hero.quickFacts[0]}</strong>
-                    </div>
-                    <div className="hero-proof-chip glass-inset">
-                      <span className="hero-proof-label">Projektfit</span>
-                      <strong>{cfg.hero.quickFacts[2]}</strong>
-                    </div>
+                  <div className="hero-trust-inline glass-inset" aria-label="Vorteile auf einen Blick">
+                    <strong>{cfg.hero.quickFacts[0]}</strong>
+                    <span aria-hidden="true">•</span>
+                    <strong>{cfg.hero.quickFacts[2]}</strong>
                   </div>
 
                   <div className="button-row hero-cta-row hero-cta-row-compact">
@@ -296,13 +291,13 @@ export default function App() {
               <div className="hero-side hero-side-compact">
                 <div className="card liquid-card subtle hero-main-card hero-main-card-compact">
                   <div className="hero-accent-line" aria-hidden="true" />
-                  <div className="card-pad">
+                  <div className="card-pad hero-card-pad-finish">
                     <div className="eyebrow">Digitale Ersteinschätzung</div>
-                    <h3 className="card-title">Schnelle Orientierung vor der Anfrage</h3>
-                    <p className="body-text hero-card-text">Mehrstufige Eingabe für eine erste realistische Einordnung – sinnvoll, bevor Details abgestimmt werden.</p>
-                    <div className="hero-mini-boxes hero-mini-boxes-compact">
+                    <h3 className="card-title hero-card-title-finish">Schnelle Orientierung vor der Anfrage</h3>
+                    <p className="body-text hero-card-text hero-card-text-finish">Realistische Einordnung statt Bauchgefühl – sinnvoll, bevor Details abgestimmt werden.</p>
+                    <div className="hero-mini-boxes hero-mini-boxes-compact hero-mini-boxes-finish">
                       <div className="soft-box liquid-card subtle">Richtpreis statt Bauchgefühl</div>
-                      <div className="soft-box liquid-card subtle">Für Sanierung, Erweiterung und Bestand</div>
+                      <div className="soft-box liquid-card subtle">Für Bestand, Sanierung und Erweiterung</div>
                     </div>
                     <Button className="full" onClick={() => openTab("rechner")}>Zum Rechner</Button>
                   </div>
