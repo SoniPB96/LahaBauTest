@@ -49,27 +49,46 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("start");
   const [menuOpen, setMenuOpen] = useState(false);
   const [requestMode, setRequestMode] = useState("whatsapp");
+  const [topInView, setTopInView] = useState(true);
+  const [stickyBlocked, setStickyBlocked] = useState(false);
   const [showSticky, setShowSticky] = useState(false);
   const heroRef = useRef(null);
+  const testimonialsRef = useRef(null);
+  const begleitungRef = useRef(null);
 
   const heroExampleResult = useMemo(() => estimatePrice(calculatorConfig.defaults), []);
 
   useEffect(() => {
-    if (!heroRef.current) return;
+    const target = activeTab === "begleitung" ? begleitungRef.current : heroRef.current;
+    if (!target) {
+      setTopInView(true);
+      return;
+    }
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        const shouldShow = !entry.isIntersecting && !menuOpen && (activeTab === "start" || activeTab === "begleitung");
-        setShowSticky(shouldShow);
-      },
-      { threshold: 0.15 }
+      ([entry]) => setTopInView(entry.isIntersecting),
+      { threshold: 0.12 }
     );
-    observer.observe(heroRef.current);
+    observer.observe(target);
     return () => observer.disconnect();
-  }, [menuOpen, activeTab]);
+  }, [activeTab]);
 
   useEffect(() => {
-    if (menuOpen) setShowSticky(false);
-  }, [menuOpen]);
+    if (activeTab !== "start" || !testimonialsRef.current) {
+      setStickyBlocked(false);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setStickyBlocked(entry.isIntersecting),
+      { threshold: 0.18 }
+    );
+    observer.observe(testimonialsRef.current);
+    return () => observer.disconnect();
+  }, [activeTab]);
+
+  useEffect(() => {
+    const shouldShow = !topInView && !menuOpen && (activeTab === "start" || activeTab === "begleitung") && !stickyBlocked;
+    setShowSticky(shouldShow);
+  }, [topInView, menuOpen, activeTab, stickyBlocked]);
 
   const openTab = (key) => {
     setActiveTab(key);
@@ -158,11 +177,6 @@ export default function App() {
                       <strong>Planung und Ausführung fachlich sauber abgestimmt für Privatkunden im Raum Paderborn.</strong>
                     </div>
                   </div>
-
-                  <div className="button-row hero-cta-row hero-cta-row-balanced">
-                    <Button onClick={() => openTab("rechner")}>Kosten einschätzen</Button>
-                    <Button outline onClick={() => openTab("anfrage")}>Anfrage stellen</Button>
-                  </div>
                 </div>
               </div>
 
@@ -213,7 +227,7 @@ export default function App() {
             </div>
           </section>
 
-          <section className="section testimonials-section">
+          <section className="section testimonials-section" ref={testimonialsRef}>
             <div className="container">
               <SectionTitle eyebrow={cfg.testimonials.eyebrow} title={cfg.testimonials.title} text={cfg.testimonials.text} />
               <div className="testimonials-grid">
@@ -239,7 +253,7 @@ export default function App() {
       )}
 
       {activeTab === "begleitung" && (
-        <main className="section">
+        <main className="section" ref={begleitungRef}>
           <div className="container">
             <SectionTitle eyebrow={cfg.begleitung.eyebrow} title={cfg.begleitung.title} text={cfg.begleitung.text} />
             <p className="begleitung-subline">{cfg.begleitung.subline}</p>
@@ -259,7 +273,7 @@ export default function App() {
                   })}
                 </div>
                 <div className="button-row feature-cta-row">
-                  <Button onClick={() => openTab("anfrage")}>Anfrage stellen</Button>
+                  <Button onClick={() => openTab("anfrage")}>Projekt anfragen</Button>
                 </div>
               </div>
             </div>
@@ -385,7 +399,7 @@ export default function App() {
       )}
 
       {showSticky && (
-        <button className="sticky-contact sticky-contact-wide" onClick={() => openTab("anfrage")}>Anfrage stellen</button>
+        <button className="sticky-contact sticky-contact-compact" onClick={() => openTab("anfrage")}>Anfrage stellen</button>
       )}
     </div>
   );
