@@ -1,5 +1,7 @@
 import React from "react";
-import { CheckCircle2, Home, Building2, Upload, ArrowRight } from "lucide-react";
+import {
+  CheckCircle2, Home, Building2, Upload, ArrowRight
+} from "lucide-react";
 import { calculatorConfig } from "../config/calculatorConfig";
 import { estimatePrice, formatEUR, getVisibleComponentFields, isDirectInquiryProject } from "./calculatorLogic";
 import { getNextStep, getPreviousStep, getStepPosition, getWizardLabelsForFlow } from "../calculator/flow";
@@ -9,7 +11,9 @@ const iconMap = { home: Home, building: Building2 };
 
 function Button({ children, href, outline = false, onClick, type = "button", className = "", target, disabled = false }) {
   const cls = `btn ${outline ? "btn-outline" : ""} ${className}`.trim();
-  if (href) return <a className={cls} href={href} target={target} rel={target === "_blank" ? "noreferrer" : undefined}>{children}</a>;
+  if (href) {
+    return <a className={cls} href={href} target={target} rel={target === "_blank" ? "noreferrer" : undefined}>{children}</a>;
+  }
   return <button className={cls} onClick={onClick} type={type} disabled={disabled}>{children}</button>;
 }
 
@@ -39,43 +43,38 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
     .filter(([, enabled]) => enabled)
     .map(([key]) => calculatorConfig.options.find((item) => item.key === key)?.label || key);
 
-  const updateField = (key, value) => { setForm((prev) => ({ ...prev, [key]: value })); setStepError(""); };
-  const updateOption = (key, value) => { setForm((prev) => ({ ...prev, options: { ...prev.options, [key]: value } })); setStepError(""); };
+  const updateField = (key, value) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+    setStepError("");
+  };
+
+  const updateOption = (key, value) => {
+    setForm((prev) => ({ ...prev, options: { ...prev.options, [key]: value } }));
+    setStepError("");
+  };
 
   React.useEffect(() => {
-    if (!sequence.includes(step)) { setStep(sequence[sequence.length - 1]); setStepError(""); }
+    if (!sequence.includes(step)) {
+      setStep(sequence[sequence.length - 1]);
+      setStepError("");
+    }
   }, [sequence, step]);
 
   const nextStep = () => {
     const error = validateStep(step, form, { skipsCalculator });
-    if (error) { setStepError(error); return; }
+    if (error) {
+      setStepError(error);
+      return;
+    }
     setStepError("");
     const next = getNextStep(step, form);
     if (next !== step) setStep(next);
   };
 
-  const prevStep = () => { setStepError(""); const previous = getPreviousStep(step, form); if (previous !== step) setStep(previous); };
-
-  // Build prefill data to pass to request page
-  const buildPrefill = () => {
-    const projectLabel = calculatorConfig.projectChoices.find(c => c.value === form.projectType)?.label || "";
-    const objectLabel = calculatorConfig.objectChoices.find(c => c.value === form.objectType)?.label || "";
-    const priceText = !skipsCalculator && result.low ? `Richtpreis: ${formatEUR(result.low)} – ${formatEUR(result.high)}` : "";
-    const subject = [objectLabel, form.sqm ? `${form.sqm} m²` : "", projectLabel].filter(Boolean).join(", ");
-    const messageParts = [
-      priceText,
-      selectedOptions.length ? `Optionen: ${selectedOptions.join(", ")}` : "",
-      form.message || "",
-    ].filter(Boolean);
-    return {
-      name: form.name,
-      phone: form.phone,
-      email: form.email,
-      zip: form.zip,
-      fileName: form.fileName,
-      subject,
-      message: messageParts.join("\n"),
-    };
+  const prevStep = () => {
+    setStepError("");
+    const previous = getPreviousStep(step, form);
+    if (previous !== step) setStep(previous);
   };
 
   return (
@@ -87,24 +86,23 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
               <span>Schritt {stepIndex + 1} von {totalSteps}</span>
               <span>{progress}%</span>
             </div>
-            <div className="progress glass-inset" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
+            <div className="progress glass-inset">
               <div className="progress-bar" style={{ width: `${progress}%` }} />
             </div>
-            <div className="chip-row" aria-label="Wizard-Fortschritt">
+            <div className="chip-row">
               {wizardLabels.map((label, index) => (
-                <div key={label} className={`step-chip ${index === stepIndex ? "active" : ""} ${index < stepIndex ? "done" : ""}`} aria-current={index === stepIndex ? "step" : undefined}>{label}</div>
+                <div key={label} className={`step-chip ${index === stepIndex ? "active" : ""} ${index < stepIndex ? "done" : ""}`}>{label}</div>
               ))}
             </div>
           </div>
 
-          {/* Step 1: Object + sqm */}
           {step === 1 && (
             <div className="form-grid two">
               <div>
                 <label className="field-label">Objektart</label>
-                <div className="choice-grid" role="group" aria-label="Objektart wählen">
+                <div className="choice-grid">
                   {calculatorConfig.objectChoices.map((item) => (
-                    <button key={item.value} className={`choice ${form.objectType === item.value ? "active" : ""}`} onClick={() => updateField("objectType", item.value)} aria-pressed={form.objectType === item.value}>
+                    <button key={item.value} className={`choice ${form.objectType === item.value ? "active" : ""}`} onClick={() => updateField("objectType", item.value)}>
                       <ChoiceIcon iconName={item.icon} size={17} />
                       <div>{item.label}</div>
                     </button>
@@ -112,19 +110,18 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
                 </div>
               </div>
               <div>
-                <label className="field-label" htmlFor="sqm-input">Wohnfläche / Nutzfläche in m²</label>
-                <input id="sqm-input" className="input glass-input" inputMode="numeric" value={form.sqm} onChange={(e) => updateField("sqm", e.target.value)} placeholder="z. B. 120" />
+                <label className="field-label">Wohnfläche / Nutzfläche in m²</label>
+                <input className="input glass-input" inputMode="numeric" value={form.sqm} onChange={(e) => updateField("sqm", e.target.value)} placeholder="z. B. 120" />
               </div>
             </div>
           )}
 
-          {/* Step 2: Project type */}
           {step === 2 && (
             <div>
               <label className="field-label">Projektart</label>
-              <div className="choice-grid wide project-grid" role="group" aria-label="Projektart wählen">
+              <div className="choice-grid wide project-grid">
                 {calculatorConfig.projectChoices.map((item) => (
-                  <button key={item.value} className={`choice ${form.projectType === item.value ? "active" : ""}`} onClick={() => updateField("projectType", item.value)} aria-pressed={form.projectType === item.value}>
+                  <button key={item.value} className={`choice ${form.projectType === item.value ? "active" : ""}`} onClick={() => updateField("projectType", item.value)}>
                     {item.label}
                   </button>
                 ))}
@@ -137,7 +134,6 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
             </div>
           )}
 
-          {/* Step 3: Extra options */}
           {step === 3 && !skipsCalculator && (
             <div>
               <label className="field-label">{calculatorConfig.optionsTitle}</label>
@@ -145,9 +141,9 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
                 <div className="room-info-title">Zusätzliche Bereiche und Vorbereitungen</div>
                 <div className="room-info-text">{calculatorConfig.optionsHint}</div>
               </div>
-              <div className="choice-grid wide" role="group" aria-label="Zusatzoptionen wählen">
+              <div className="choice-grid wide">
                 {calculatorConfig.options.map((item) => (
-                  <button key={item.key} className={`choice ${form.options[item.key] ? "active" : ""}`} onClick={() => updateOption(item.key, !form.options[item.key])} aria-pressed={!!form.options[item.key]}>
+                  <button key={item.key} className={`choice ${form.options[item.key] ? "active" : ""}`} onClick={() => updateOption(item.key, !form.options[item.key])}>
                     {item.label}
                   </button>
                 ))}
@@ -155,44 +151,43 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
             </div>
           )}
 
-          {/* Step 4: Room equipment */}
           {step === 4 && !skipsCalculator && (
             <div>
               <div className="room-info-block liquid-card subtle">
                 <div className="room-info-title">{calculatorConfig.roomInfoTitle}</div>
                 <div className="room-info-text">{calculatorConfig.roomInfoText}</div>
               </div>
+
               <div className="room-first-block">
                 <div>
-                  <label className="field-label small" htmlFor="rooms-input">{visibleComponentFields[0]?.label || "Raumanzahl"}</label>
-                  <input id="rooms-input" className="input glass-input room-input" inputMode="numeric" value={form.rooms} onChange={(e) => updateField("rooms", e.target.value)} />
+                  <label className="field-label small">{visibleComponentFields[0]?.label || "Raumanzahl"}</label>
+                  <input className="input glass-input room-input" inputMode="numeric" value={form.rooms} onChange={(e) => updateField("rooms", e.target.value)} />
                 </div>
               </div>
+
               <div className="form-grid three room-grid">
                 {visibleComponentFields.slice(1).map((field) => (
                   <div key={field.key}>
-                    <label className="field-label small" htmlFor={`field-${field.key}`}>{field.label}</label>
-                    <input id={`field-${field.key}`} className="input glass-input" inputMode="numeric" value={form[field.key]} onChange={(e) => updateField(field.key, e.target.value)} />
+                    <label className="field-label small">{field.label}</label>
+                    <input className="input glass-input" inputMode="numeric" value={form[field.key]} onChange={(e) => updateField(field.key, e.target.value)} />
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Step 5: Material */}
           {step === 5 && !skipsCalculator && (
             <div>
               <div className="room-info-block liquid-card subtle material-info">
                 <div className="room-info-title">{calculatorConfig.materialTitle}</div>
                 <div className="room-info-text">{calculatorConfig.materialInfo}</div>
               </div>
-              <div className="choice-grid wide material-grid" role="group" aria-label="Schalterprogramm wählen">
+              <div className="choice-grid wide material-grid">
                 {calculatorConfig.brandChoices.map((item) => (
                   <button
                     key={item.value}
                     className={`choice material-choice ${item.accentClass} ${form.brand === item.value ? "active" : ""} ${item.value === "gira" ? "recommended-material" : ""}`}
                     onClick={() => updateField("brand", item.value)}
-                    aria-pressed={form.brand === item.value}
                   >
                     <div className="material-topline">
                       <span>{item.label}</span>
@@ -204,12 +199,11 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
             </div>
           )}
 
-          {/* Step 6: Result */}
           {step === 6 && !skipsCalculator && (
             <div className="form-grid two">
               <div className="result-box big glass-inset">
                 <div className="eyebrow">Ergebnis</div>
-                <div className="hero-price" aria-live="polite">{formatEUR(result.low)} – {formatEUR(result.high)}</div>
+                <div className="hero-price hero-price-gradient">{formatEUR(result.low)} – {formatEUR(result.high)}</div>
                 <p className="body-text">{calculatorConfig.disclaimer}</p>
                 <div className="mini-grid result-grid">
                   <div className="soft-box liquid-card subtle"><div className="meta-label">Material</div><div className="meta-value">{formatEUR(result.material)}</div></div>
@@ -226,23 +220,22 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
             </div>
           )}
 
-          {/* Step 7: Contact */}
           {step === 7 && (
             <div className="form-grid two">
               <div className="stack">
-                <div><label className="field-label" htmlFor="c-name">Name *</label><input id="c-name" className="input glass-input" value={form.name} onChange={(e) => updateField("name", e.target.value)} placeholder="Dein Name" /></div>
-                <div><label className="field-label" htmlFor="c-phone">Telefon</label><input id="c-phone" className="input glass-input" type="tel" value={form.phone} onChange={(e) => updateField("phone", e.target.value)} /></div>
-                <div><label className="field-label" htmlFor="c-email">E-Mail</label><input id="c-email" className="input glass-input" type="email" value={form.email} onChange={(e) => updateField("email", e.target.value)} /></div>
-                <div><label className="field-label" htmlFor="c-zip">PLZ / Ort</label><input id="c-zip" className="input glass-input" value={form.zip} onChange={(e) => updateField("zip", e.target.value)} /></div>
+                <div><label className="field-label">Name</label><input className="input glass-input" value={form.name} onChange={(e) => updateField("name", e.target.value)} /></div>
+                <div><label className="field-label">Telefon</label><input className="input glass-input" value={form.phone} onChange={(e) => updateField("phone", e.target.value)} /></div>
+                <div><label className="field-label">E-Mail</label><input className="input glass-input" value={form.email} onChange={(e) => updateField("email", e.target.value)} /></div>
+                <div><label className="field-label">PLZ / Ort</label><input className="input glass-input" value={form.zip} onChange={(e) => updateField("zip", e.target.value)} /></div>
                 <div>
                   <label className="field-label">Grundriss / Umrissplan</label>
-                  <label className="upload-box glass-input" style={{ cursor: "pointer" }}>
-                    <Upload size={16} aria-hidden="true" />
+                  <label className="upload-box glass-input">
+                    <Upload size={16} />
                     <span>{form.fileName || "Datei auswählen"}</span>
                     <input hidden type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => updateField("fileName", e.target.files?.[0]?.name || "")} />
                   </label>
                 </div>
-                <div><label className="field-label" htmlFor="c-message">Zusätzliche Angaben</label><textarea id="c-message" className="input textarea glass-input" value={form.message} onChange={(e) => updateField("message", e.target.value)} /></div>
+                <div><label className="field-label">Zusätzliche Angaben</label><textarea className="input textarea glass-input" value={form.message} onChange={(e) => updateField("message", e.target.value)} /></div>
                 <div className="soft-box liquid-card subtle">{calculatorConfig.requestNote}</div>
               </div>
 
@@ -267,25 +260,27 @@ export default function CalculatorPanel({ onOpenRequestPage }) {
             </div>
           )}
 
-          {stepError && <div className="soft-box liquid-card subtle flow-note" role="alert">{stepError}</div>}
+          {stepError && <div className="soft-box liquid-card subtle flow-note">{stepError}</div>}
 
           <div className="wizard-actions">
-            <Button outline onClick={prevStep} disabled={stepIndex <= 0} aria-label="Vorheriger Schritt">Zurück</Button>
+            <Button outline onClick={prevStep} disabled={stepIndex <= 0}>Zurück</Button>
             {stepIndex < totalSteps - 1 ? (
-              <Button onClick={nextStep} aria-label="Nächster Schritt">Weiter <ArrowRight size={15} /></Button>
+              <Button onClick={nextStep}>Weiter <ArrowRight size={15} /></Button>
             ) : (
               <Button onClick={() => {
                 const error = validateStep(step, form, { skipsCalculator });
-                if (error) { setStepError(error); return; }
+                if (error) {
+                  setStepError(error);
+                  return;
+                }
                 setStepError("");
-                onOpenRequestPage(buildPrefill());
-              }}>Zur Anfrageseite <ArrowRight size={15} /></Button>
+                onOpenRequestPage();
+              }}>Zur Anfrageseite</Button>
             )}
           </div>
         </div>
       </div>
 
-      {/* Sidebar summary */}
       <div className="card sidebar-card liquid-card subtle">
         <div className="card-pad">
           <div className="eyebrow">{calculatorConfig.sidebarTitle}</div>
