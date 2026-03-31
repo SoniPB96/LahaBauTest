@@ -12,97 +12,100 @@ export const siteConfig = {
   navigation: {
     items: [
       { key: "start", label: "Start" },
-      { key: "rechner", label: "Erste Kosteneinschätzung Elektrik" },
+      { key: "rechner", label: "Kostenrechner" },
       { key: "begleitung", label: "Baubegleitung" },
     ],
     ctaLabel: "Anfrage stellen",
   },
 
   hero: {
-    badgePrimary: "Elektroarbeiten in Paderborn und Umgebung",
-    badgeSecondary: "Unverbindliche Ersteinschätzung",
-    headline: "Elektroarbeiten für Sanierung, Modernisierung und Erweiterung.",
-    subheadline: "Klar geplant. Sauber umgesetzt.",
-    text:
-      "Für Privatkunden in Paderborn und Umgebung – mit klarer Ersteinschätzung und sauberer Abstimmung.",
-    trustLine:
-      "Planung und Ausführung in Zusammenarbeit mit Meisterbetrieb.",
-    estimatorCardInfo:
-      "Realistische Preisspanne als erste Orientierung.",
+    badge: "Elektroarbeiten in Paderborn und Umgebung",
+    headline: "Saubere Elektroarbeiten ohne Chaos auf der Baustelle.",
+    subheadline: "Ein Ansprechpartner. Klare Planung. Saubere Umsetzung.",
+    trustLine: "Planung und Ausführung in Zusammenarbeit mit Meisterbetrieb.",
   },
 
   services: {
     eyebrow: "Leistungen",
     title: "Leistungen für Privatkunden",
-    text:
-      "Klar eingegrenzte Leistungen für Sanierung, Erweiterung und Modernisierung.",
     items: [
-      { key: "installation", icon: "zap", title: "Elektroinstallation", text: "Neue Stromkreise, Steckdosen und saubere Erweiterungen im Bestand." },
-      { key: "distribution", icon: "wrench", title: "Unterverteilungen & Schutztechnik", text: "Wenn Verteilungen modernisiert oder sinnvoll neu aufgebaut werden müssen." },
-      { key: "lighting", icon: "sun", title: "Beleuchtung", text: "Innen- und Außenlicht mit sauberer Leitungsführung und klarer Schaltlogik." },
-      { key: "network", icon: "network", title: "Netzwerk & Datenleitungen", text: "Strukturierte Verkabelung für Homeoffice, Medienpunkte und moderne Haustechnik." },
-      { key: "estimator", icon: "calculator", title: "Digitale Ersteinschätzung", text: "Realistische Preisspanne statt blindem Festpreisversprechen." },
-      { key: "quality", icon: "check", title: "Saubere Ausführung", text: "Klare Abstimmung und nachvollziehbare Umsetzung im Projekt." },
+      { 
+        key: "installation", 
+        icon: "zap", 
+        title: "Elektroinstallation", 
+        text: "Neuinstallation und Modernisierung für Wohnung und Haus." 
+      },
+      { 
+        key: "distribution", 
+        icon: "wrench", 
+        title: "Unterverteilungen", 
+        text: "Erweiterung und Erneuerung bestehender Sicherungstechnik." 
+      },
+      { 
+        key: "lighting", 
+        icon: "sun", 
+        title: "Beleuchtung", 
+        text: "Innen- und Außenbeleuchtung mit sauberer Leitungsführung." 
+      },
+      { 
+        key: "network", 
+        icon: "network", 
+        title: "Netzwerk & Datenleitungen", 
+        text: "Strukturierte Verkabelung für Homeoffice und Haustechnik." 
+      },
+      { 
+        key: "estimator", 
+        icon: "calculator", 
+        title: "Digitale Ersteinschätzung", 
+        text: "Realistische Preisspanne statt ungenauem Festpreis." 
+      },
+      { 
+        key: "quality", 
+        icon: "check", 
+        title: "Saubere Ausführung", 
+        text: "Klare Abstimmung und nachvollziehbare Umsetzung." 
+      },
     ],
   },
 
   begleitung: {
     eyebrow: "Baubegleitung",
-    title: "Baubegleitung für Sanierungen",
-    text:
-      "Für umfangreichere Projekte mit technischer Begleitung und klarer Abstimmung.",
-    subline:
-      "Sinnvoll, wenn nicht mehrere Gewerke einzeln koordiniert werden sollen.",
-    intro:
-      "Passend zum Umfang, Budget und gewünschten Ergebnis.",
+    title: "Baubegleitung mit lokalen Partnern",
+    text: "Für umfangreichere Sanierungen: technische Begleitung und Koordination mit lokalen Partnerbetrieben.",
     points: [
-      "Fester Ansprechpartner für Abstimmung und Ablauf",
-      "Koordination mit lokalen Partnerbetrieben",
-      "Technisch saubere Planung statt Improvisation",
-      "Geeignet für einfache bis hochwertige Ausführungen",
+      "Koordination mit lokalen Sanierungspartnern",
+      "Ein fester Ansprechpartner als Bauleiter",
+      "Für einfache bis hochwertige Sanierungsstandards",
+      "Abgestimmte Umsetzung aller Gewerke",
     ],
     cards: [
       {
         title: "Zweckmäßige Sanierung",
-        text: "Für Projekte mit klarem Kostenfokus und sauberer Umsetzung.",
+        text: "Kostenfokus mit sauberer, funktionaler Umsetzung.",
       },
       {
         title: "Gehobene Modernisierung",
-        text: "Für Eigentümer mit Fokus auf bessere Materialien und saubere Details.",
+        text: "Bessere Materialien und koordinierte Umsetzung.",
       },
       {
         title: "Hochwertige Sanierung",
-        text: "Für anspruchsvollere Projekte mit höherem Qualitätsanspruch.",
+        text: "Hoher Qualitätsanspruch mit feiner Materialauswahl.",
       },
-    ],
-  },
-
-  testimonials: {
-    eyebrow: "Vertrauen",
-    title: "Vertrauen durch klare Kommunikation",
-    text: "Saubere Arbeit, realistische Preise und klare Abstimmung.",
-    items: [
-      { initials: "FK", name: "Familie K.", location: "Paderborn", quote: "Klare Abstimmung, saubere Umsetzung." },
-      { initials: "MH", name: "M. Hoffmann", location: "Salzkotten", quote: "Realistisch eingeschätzt und verständlich erklärt." },
     ],
   },
 
   requestPage: {
     eyebrow: "Anfrage",
     title: "Projekt anfragen",
-    text:
-      "Wähle den passenden Kontaktweg: schnell per WhatsApp oder strukturiert per Formular.",
+    text: "Wähle den passenden Kontaktweg: schnell per WhatsApp oder strukturiert per Formular.",
     quickTitle: "Direkte Kontaktwege",
-    quickText:
-      "WhatsApp für schnelle Fragen, Formular für strukturierte Anfragen.",
-    listTitle: "Was für die Rückmeldung hilft",
+    quickText: "Für schnelle Abstimmung eignet sich WhatsApp am besten.",
+    listTitle: "So läuft die Anfrage ab",
     listItems: [
-      "Kurze Beschreibung des Vorhabens",
-      "Optional Fotos oder Grundriss mitsenden",
+      "Kurze Beschreibung des Projekts",
+      "Optional Grundriss oder Fotos mitsenden",
       "Erste Rückmeldung zur Einordnung",
-      "Falls passend: Termin oder weitere Abstimmung",
+      "Termin oder Besichtigung falls sinnvoll",
     ],
-    formNote:
-      "Das Formular ist vorbereitet und wird bei Bedarf ergänzt.",
   },
 };
