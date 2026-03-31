@@ -17,16 +17,23 @@ const serviceIconMap = {
   check: CheckCircle2,
 };
 
+// Optimierte Button-Komponente
 function Button({ children, href, outline = false, onClick, type = "button", className = "", target }) {
   const cls = `btn ${outline ? "btn-outline" : ""} ${className}`.trim();
   if (href) {
-    return <a className={cls} href={href} target={target} rel={target === "_blank" ? "noreferrer" : undefined}>{children}</a>;
+    return <a className={cls} href={href} target={target} rel={target === "_blank" ? "noopener noreferrer" : undefined}>{children}</a>;
   }
   return <button className={cls} onClick={onClick} type={type}>{children}</button>;
 }
 
 function SectionTitle({ eyebrow, title, text }) {
-  return <div className="section-title"><p className="eyebrow">{eyebrow}</p><h2>{title}</h2><p>{text}</p></div>;
+  return (
+    <div className="section-title">
+      <p className="eyebrow" aria-hidden="true">{eyebrow}</p>
+      <h2>{title}</h2>
+      <p>{text}</p>
+    </div>
+  );
 }
 
 function Logo() {
@@ -54,6 +61,7 @@ export default function App() {
 
   const heroExampleResult = useMemo(() => estimatePrice(calculatorConfig.defaults), []);
 
+  // Intersection Observer für Sticky Button
   useEffect(() => {
     if (!heroRef.current) return;
     const observer = new IntersectionObserver(
@@ -74,23 +82,33 @@ export default function App() {
   const openTab = (key) => {
     setActiveTab(key);
     setMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // UX-Verbesserung: Scroll to top bei Tab-Wechsel
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    // Hier später die echte API/Backend-Anbindung einfügen
+    alert("Vielen Dank! Deine Anfrage wurde erfolgreich gesendet.");
   };
 
   return (
     <div className="page">
-      <div className="bg-orb orb-1" /><div className="bg-orb orb-2" /><div className="bg-orb orb-3" />
+      <div className="bg-orb orb-1" aria-hidden="true" />
+      <div className="bg-orb orb-2" aria-hidden="true" />
+      <div className="bg-orb orb-3" aria-hidden="true" />
 
       <header className="header">
         <div className="container header-inner">
-          <button className="brand" onClick={() => openTab("start")} aria-label="Startseite">
+          <button className="brand" onClick={() => openTab("start")} aria-label="Zur Startseite">
             <Logo />
           </button>
 
-          <nav className="nav desktop-nav">
+          <nav className="nav desktop-nav" aria-label="Hauptnavigation">
             {cfg.navigation.items.map((item) => (
               <button
                 key={item.key}
                 className={activeTab === item.key ? "nav-active" : ""}
+                aria-current={activeTab === item.key ? "page" : undefined}
                 onClick={() => openTab(item.key)}
               >
                 {item.label}
@@ -102,25 +120,31 @@ export default function App() {
             <Button onClick={() => openTab("anfrage")}>{cfg.navigation.ctaLabel}</Button>
           </div>
 
-          <button className="menu-toggle" onClick={() => setMenuOpen((v) => !v)} aria-label="Menü">
+          <button 
+            className="menu-toggle" 
+            onClick={() => setMenuOpen((v) => !v)} 
+            aria-label={menuOpen ? "Menü schließen" : "Menü öffnen"}
+            aria-expanded={menuOpen}
+          >
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
 
         {menuOpen && (
           <div className="mobile-menu">
-            <div className="container mobile-menu-inner">
+            <nav className="container mobile-menu-inner" aria-label="Mobile Navigation">
               {cfg.navigation.items.map((item) => (
                 <button
                   key={item.key}
                   className={activeTab === item.key ? "nav-active" : ""}
+                  aria-current={activeTab === item.key ? "page" : undefined}
                   onClick={() => openTab(item.key)}
                 >
                   {item.label}
                 </button>
               ))}
-              <Button onClick={() => openTab("anfrage")}>{cfg.navigation.ctaLabel}</Button>
-            </div>
+              <Button onClick={() => openTab("anfrage")} className="mt-2">{cfg.navigation.ctaLabel}</Button>
+            </nav>
           </div>
         )}
       </header>
@@ -202,7 +226,7 @@ export default function App() {
                   return (
                     <div key={service.key} className="card liquid-card subtle service-card">
                       <div className="card-pad">
-                        <div className="service-icon"><Icon size={22} /></div>
+                        <div className="service-icon" aria-hidden="true"><Icon size={22} /></div>
                         <h3 className="card-title">{service.title}</h3>
                         <p className="body-text">{service.text}</p>
                       </div>
@@ -220,7 +244,7 @@ export default function App() {
                 {cfg.testimonials.items.map((item) => (
                   <div key={item.name} className="card liquid-card subtle testimonial-card">
                     <div className="card-pad">
-                      <div className="testimonial-quote-mark">“</div>
+                      <div className="testimonial-quote-mark" aria-hidden="true">“</div>
                       <p className="testimonial-quote">{item.quote}</p>
                       <div className="testimonial-person">
                         <div className="testimonial-avatar" aria-hidden="true">{item.initials}</div>
@@ -252,7 +276,7 @@ export default function App() {
                     const Icon = icons[i] || CheckCircle2;
                     return (
                       <div key={point} className="feature-row">
-                        <div className="feature-icon"><Icon size={18} /></div>
+                        <div className="feature-icon" aria-hidden="true"><Icon size={18} /></div>
                         <div className="feature-text">{point}</div>
                       </div>
                     );
@@ -298,42 +322,42 @@ export default function App() {
                   <h3 className="card-title">Wähle deinen bevorzugten Kontaktweg</h3>
                   <p className="body-text">{cfg.requestPage.quickText}</p>
 
-                  <div className="request-selector">
-                    <button className={`request-option request-option-primary ${requestMode==="whatsapp" ? "active" : ""}`} onClick={() => setRequestMode("whatsapp")}>
-                      <MessageCircle size={18} />
+                  <div className="request-selector" role="tablist">
+                    <button role="tab" aria-selected={requestMode === "whatsapp"} className={`request-option request-option-primary ${requestMode==="whatsapp" ? "active" : ""}`} onClick={() => setRequestMode("whatsapp")}>
+                      <MessageCircle size={18} aria-hidden="true" />
                       <div className="request-option-text">
                         <span>WhatsApp</span>
                         <small>Empfohlen</small>
                       </div>
                     </button>
-                    <button className={`request-option ${requestMode==="phone" ? "active" : ""}`} onClick={() => setRequestMode("phone")}>
-                      <Phone size={18} />
+                    <button role="tab" aria-selected={requestMode === "phone"} className={`request-option ${requestMode==="phone" ? "active" : ""}`} onClick={() => setRequestMode("phone")}>
+                      <Phone size={18} aria-hidden="true" />
                       <div className="request-option-text"><span>Anrufen</span></div>
                     </button>
-                    <button className={`request-option ${requestMode==="email" ? "active" : ""}`} onClick={() => setRequestMode("email")}>
-                      <Mail size={18} />
+                    <button role="tab" aria-selected={requestMode === "email"} className={`request-option ${requestMode==="email" ? "active" : ""}`} onClick={() => setRequestMode("email")}>
+                      <Mail size={18} aria-hidden="true" />
                       <div className="request-option-text"><span>E-Mail</span></div>
                     </button>
-                    <button className={`request-option ${requestMode==="form" ? "active" : ""}`} onClick={() => setRequestMode("form")}>
-                      <Calculator size={18} />
+                    <button role="tab" aria-selected={requestMode === "form"} className={`request-option ${requestMode==="form" ? "active" : ""}`} onClick={() => setRequestMode("form")}>
+                      <Calculator size={18} aria-hidden="true" />
                       <div className="request-option-text"><span>Formular</span></div>
                     </button>
                   </div>
 
                   {requestMode === "whatsapp" && (
-                    <div className="request-panel liquid-card subtle">
+                    <div className="request-panel liquid-card subtle fade-in">
                       <p className="body-text">Schnellste Abstimmung direkt per WhatsApp.</p>
                       <Button href={cfg.company.whatsappLink} target="_blank"><MessageCircle size={16} /> WhatsApp schreiben</Button>
                     </div>
                   )}
                   {requestMode === "phone" && (
-                    <div className="request-panel liquid-card subtle">
+                    <div className="request-panel liquid-card subtle fade-in">
                       <p className="body-text">Direkter Anruf für schnelle Klärung.</p>
                       <Button href={cfg.company.phoneLink}><Phone size={16} /> Jetzt anrufen</Button>
                     </div>
                   )}
                   {requestMode === "email" && (
-                    <div className="request-panel liquid-card subtle">
+                    <div className="request-panel liquid-card subtle fade-in">
                       <p className="body-text">Für strukturierte Anfragen per E-Mail.</p>
                       <Button href={`mailto:${cfg.company.email}`}><Mail size={16} /> E-Mail senden</Button>
                     </div>
@@ -354,30 +378,51 @@ export default function App() {
               </div>
 
               <div className={`card liquid-card subtle form-card ${requestMode === "form" ? "form-card-show" : "form-card-muted"}`}>
-                <div className="card-pad stack">
+                <form className="card-pad stack" onSubmit={handleFormSubmit}>
                   <div className="request-form-head">
                     <div className="eyebrow">Formular</div>
                     <h3 className="card-title">Detaillierte Projektanfrage</h3>
                     <p className="body-text">Für strukturierte Anfragen mit Unterlagen, Fotos oder Grundrissen.</p>
                   </div>
-                  <div><label className="field-label">Name</label><input className="input glass-input" placeholder="Name" /></div>
-                  <div className="form-grid two">
-                    <div><label className="field-label">E-Mail</label><input className="input glass-input" placeholder="E-Mail" /></div>
-                    <div><label className="field-label">Telefon</label><input className="input glass-input" placeholder="Telefon" /></div>
-                  </div>
-                  <div><label className="field-label">PLZ / Ort</label><input className="input glass-input" placeholder="PLZ / Ort" /></div>
-                  <div><label className="field-label">Projektart / Thema</label><input className="input glass-input" placeholder="z. B. Sanierung / Altbau, Baubegleitung, Erweiterung" /></div>
                   <div>
-                    <label className="field-label">Unterlagen / Grundriss</label>
-                    <label className="upload-box glass-input">
+                    <label htmlFor="form-name" className="field-label">Name</label>
+                    <input id="form-name" required className="input glass-input" placeholder="Max Mustermann" />
+                  </div>
+                  <div className="form-grid two">
+                    <div>
+                      <label htmlFor="form-email" className="field-label">E-Mail</label>
+                      <input id="form-email" type="email" required className="input glass-input" placeholder="mail@beispiel.de" />
+                    </div>
+                    <div>
+                      <label htmlFor="form-phone" className="field-label">Telefon</label>
+                      <input id="form-phone" type="tel" className="input glass-input" placeholder="0123 456789" />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="form-city" className="field-label">PLZ / Ort</label>
+                    <input id="form-city" required className="input glass-input" placeholder="33102 Paderborn" />
+                  </div>
+                  <div>
+                    <label htmlFor="form-project" className="field-label">Projektart / Thema</label>
+                    <input id="form-project" className="input glass-input" placeholder="z. B. Sanierung / Altbau, Baubegleitung" />
+                  </div>
+                  <div>
+                    <span className="field-label">Unterlagen / Grundriss</span>
+                    <label className="upload-box glass-input" style={{cursor: "pointer"}}>
                       <Upload size={16} />
                       <span>Datei auswählen</span>
                       <input hidden type="file" accept=".pdf,.jpg,.jpeg,.png" />
                     </label>
                   </div>
-                  <div><label className="field-label">Beschreibung</label><textarea className="input textarea glass-input" placeholder="Kurze Beschreibung des Projekts" /></div>
-                  <div className="soft-box liquid-card subtle">{cfg.requestPage.formNote}</div>
-                </div>
+                  <div>
+                    <label htmlFor="form-message" className="field-label">Beschreibung</label>
+                    <textarea id="form-message" required className="input textarea glass-input" placeholder="Kurze Beschreibung des Projekts" />
+                  </div>
+                  <Button type="submit" className="full">Anfrage verbindlich senden</Button>
+                  <div className="soft-box liquid-card subtle" style={{marginTop: "8px"}}>
+                    <small>{cfg.requestPage.formNote}</small>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -385,7 +430,7 @@ export default function App() {
       )}
 
       {showSticky && (
-        <button className="sticky-contact sticky-contact-wide" onClick={() => openTab("anfrage")}>Anfrage stellen</button>
+        <button className="sticky-contact sticky-contact-wide fade-in" onClick={() => openTab("anfrage")}>Anfrage stellen</button>
       )}
     </div>
   );
