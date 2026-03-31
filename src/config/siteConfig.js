@@ -37,10 +37,10 @@ export const siteConfig = {
   hero: {
     badgePrimary: "Elektroarbeiten in Paderborn und Umgebung",
     badgeSecondary: "Unverbindliche Ersteinschätzung",
-    headline: "Elektroarbeiten für Sanierung und Modernisierung – klar geplant, sauber umgesetzt.",
-    subheadline: "Für Privatkunden im Raum Paderborn – von der Erweiterung im Bestand bis zur strukturierten Modernisierung.",
+    headline: "Elektroarbeiten für Sanierung, Modernisierung und Erweiterung – klar geplant und sauber umgesetzt.",
+    subheadline: "Für Privatkunden im Raum Paderborn, die Verlässlichkeit statt Baustellenchaos wollen.",
     text:
-      "Realistische Ersteinschätzung, klare Abstimmung und saubere Umsetzung – ohne unnötiges Durcheinander auf der Baustelle.",
+      "Von der Wohnungsmodernisierung bis zur Erweiterung im Bestand: Du bekommst eine realistische Ersteinschätzung, klare Abstimmung und eine saubere Umsetzung ohne unnötiges Durcheinander.",
     trustLine:
       "Planung und Ausführung in Zusammenarbeit mit Meisterbetrieb – nachvollziehbar abgestimmt für Privatkunden, Eigentümer und Sanierungsprojekte im Raum Paderborn.",
     estimatorCardInfo:
@@ -179,7 +179,7 @@ export const siteConfig = {
       "Hier laufen die wichtigsten Kontaktwege zusammen: schnelle Abstimmung per WhatsApp oder Telefon und bei Bedarf eine strukturierte Anfrage mit Fotos, Grundriss oder weiteren Unterlagen.",
     quickTitle: "Direkte Kontaktwege",
     quickText:
-      "Für eine erste Einordnung ist WhatsApp meist am schnellsten. Wenn Unterlagen, Fotos oder mehrere Punkte sauber gesammelt werden sollen, eignet sich das Formular besser.",
+      "Für eine erste Einordnung ist WhatsApp meist am schnellsten. Wenn mehrere Punkte gesammelt werden sollen, öffnet sich das Formular erst bei Bedarf als eigener Schritt.",
     listTitle: "Was für eine sinnvolle erste Rückmeldung hilft",
     listItems: [
       "Kurze Beschreibung des Vorhabens, Problems oder Modernisierungswunsches",

@@ -74,6 +74,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState(getInitialTab);
   const [menuOpen, setMenuOpen] = useState(false);
   const [requestMode, setRequestMode] = useState("whatsapp");
+  const requestFormRef = useRef(null);
   const [topInView, setTopInView] = useState(true);
   const [stickyBlocked, setStickyBlocked] = useState(false);
   const [showSticky, setShowSticky] = useState(false);
@@ -86,6 +87,10 @@ export default function App() {
   const [formMessage, setFormMessage] = useState("");
 
   const heroExampleResult = useMemo(() => estimatePrice(calculatorConfig.defaults), []);
+  const heroPriceRange = useMemo(() => {
+    if (heroExampleResult.directContact) return "Projekt individuell abstimmen";
+    return `${formatEUR(heroExampleResult.minTotal)} – ${formatEUR(heroExampleResult.maxTotal)}`;
+  }, [heroExampleResult]);
   const localBusinessJsonLd = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "Electrician",
@@ -173,11 +178,23 @@ export default function App() {
     const shouldShow = !topInView && !menuOpen && activeTab === "begleitung";
     setShowSticky(shouldShow);
   }, [topInView, menuOpen, activeTab]);
+  useEffect(() => {
+    if (activeTab !== "anfrage" || requestMode !== "form") return;
+    const id = window.setTimeout(() => {
+      requestFormRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 180);
+    return () => window.clearTimeout(id);
+  }, [activeTab, requestMode]);
+
 
   const openTab = (key) => {
     setActiveTab(key);
     setMenuOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const openRequestMode = (mode) => {
+    setRequestMode(mode);
   };
 
   const handleFormSubmit = async (e) => {
@@ -265,43 +282,54 @@ export default function App() {
 
       {activeTab === "start" && (
         <main>
-          <section className="hero hero-compact" ref={heroRef}>
-            <div className="container hero-grid hero-grid-compact">
-              <div className="hero-copy clean-hero-copy">
-                <div className="hero-copy-panel hero-copy-panel-compact">
+          <section className="hero hero-refresh" ref={heroRef}>
+            <div className="container hero-grid hero-grid-refresh">
+              <div className="hero-copy hero-copy-refresh">
+                <div className="hero-copy-panel hero-copy-panel-refresh">
                   <div className="badge-row">
                     <span className="badge">{cfg.hero.badgePrimary}</span>
                   </div>
-                  <h1>{cfg.hero.headline}</h1>
-                  <p className="hero-lead hero-lead-compact">{cfg.hero.subheadline}</p>
-                  <p className="hero-support-text hero-support-text-compact">{cfg.hero.text}</p>
 
-                  <div className="hero-trust-inline glass-inset" aria-label="Vorteile auf einen Blick">
-                    <strong>{cfg.hero.quickFacts[0]}</strong>
-                    <span aria-hidden="true">•</span>
-                    <strong>{cfg.hero.quickFacts[2]}</strong>
+                  <h1>{cfg.hero.headline}</h1>
+                  <p className="hero-lead hero-lead-refresh">{cfg.hero.subheadline}</p>
+                  <p className="hero-support-text hero-support-text-refresh">{cfg.hero.text}</p>
+
+                  <div className="hero-trust-inline" aria-label="Vorteile auf einen Blick">
+                    <span><strong>Fester Ansprechpartner</strong> statt Weiterreichen</span>
+                    <span><strong>Realistische Ersteinschätzung</strong> vor der Abstimmung</span>
                   </div>
 
-                  <div className="button-row hero-cta-row hero-cta-row-compact">
+                  <div className="button-row hero-cta-row hero-cta-row-refresh">
                     <Button onClick={() => openTab("rechner")}>Ersteinschätzung starten</Button>
                   </div>
                 </div>
               </div>
 
-              <div className="hero-side hero-side-compact">
-                <div className="card liquid-card subtle hero-main-card hero-main-card-compact">
+              <div className="hero-side hero-side-refresh">
+                <button className="card liquid-card subtle hero-estimator-card" onClick={() => openTab("rechner")} aria-label="Zum Rechner wechseln">
                   <div className="hero-accent-line" aria-hidden="true" />
-                  <div className="card-pad hero-card-pad-finish">
+                  <div className="card-pad hero-estimator-pad">
                     <div className="eyebrow">Digitale Ersteinschätzung</div>
-                    <h3 className="card-title hero-card-title-finish">Schnelle Orientierung vor der Anfrage</h3>
-                    <p className="body-text hero-card-text hero-card-text-finish">Realistische Einordnung statt Bauchgefühl – sinnvoll, bevor Details abgestimmt werden.</p>
-                    <div className="hero-mini-boxes hero-mini-boxes-compact hero-mini-boxes-finish">
-                      <div className="soft-box liquid-card subtle">Richtpreis statt Bauchgefühl</div>
-                      <div className="soft-box liquid-card subtle">Für Bestand, Sanierung und Erweiterung</div>
+                    <h3 className="card-title">Rechner für eine erste grobe Einordnung</h3>
+                    <p className="body-text hero-card-text">Beispiel für typische Sanierung im Bestand – als erste Orientierung vor Fotos, Grundriss oder Abstimmung.</p>
+
+                    <div className="result-box glass-inset hero-estimator-preview">
+                      <div className="result-top">
+                        <span>Beispiel · Wohnung 85 m²</span>
+                        <span>Sanierung / Altbau</span>
+                      </div>
+                      <div className="hero-price hero-price-refresh">{heroPriceRange}</div>
+                      <p className="body-text hero-preview-note">Mehrstufige Eingabe mit realistischer Preisspanne statt blindem Festpreisversprechen.</p>
                     </div>
-                    <Button className="full" onClick={() => openTab("rechner")}>Zum Rechner</Button>
+
+                    <div className="hero-estimator-tags" aria-hidden="true">
+                      <span className="soft-box liquid-card subtle">Richtwert statt Bauchgefühl</span>
+                      <span className="soft-box liquid-card subtle">Für Bestand, Ausbau und Erweiterung</span>
+                    </div>
+
+                    <div className="hero-card-link">Rechner öffnen</div>
                   </div>
-                </div>
+                </button>
               </div>
             </div>
           </section>
@@ -466,22 +494,22 @@ export default function App() {
                   <p className="body-text">{cfg.requestPage.quickText}</p>
 
                   <div className="request-selector">
-                    <button className={`request-option request-option-primary ${requestMode==="whatsapp" ? "active" : ""}`} onClick={() => setRequestMode("whatsapp")}>
+                    <button className={`request-option request-option-primary ${requestMode==="whatsapp" ? "active" : ""}`} onClick={() => openRequestMode("whatsapp")}>
                       <MessageCircle size={18} />
                       <div className="request-option-text">
                         <span>WhatsApp</span>
                         <small>Empfohlen</small>
                       </div>
                     </button>
-                    <button className={`request-option ${requestMode==="phone" ? "active" : ""}`} onClick={() => setRequestMode("phone")}>
+                    <button className={`request-option ${requestMode==="phone" ? "active" : ""}`} onClick={() => openRequestMode("phone")}>
                       <Phone size={18} />
                       <div className="request-option-text"><span>Anrufen</span></div>
                     </button>
-                    <button className={`request-option ${requestMode==="email" ? "active" : ""}`} onClick={() => setRequestMode("email")}>
+                    <button className={`request-option ${requestMode==="email" ? "active" : ""}`} onClick={() => openRequestMode("email")}>
                       <Mail size={18} />
                       <div className="request-option-text"><span>E-Mail</span></div>
                     </button>
-                    <button className={`request-option ${requestMode==="form" ? "active" : ""}`} onClick={() => setRequestMode("form")}>
+                    <button className={`request-option ${requestMode==="form" ? "active" : ""}`} onClick={() => openRequestMode("form")}>
                       <Calculator size={18} />
                       <div className="request-option-text"><span>Formular</span></div>
                     </button>
@@ -521,7 +549,7 @@ export default function App() {
               </div>
 
               {requestMode === "form" && (
-                <div className="card liquid-card subtle form-card form-card-show">
+                <div ref={requestFormRef} className="card liquid-card subtle form-card form-card-show form-card-anchored">
                   <div className="card-pad">
                     <div className="request-form-head">
                       <div className="eyebrow">Formular</div>
