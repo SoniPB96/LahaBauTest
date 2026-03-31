@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import {
   CheckCircle2, MessageCircle, Phone, Mail, Menu, X, Zap, Wrench, Network, Sun, Calculator,
-  ClipboardList, Handshake, Gem, Hammer, Upload, Star, MapPin, ShieldCheck
+  ClipboardList, Handshake, Gem, Hammer, Upload, Star
 } from "lucide-react";
 import { siteConfig } from "./config/siteConfig";
 import { calculatorConfig } from "./config/calculatorConfig";
@@ -17,20 +17,12 @@ const serviceIconMap = {
   check: CheckCircle2,
 };
 
-const VALID_TABS = new Set(["start", "rechner", "begleitung", "anfrage", "impressum", "datenschutz"]);
-const formEndpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT?.trim() || "";
-
-function getInitialTab() {
-  const hash = window.location.hash.replace("#", "").trim();
-  return VALID_TABS.has(hash) ? hash : "start";
-}
-
-function Button({ children, href, outline = false, onClick, type = "button", className = "", target, disabled = false, ariaLabel }) {
+function Button({ children, href, outline = false, onClick, type = "button", className = "", target, disabled = false }) {
   const cls = `btn ${outline ? "btn-outline" : ""} ${className}`.trim();
   if (href) {
-    return <a aria-label={ariaLabel} className={cls} href={href} target={target} rel={target === "_blank" ? "noreferrer" : undefined}>{children}</a>;
+    return <a className={cls} href={href} target={target} rel={target === "_blank" ? "noreferrer" : undefined}>{children}</a>;
   }
-  return <button aria-label={ariaLabel} className={cls} onClick={onClick} type={type} disabled={disabled}>{children}</button>;
+  return <button className={cls} onClick={onClick} type={type} disabled={disabled}>{children}</button>;
 }
 
 function SectionTitle({ eyebrow, title, text }) {
@@ -45,36 +37,18 @@ function Logo() {
         <span className="logo-cut c1" /><span className="logo-cut c2" /><span className="logo-cut c3" />
       </div>
       <div className="logo-text">
-        <div className="brand-name">{siteConfig.company.name}</div>
-        <div className="brand-sub">{siteConfig.company.subtitle}</div>
+        <div className="brand-name">LAHA</div>
+        <div className="brand-sub">BAUDIENSTLEISTUNGEN</div>
       </div>
     </div>
   );
 }
 
-function createMailto(formData) {
-  const subject = `Projektanfrage von ${formData.name || "Website"}`;
-  const lines = [
-    `Name: ${formData.name || "-"}`,
-    `E-Mail: ${formData.email || "-"}`,
-    `Telefon: ${formData.phone || "-"}`,
-    `PLZ / Ort: ${formData.zip || "-"}`,
-    `Projektart / Thema: ${formData.projectType || "-"}`,
-    "",
-    "Beschreibung:",
-    formData.description || "-",
-    "",
-    formData.file ? `Hinweis zu Unterlagen: Datei \"${formData.file.name}\" bitte separat mitsenden.` : "Keine Datei ausgewählt.",
-  ];
-  return `mailto:${siteConfig.company.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
-}
-
 export default function App() {
   const cfg = siteConfig;
-  const [activeTab, setActiveTab] = useState(getInitialTab);
+  const [activeTab, setActiveTab] = useState("start");
   const [menuOpen, setMenuOpen] = useState(false);
   const [requestMode, setRequestMode] = useState("whatsapp");
-  const requestFormRef = useRef(null);
   const [topInView, setTopInView] = useState(true);
   const [stickyBlocked, setStickyBlocked] = useState(false);
   const [showSticky, setShowSticky] = useState(false);
@@ -84,68 +58,27 @@ export default function App() {
 
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", zip: "", projectType: "", description: "", file: null });
   const [formState, setFormState] = useState("idle"); // idle | sending | success | error
-  const [formMessage, setFormMessage] = useState("");
 
   const heroExampleResult = useMemo(() => estimatePrice(calculatorConfig.defaults), []);
-  const heroPriceRange = useMemo(() => {
-    if (heroExampleResult.directContact) return "Projekt individuell abstimmen";
-    return `${formatEUR(heroExampleResult.minTotal)} – ${formatEUR(heroExampleResult.maxTotal)}`;
-  }, [heroExampleResult]);
-  const localBusinessJsonLd = useMemo(() => ({
-    "@context": "https://schema.org",
-    "@type": "Electrician",
-    name: cfg.company.legalName,
-    url: cfg.seo.siteUrl,
-    areaServed: cfg.company.serviceAreas,
-    email: cfg.company.email,
-    telephone: cfg.company.phoneLink.replace("tel:", ""),
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: cfg.company.street,
-      addressLocality: "Paderborn",
-      postalCode: cfg.company.cityLine.split(" ")[0],
-      addressCountry: "DE",
-    },
-  }), [cfg]);
 
-  useEffect(() => {
-    document.title = cfg.seo.pageTitle;
-
-    const desc = document.querySelector('meta[name="description"]');
-    if (desc) desc.setAttribute("content", cfg.seo.pageDescription);
-
-    const updateOrCreateMeta = (selector, attr, value) => {
-      let meta = document.querySelector(selector);
-      if (!meta) {
-        meta = document.createElement("meta");
-        meta.setAttribute(attr, selector.includes("property=") ? selector.match(/property="([^"]+)"/)?.[1] || "" : selector.match(/name="([^"]+)"/)?.[1] || "");
-        document.head.appendChild(meta);
-      }
-      meta.setAttribute("content", value);
-    };
-
-    updateOrCreateMeta('meta[property="og:title"]', "property", cfg.seo.ogTitle);
-    updateOrCreateMeta('meta[property="og:description"]', "property", cfg.seo.ogDescription);
-    updateOrCreateMeta('meta[name="twitter:card"]', "name", "summary_large_image");
-
-    let canonical = document.querySelector("link[rel='canonical']");
-    if (!canonical) {
-      canonical = document.createElement("link");
-      canonical.setAttribute("rel", "canonical");
-      document.head.appendChild(canonical);
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email) return;
+    setFormState("sending");
+    try {
+      const body = new FormData();
+      Object.entries(formData).forEach(([k, v]) => { if (v) body.append(k, v); });
+      body.append("_subject", `Neue Anfrage von ${formData.name}`);
+      const res = await fetch("https://formspree.io/f/DEINE_FORMSPREE_ID", {
+        method: "POST",
+        body,
+        headers: { Accept: "application/json" },
+      });
+      setFormState(res.ok ? "success" : "error");
+    } catch {
+      setFormState("error");
     }
-    canonical.setAttribute("href", cfg.seo.siteUrl);
-  }, [cfg]);
-
-  useEffect(() => {
-    const onHashChange = () => setActiveTab(getInitialTab());
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
-  }, []);
-
-  useEffect(() => {
-    window.history.replaceState(null, "", `#${activeTab}`);
-  }, [activeTab]);
+  };
 
   useEffect(() => {
     const target = activeTab === "begleitung" ? begleitungRef.current : heroRef.current;
@@ -175,17 +108,9 @@ export default function App() {
   }, [activeTab]);
 
   useEffect(() => {
-    const shouldShow = !topInView && !menuOpen && activeTab === "begleitung";
+    const shouldShow = !topInView && !menuOpen && (activeTab === "start" || activeTab === "begleitung") && !stickyBlocked;
     setShowSticky(shouldShow);
-  }, [topInView, menuOpen, activeTab]);
-  useEffect(() => {
-    if (activeTab !== "anfrage" || requestMode !== "form") return;
-    const id = window.setTimeout(() => {
-      requestFormRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 180);
-    return () => window.clearTimeout(id);
-  }, [activeTab, requestMode]);
-
+  }, [topInView, menuOpen, activeTab, stickyBlocked]);
 
   const openTab = (key) => {
     setActiveTab(key);
@@ -193,44 +118,8 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const openRequestMode = (mode) => {
-    setRequestMode(mode);
-  };
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email) return;
-
-    if (!formEndpoint) {
-      window.location.href = createMailto(formData);
-      setFormState("success");
-      setFormMessage("Dein E-Mail-Programm wurde mit einer vorbereiteten Anfrage geöffnet.");
-      return;
-    }
-
-    setFormState("sending");
-    setFormMessage("");
-    try {
-      const body = new FormData();
-      Object.entries(formData).forEach(([k, v]) => { if (v) body.append(k, v); });
-      body.append("_subject", `Neue Anfrage von ${formData.name}`);
-      const res = await fetch(formEndpoint, {
-        method: "POST",
-        body,
-        headers: { Accept: "application/json" },
-      });
-      if (!res.ok) throw new Error("submit_failed");
-      setFormState("success");
-      setFormMessage(`Anfrage gesendet – Rückmeldung ${cfg.company.responseTime}.`);
-    } catch {
-      setFormState("error");
-      setFormMessage("Fehler beim Senden. Bitte versuche es erneut oder nutze WhatsApp bzw. E-Mail.");
-    }
-  };
-
   return (
     <div className="page">
-      <script type="application/ld+json">{JSON.stringify(localBusinessJsonLd)}</script>
       <div className="bg-orb orb-1" /><div className="bg-orb orb-2" /><div className="bg-orb orb-3" />
 
       <header className="header">
@@ -239,13 +128,12 @@ export default function App() {
             <Logo />
           </button>
 
-          <nav className="nav desktop-nav" aria-label="Hauptnavigation">
+          <nav className="nav desktop-nav">
             {cfg.navigation.items.map((item) => (
               <button
                 key={item.key}
                 className={activeTab === item.key ? "nav-active" : ""}
                 onClick={() => openTab(item.key)}
-                aria-current={activeTab === item.key ? "page" : undefined}
               >
                 {item.label}
               </button>
@@ -256,7 +144,7 @@ export default function App() {
             <Button onClick={() => openTab("anfrage")} className={activeTab === "anfrage" ? "btn-active" : ""}>{cfg.navigation.ctaLabel}</Button>
           </div>
 
-          <button className="menu-toggle" onClick={() => setMenuOpen((v) => !v)} aria-label="Menü" aria-expanded={menuOpen}>
+          <button className="menu-toggle" onClick={() => setMenuOpen((v) => !v)} aria-label="Menü">
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
@@ -269,7 +157,6 @@ export default function App() {
                   key={item.key}
                   className={activeTab === item.key ? "nav-active" : ""}
                   onClick={() => openTab(item.key)}
-                  aria-current={activeTab === item.key ? "page" : undefined}
                 >
                   {item.label}
                 </button>
@@ -282,54 +169,58 @@ export default function App() {
 
       {activeTab === "start" && (
         <main>
-          <section className="hero hero-refresh" ref={heroRef}>
-            <div className="container hero-grid hero-grid-refresh">
-              <div className="hero-copy hero-copy-refresh">
-                <div className="hero-copy-panel hero-copy-panel-refresh">
-                  <div className="badge-row">
-                    <span className="badge">{cfg.hero.badgePrimary}</span>
-                  </div>
-
+          <section className="hero" ref={heroRef}>
+            <div className="container hero-grid">
+              <div className="hero-copy clean-hero-copy">
+                <div className="hero-copy-panel">
                   <h1>{cfg.hero.headline}</h1>
-                  <p className="hero-lead hero-lead-refresh">{cfg.hero.subheadline}</p>
-                  <p className="hero-support-text hero-support-text-refresh">{cfg.hero.text}</p>
+                  <h2 className="hero-subheadline">{cfg.hero.subheadline}</h2>
 
-                  <div className="hero-trust-inline" aria-label="Vorteile auf einen Blick">
-                    <span><strong>Fester Ansprechpartner</strong> statt Weiterreichen</span>
-                    <span><strong>Realistische Ersteinschätzung</strong> vor der Abstimmung</span>
+                  <div className="hero-lead-stack">
+                    <p className="hero-lead">{cfg.hero.text}</p>
+                    <p className="hero-trust">{cfg.hero.trustLine}</p>
                   </div>
 
-                  <div className="button-row hero-cta-row hero-cta-row-refresh">
-                    <Button onClick={() => openTab("rechner")}>Ersteinschätzung starten</Button>
+                  <div className="hero-proof-grid" aria-label="Vorteile auf einen Blick">
+                    <div className="hero-proof-item glass-inset">
+                      <span className="hero-proof-label">Ansprechpartner</span>
+                      <strong>Fester Ansprechpartner ohne wechselnde Zuständigkeiten.</strong>
+                    </div>
+                    <div className="hero-proof-item glass-inset">
+                      <span className="hero-proof-label">Ersteinschätzung</span>
+                      <strong>Früh einordnen, was technisch sinnvoll und preislich realistisch ist.</strong>
+                    </div>
+                    <div className="hero-proof-item glass-inset hero-proof-item-wide">
+                      <span className="hero-proof-label">Meisterbetrieb</span>
+                      <strong>Planung und Ausführung fachlich sauber abgestimmt für Privatkunden im Raum Paderborn.</strong>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="hero-side hero-side-refresh">
-                <button className="card liquid-card subtle hero-estimator-card" onClick={() => openTab("rechner")} aria-label="Zum Rechner wechseln">
+              <div className="hero-side">
+                <div className="card liquid-card glow hero-main-card">
                   <div className="hero-accent-line" aria-hidden="true" />
-                  <div className="card-pad hero-estimator-pad">
+                  <div className="card-pad">
                     <div className="eyebrow">Digitale Ersteinschätzung</div>
-                    <h3 className="card-title">Rechner für eine erste grobe Einordnung</h3>
-                    <p className="body-text hero-card-text">Beispiel für typische Sanierung im Bestand – als erste Orientierung vor Fotos, Grundriss oder Abstimmung.</p>
-
-                    <div className="result-box glass-inset hero-estimator-preview">
+                    <h3 className="card-title">Erste Kosteneinschätzung Elektrik</h3>
+                    <div className="result-box glass-inset">
                       <div className="result-top">
-                        <span>Beispiel · Wohnung 85 m²</span>
+                        <span>Beispiel: Wohnung, {calculatorConfig.defaults.sqm} m²</span>
                         <span>Sanierung / Altbau</span>
                       </div>
-                      <div className="hero-price hero-price-refresh">{heroPriceRange}</div>
-                      <p className="body-text hero-preview-note">Mehrstufige Eingabe mit realistischer Preisspanne statt blindem Festpreisversprechen.</p>
+                      <div className="hero-price hero-price-strong">{formatEUR(heroExampleResult.low)} – {formatEUR(heroExampleResult.high)}</div>
+                      <p>{cfg.hero.estimatorCardInfo}</p>
                     </div>
-
-                    <div className="hero-estimator-tags" aria-hidden="true">
-                      <span className="soft-box liquid-card subtle">Richtwert statt Bauchgefühl</span>
-                      <span className="soft-box liquid-card subtle">Für Bestand, Ausbau und Erweiterung</span>
+                    <div className="hero-mini-boxes">
+                      <div className="soft-box liquid-card subtle">Mehrstufige Eingabe</div>
+                      <div className="soft-box liquid-card subtle">Richtpreis statt Festpreis</div>
                     </div>
-
-                    <div className="hero-card-link">Rechner öffnen</div>
+                    <Button className="full" onClick={() => openTab("rechner")}>
+                      Rechner öffnen
+                    </Button>
                   </div>
-                </button>
+                </div>
               </div>
             </div>
           </section>
@@ -350,42 +241,6 @@ export default function App() {
                     </div>
                   );
                 })}
-              </div>
-            </div>
-          </section>
-
-          <section className="section">
-            <div className="container">
-              <SectionTitle eyebrow={cfg.process.eyebrow} title={cfg.process.title} text={cfg.process.text} />
-              <div className="process-grid">
-                {cfg.process.items.map((item) => (
-                  <div key={item.step} className="card liquid-card subtle process-card">
-                    <div className="card-pad">
-                      <div className="process-step">{item.step}</div>
-                      <h3 className="card-title">{item.title}</h3>
-                      <p className="body-text">{item.text}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          <section className="section area-section">
-            <div className="container">
-              <div className="card liquid-card subtle area-card">
-                <div className="card-pad area-card-pad">
-                  <div>
-                    <div className="eyebrow">Region</div>
-                    <h3 className="card-title">Im Raum {cfg.company.region}</h3>
-                    <p className="body-text">Lokaler Bezug ist im Handwerk kein Nebenthema. Sichtbar gemeint sind Projekte in und um Paderborn mit nachvollziehbarer Abstimmung und kurzen Wegen.</p>
-                  </div>
-                  <div className="service-areas" aria-label="Einsatzgebiet">
-                    {cfg.company.serviceAreas.map((area) => (
-                      <div key={area} className="badge"><MapPin size={14} /> {area}</div>
-                    ))}
-                  </div>
-                </div>
               </div>
             </div>
           </section>
@@ -415,20 +270,6 @@ export default function App() {
               </div>
             </div>
           </section>
-
-          <section className="section faq-section">
-            <div className="container">
-              <SectionTitle eyebrow={cfg.faq.eyebrow} title={cfg.faq.title} text={cfg.faq.text} />
-              <div className="faq-list">
-                {cfg.faq.items.map((item) => (
-                  <details key={item.question} className="card liquid-card subtle faq-item">
-                    <summary>{item.question}</summary>
-                    <p className="body-text faq-answer">{item.answer}</p>
-                  </details>
-                ))}
-              </div>
-            </div>
-          </section>
         </main>
       )}
 
@@ -453,8 +294,7 @@ export default function App() {
                   })}
                 </div>
                 <div className="button-row feature-cta-row">
-                  <Button onClick={() => openTab("anfrage")}>Projekt besprechen</Button>
-                  <Button outline onClick={() => openTab("rechner")}>Richtpreis einschätzen</Button>
+                  <Button onClick={() => openTab("anfrage")}>Projekt anfragen</Button>
                 </div>
               </div>
             </div>
@@ -486,7 +326,7 @@ export default function App() {
         <main className="section">
           <div className="container">
             <SectionTitle eyebrow={cfg.requestPage.eyebrow} title={cfg.requestPage.title} text={cfg.requestPage.text} />
-            <div className={`request-layout ${requestMode === "form" ? "" : "request-layout-single"}`.trim()}>
+            <div className="request-layout">
               <div className="card liquid-card glow">
                 <div className="card-pad">
                   <div className="eyebrow">{cfg.requestPage.quickTitle}</div>
@@ -494,22 +334,22 @@ export default function App() {
                   <p className="body-text">{cfg.requestPage.quickText}</p>
 
                   <div className="request-selector">
-                    <button className={`request-option request-option-primary ${requestMode==="whatsapp" ? "active" : ""}`} onClick={() => openRequestMode("whatsapp")}>
+                    <button className={`request-option request-option-primary ${requestMode==="whatsapp" ? "active" : ""}`} onClick={() => setRequestMode("whatsapp")}>
                       <MessageCircle size={18} />
                       <div className="request-option-text">
                         <span>WhatsApp</span>
                         <small>Empfohlen</small>
                       </div>
                     </button>
-                    <button className={`request-option ${requestMode==="phone" ? "active" : ""}`} onClick={() => openRequestMode("phone")}>
+                    <button className={`request-option ${requestMode==="phone" ? "active" : ""}`} onClick={() => setRequestMode("phone")}>
                       <Phone size={18} />
                       <div className="request-option-text"><span>Anrufen</span></div>
                     </button>
-                    <button className={`request-option ${requestMode==="email" ? "active" : ""}`} onClick={() => openRequestMode("email")}>
+                    <button className={`request-option ${requestMode==="email" ? "active" : ""}`} onClick={() => setRequestMode("email")}>
                       <Mail size={18} />
                       <div className="request-option-text"><span>E-Mail</span></div>
                     </button>
-                    <button className={`request-option ${requestMode==="form" ? "active" : ""}`} onClick={() => openRequestMode("form")}>
+                    <button className={`request-option ${requestMode==="form" ? "active" : ""}`} onClick={() => setRequestMode("form")}>
                       <Calculator size={18} />
                       <div className="request-option-text"><span>Formular</span></div>
                     </button>
@@ -517,19 +357,19 @@ export default function App() {
 
                   {requestMode === "whatsapp" && (
                     <div className="request-panel liquid-card subtle">
-                      <p className="body-text">Schnellste Abstimmung für erste Fragen, Fotos und kurze Einordnung direkt per WhatsApp.</p>
+                      <p className="body-text">Schnellste Abstimmung direkt per WhatsApp.</p>
                       <Button href={cfg.company.whatsappLink} target="_blank"><MessageCircle size={16} /> WhatsApp schreiben</Button>
                     </div>
                   )}
                   {requestMode === "phone" && (
                     <div className="request-panel liquid-card subtle">
-                      <p className="body-text">Direkter Kontakt, wenn das Thema kurz telefonisch geklärt werden soll.</p>
+                      <p className="body-text">Direkter Anruf für schnelle Klärung.</p>
                       <Button href={cfg.company.phoneLink}><Phone size={16} /> Jetzt anrufen</Button>
                     </div>
                   )}
                   {requestMode === "email" && (
                     <div className="request-panel liquid-card subtle">
-                      <p className="body-text">Gut, wenn du Unterlagen gesammelt per E-Mail schicken möchtest.</p>
+                      <p className="body-text">Für strukturierte Anfragen per E-Mail.</p>
                       <Button href={`mailto:${cfg.company.email}`}><Mail size={16} /> E-Mail senden</Button>
                     </div>
                   )}
@@ -548,51 +388,50 @@ export default function App() {
                 </div>
               </div>
 
-              {requestMode === "form" && (
-                <div ref={requestFormRef} className="card liquid-card subtle form-card form-card-show form-card-anchored">
-                  <div className="card-pad">
-                    <div className="request-form-head">
-                      <div className="eyebrow">Formular</div>
-                      <h3 className="card-title">Detaillierte Projektanfrage</h3>
-                      <p className="body-text">Für strukturierte Anfragen mit Unterlagen, Fotos oder Grundrissen. Je besser die Ausgangslage beschrieben ist, desto sinnvoller fällt die erste Rückmeldung aus.</p>
-                      <div className="request-form-note">{cfg.requestPage.formNote}</div>
-                    </div>
-
-                    {formState === "success" ? (
-                      <div className="soft-box liquid-card subtle success-box">
-                        <CheckCircle2 size={32} className="success-icon" />
-                        <p className="success-title">Anfrage vorbereitet</p>
-                        <p className="body-text">{formMessage}</p>
-                      </div>
-                    ) : (
-                      <form onSubmit={handleFormSubmit} className="form-stack">
-                        <div><label className="field-label">Name *</label><input required className="input glass-input" placeholder="Name" value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} /></div>
-                        <div className="form-grid two">
-                          <div><label className="field-label">E-Mail *</label><input required type="email" className="input glass-input" placeholder="E-Mail" value={formData.email} onChange={e => setFormData(p => ({ ...p, email: e.target.value }))} /></div>
-                          <div><label className="field-label">Telefon</label><input className="input glass-input" placeholder="Telefon" value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} /></div>
-                        </div>
-                        <div><label className="field-label">PLZ / Ort</label><input className="input glass-input" placeholder="PLZ / Ort" value={formData.zip} onChange={e => setFormData(p => ({ ...p, zip: e.target.value }))} /></div>
-                        <div><label className="field-label">Projektart / Thema</label><input className="input glass-input" placeholder="z. B. Sanierung / Altbau, Baubegleitung, Erweiterung" value={formData.projectType} onChange={e => setFormData(p => ({ ...p, projectType: e.target.value }))} /></div>
-                        <div>
-                          <label className="field-label">Unterlagen / Grundriss</label>
-                          <label className="upload-box glass-input">
-                            <Upload size={16} />
-                            <span>{formData.file ? formData.file.name : "Datei auswählen"}</span>
-                            <input hidden type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={e => setFormData(p => ({ ...p, file: e.target.files?.[0] || null }))} />
-                          </label>
-                        </div>
-                        <div><label className="field-label">Beschreibung</label><textarea className="input textarea glass-input" placeholder="Kurze Beschreibung des Projekts" value={formData.description} onChange={e => setFormData(p => ({ ...p, description: e.target.value }))} /></div>
-                        {formState === "error" && (
-                          <div className="soft-box liquid-card subtle error-box">{formMessage}</div>
-                        )}
-                        <Button type="submit" className="full" disabled={formState === "sending"}>
-                          {formState === "sending" ? "Wird gesendet…" : formEndpoint ? "Projektanfrage absenden" : "Anfrage per E-Mail vorbereiten"}
-                        </Button>
-                      </form>
-                    )}
+              <div className={`card liquid-card subtle form-card ${requestMode === "form" ? "form-card-show" : "form-card-muted"}`}>
+                <div className="card-pad">
+                  <div className="request-form-head">
+                    <div className="eyebrow">Formular</div>
+                    <h3 className="card-title">Detaillierte Projektanfrage</h3>
+                    <p className="body-text">Für strukturierte Anfragen mit Unterlagen, Fotos oder Grundrissen.</p>
                   </div>
+
+                  {formState === "success" ? (
+                    <div className="soft-box liquid-card subtle" style={{ textAlign: "center", padding: "32px 20px", marginTop: "16px" }}>
+                      <CheckCircle2 size={32} style={{ color: "#4ba776", display: "block", margin: "0 auto 10px" }} />
+                      <p style={{ fontWeight: 700, color: "#f4f7ff", marginBottom: 6 }}>Anfrage gesendet!</p>
+                      <p className="body-text">Ich melde mich in der Regel innerhalb von 24 Stunden.</p>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleFormSubmit} className="form-stack">
+                      <div><label className="field-label">Name *</label><input required className="input glass-input" placeholder="Name" value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} /></div>
+                      <div className="form-grid two">
+                        <div><label className="field-label">E-Mail *</label><input required type="email" className="input glass-input" placeholder="E-Mail" value={formData.email} onChange={e => setFormData(p => ({ ...p, email: e.target.value }))} /></div>
+                        <div><label className="field-label">Telefon</label><input className="input glass-input" placeholder="Telefon" value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} /></div>
+                      </div>
+                      <div><label className="field-label">PLZ / Ort</label><input className="input glass-input" placeholder="PLZ / Ort" value={formData.zip} onChange={e => setFormData(p => ({ ...p, zip: e.target.value }))} /></div>
+                      <div><label className="field-label">Projektart / Thema</label><input className="input glass-input" placeholder="z. B. Sanierung / Altbau, Baubegleitung, Erweiterung" value={formData.projectType} onChange={e => setFormData(p => ({ ...p, projectType: e.target.value }))} /></div>
+                      <div>
+                        <label className="field-label">Unterlagen / Grundriss</label>
+                        <label className="upload-box glass-input">
+                          <Upload size={16} />
+                          <span>{formData.file ? formData.file.name : "Datei auswählen"}</span>
+                          <input hidden type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={e => setFormData(p => ({ ...p, file: e.target.files[0] || null }))} />
+                        </label>
+                      </div>
+                      <div><label className="field-label">Beschreibung</label><textarea className="input textarea glass-input" placeholder="Kurze Beschreibung des Projekts" value={formData.description} onChange={e => setFormData(p => ({ ...p, description: e.target.value }))} /></div>
+                      {formState === "error" && (
+                        <div className="soft-box liquid-card subtle" style={{ color: "#f09575" }}>
+                          Fehler beim Senden. Bitte versuche es erneut oder schreib direkt per WhatsApp.
+                        </div>
+                      )}
+                      <Button type="submit" className="full" disabled={formState === "sending"}>
+                        {formState === "sending" ? "Wird gesendet…" : "Anfrage absenden"}
+                      </Button>
+                    </form>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </main>
@@ -601,14 +440,14 @@ export default function App() {
       {activeTab === "impressum" && (
         <main className="section">
           <div className="container legal-container">
-            <SectionTitle eyebrow="Rechtliches" title="Impressum" text="Die Platzhalter in diesem Bereich müssen vor dem finalen Livegang mit den echten Firmendaten ersetzt werden." />
+            <SectionTitle eyebrow="Rechtliches" title="Impressum" text="" />
             <div className="card liquid-card subtle">
               <div className="card-pad legal-content">
                 <p><strong>Angaben gemäß § 5 TMG</strong></p>
-                <p>{cfg.company.legalName}<br />{cfg.company.ownerName}<br />{cfg.company.street}<br />{cfg.company.cityLine}</p>
+                <p>LAHA Baudienstleistungen<br />Vorname Nachname<br />Musterstraße 1<br />33100 Paderborn</p>
                 <p><strong>Kontakt</strong><br />Telefon: {cfg.company.phoneDisplay}<br />E-Mail: {cfg.company.email}</p>
-                <p><strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</strong><br />{cfg.company.ownerName}, Anschrift wie oben</p>
-                <p className="legal-hint">Vor Livegang Eigentümername, Straße und ggf. weitere Pflichtangaben durch reale Daten ersetzen.</p>
+                <p><strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</strong><br />Vorname Nachname, Anschrift wie oben</p>
+                <p className="legal-hint">⚠️ Bitte ersetze „Vorname Nachname" und „Musterstraße 1" mit deinen echten Daten.</p>
               </div>
             </div>
           </div>
@@ -618,15 +457,15 @@ export default function App() {
       {activeTab === "datenschutz" && (
         <main className="section">
           <div className="container legal-container">
-            <SectionTitle eyebrow="Rechtliches" title="Datenschutzerklärung" text="Datenschutztext auf den real eingesetzten Formularweg abstimmen." />
+            <SectionTitle eyebrow="Rechtliches" title="Datenschutzerklärung" text="" />
             <div className="card liquid-card subtle">
               <div className="card-pad legal-content">
-                <p><strong>1. Verantwortlicher</strong><br />{cfg.company.legalName}, {cfg.company.email}</p>
-                <p><strong>2. Erhobene Daten</strong><br />Diese Website erhebt nur Daten, die aktiv im Kontaktformular eingegeben werden. Es werden keine Cookies gesetzt und kein Tracking durchgeführt.</p>
-                <p><strong>3. Zweck der Verarbeitung</strong><br />Die Daten werden ausschließlich zur Bearbeitung von Anfragen verwendet und nicht ohne Rechtsgrundlage an Dritte weitergegeben.</p>
-                <p><strong>4. Speicherdauer</strong><br />Anfragedaten werden gelöscht, sobald sie für die Bearbeitung nicht mehr erforderlich sind und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
+                <p><strong>1. Verantwortlicher</strong><br />LAHA Baudienstleistungen, {cfg.company.email}</p>
+                <p><strong>2. Erhobene Daten</strong><br />Diese Website erhebt nur Daten, die Sie aktiv im Kontaktformular eingeben (Name, E-Mail, Telefon, Projektbeschreibung). Es werden keine Cookies gesetzt und kein Tracking durchgeführt.</p>
+                <p><strong>3. Zweck der Verarbeitung</strong><br />Die Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet und nicht an Dritte weitergegeben.</p>
+                <p><strong>4. Speicherdauer</strong><br />Ihre Daten werden gelöscht, sobald sie für die Erreichung des Zwecks nicht mehr erforderlich sind.</p>
                 <p><strong>5. Ihre Rechte</strong><br />Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung. Kontakt: {cfg.company.email}</p>
-                <p><strong>6. Formularversand</strong><br />{formEndpoint ? "Formularnachrichten werden über den konfigurierten Versand-Endpunkt übermittelt. Vor Livegang bitte Datenschutzhinweise und Auftragsverarbeitung an den realen Dienst anpassen." : "Wenn kein externer Endpunkt hinterlegt ist, öffnet das Formular lediglich eine vorbereitete E-Mail im Mailprogramm des Nutzers."}</p>
+                <p><strong>6. Formularversand</strong><br />Nachrichten werden über Formspree (formspree.io) übermittelt. Deren Datenschutzerklärung: <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noreferrer">formspree.io/legal/privacy-policy</a></p>
               </div>
             </div>
           </div>
@@ -634,7 +473,7 @@ export default function App() {
       )}
 
       {showSticky && (
-        <button className="sticky-contact sticky-contact-compact" onClick={() => openTab("anfrage")}>Projekt anfragen</button>
+        <button className="sticky-contact sticky-contact-compact" onClick={() => openTab("anfrage")}>Anfrage stellen</button>
       )}
 
       <footer className="site-footer">
@@ -664,7 +503,7 @@ export default function App() {
           </div>
         </div>
         <div className="footer-bottom">
-          <div className="container">© {new Date().getFullYear()} {cfg.company.legalName} · Paderborn</div>
+          <div className="container">© {new Date().getFullYear()} LAHA Baudienstleistungen · Paderborn</div>
         </div>
       </footer>
     </div>
