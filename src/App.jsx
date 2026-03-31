@@ -170,9 +170,9 @@ export default function App() {
   }, [activeTab]);
 
   useEffect(() => {
-    const shouldShow = !topInView && !menuOpen && (activeTab === "start" || activeTab === "begleitung") && !stickyBlocked;
+    const shouldShow = !topInView && !menuOpen && activeTab === "begleitung";
     setShowSticky(shouldShow);
-  }, [topInView, menuOpen, activeTab, stickyBlocked]);
+  }, [topInView, menuOpen, activeTab]);
 
   const openTab = (key) => {
     setActiveTab(key);
@@ -265,82 +265,46 @@ export default function App() {
 
       {activeTab === "start" && (
         <main>
-          <section className="hero" ref={heroRef}>
-            <div className="container hero-grid">
+          <section className="hero hero-compact" ref={heroRef}>
+            <div className="container hero-grid hero-grid-compact">
               <div className="hero-copy clean-hero-copy">
-                <div className="hero-copy-panel">
+                <div className="hero-copy-panel hero-copy-panel-compact">
                   <div className="badge-row">
                     <span className="badge">{cfg.hero.badgePrimary}</span>
-                    <span className="badge muted">{cfg.hero.badgeSecondary}</span>
                   </div>
                   <h1>{cfg.hero.headline}</h1>
-                  <h2 className="hero-subheadline">{cfg.hero.subheadline}</h2>
+                  <p className="hero-lead hero-lead-compact">{cfg.hero.subheadline}</p>
+                  <p className="hero-support-text">{cfg.hero.text}</p>
 
-                  <div className="hero-lead-stack">
-                    <p className="hero-lead">{cfg.hero.text}</p>
-                    <p className="hero-trust">{cfg.hero.trustLine}</p>
-                  </div>
-
-                  <div className="hero-proof-grid" aria-label="Vorteile auf einen Blick">
-                    <div className="hero-proof-item glass-inset">
+                  <div className="hero-proof-row" aria-label="Vorteile auf einen Blick">
+                    <div className="hero-proof-chip glass-inset">
                       <span className="hero-proof-label">Ansprechpartner</span>
                       <strong>{cfg.hero.quickFacts[0]}</strong>
                     </div>
-                    <div className="hero-proof-item glass-inset">
-                      <span className="hero-proof-label">Ersteinschätzung</span>
-                      <strong>{cfg.hero.quickFacts[1]}</strong>
-                    </div>
-                    <div className="hero-proof-item glass-inset hero-proof-item-wide">
+                    <div className="hero-proof-chip glass-inset">
                       <span className="hero-proof-label">Projektfit</span>
                       <strong>{cfg.hero.quickFacts[2]}</strong>
                     </div>
                   </div>
 
-                  <div className="button-row hero-cta-row">
+                  <div className="button-row hero-cta-row hero-cta-row-compact">
                     <Button onClick={() => openTab("rechner")}>Ersteinschätzung starten</Button>
-                    <Button outline onClick={() => openTab("anfrage")}>Projekt anfragen</Button>
                   </div>
                 </div>
               </div>
 
-              <div className="hero-side">
-                <div className="card liquid-card glow hero-main-card">
+              <div className="hero-side hero-side-compact">
+                <div className="card liquid-card subtle hero-main-card hero-main-card-compact">
                   <div className="hero-accent-line" aria-hidden="true" />
                   <div className="card-pad">
                     <div className="eyebrow">Digitale Ersteinschätzung</div>
-                    <h3 className="card-title">Erste Kosteneinschätzung Elektrik</h3>
-                    <div className="result-box glass-inset">
-                      <div className="result-top">
-                        <span>Beispiel: Wohnung, {calculatorConfig.defaults.sqm} m²</span>
-                        <span>Sanierung / Altbau</span>
-                      </div>
-                      <div className="hero-price hero-price-strong">{formatEUR(heroExampleResult.low)} – {formatEUR(heroExampleResult.high)}</div>
-                      <p>{cfg.hero.estimatorCardInfo}</p>
+                    <h3 className="card-title">Schnelle Orientierung vor der Anfrage</h3>
+                    <p className="body-text hero-card-text">Mehrstufige Eingabe für eine erste realistische Einordnung – sinnvoll, bevor Details abgestimmt werden.</p>
+                    <div className="hero-mini-boxes hero-mini-boxes-compact">
+                      <div className="soft-box liquid-card subtle">Richtpreis statt Bauchgefühl</div>
+                      <div className="soft-box liquid-card subtle">Für Sanierung, Erweiterung und Bestand</div>
                     </div>
-                    <div className="hero-mini-boxes">
-                      <div className="soft-box liquid-card subtle">Mehrstufige Eingabe</div>
-                      <div className="soft-box liquid-card subtle">Richtpreis statt Festpreis</div>
-                    </div>
-                    <Button className="full" onClick={() => openTab("rechner")}>Ersteinschätzung starten</Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="section trust-strip-section">
-            <div className="container">
-              <div className="card liquid-card subtle trust-strip-card">
-                <div className="card-pad">
-                  <div className="eyebrow">Vertrauen</div>
-                  <h3 className="card-title trust-strip-title">{cfg.trustStrip.title}</h3>
-                  <div className="trust-strip-grid">
-                    {cfg.trustStrip.items.map((item) => (
-                      <div key={item} className="trust-chip glass-inset">
-                        <ShieldCheck size={16} />
-                        <span>{item}</span>
-                      </div>
-                    ))}
+                    <Button className="full" onClick={() => openTab("rechner")}>Zum Rechner</Button>
                   </div>
                 </div>
               </div>
@@ -363,22 +327,6 @@ export default function App() {
                     </div>
                   );
                 })}
-              </div>
-            </div>
-          </section>
-
-          <section className="section">
-            <div className="container">
-              <SectionTitle eyebrow={cfg.useCases.eyebrow} title={cfg.useCases.title} text={cfg.useCases.text} />
-              <div className="process-grid use-case-grid">
-                {cfg.useCases.items.map((item) => (
-                  <div key={item.title} className="card liquid-card subtle process-card">
-                    <div className="card-pad">
-                      <h3 className="card-title">{item.title}</h3>
-                      <p className="body-text">{item.text}</p>
-                    </div>
-                  </div>
-                ))}
               </div>
             </div>
           </section>
@@ -515,7 +463,7 @@ export default function App() {
         <main className="section">
           <div className="container">
             <SectionTitle eyebrow={cfg.requestPage.eyebrow} title={cfg.requestPage.title} text={cfg.requestPage.text} />
-            <div className="request-layout">
+            <div className={`request-layout ${requestMode === "form" ? "" : "request-layout-single"}`.trim()}>
               <div className="card liquid-card glow">
                 <div className="card-pad">
                   <div className="eyebrow">{cfg.requestPage.quickTitle}</div>
@@ -577,49 +525,51 @@ export default function App() {
                 </div>
               </div>
 
-              <div className={`card liquid-card subtle form-card ${requestMode === "form" ? "form-card-show" : "form-card-muted"}`}>
-                <div className="card-pad">
-                  <div className="request-form-head">
-                    <div className="eyebrow">Formular</div>
-                    <h3 className="card-title">Detaillierte Projektanfrage</h3>
-                    <p className="body-text">Für strukturierte Anfragen mit Unterlagen, Fotos oder Grundrissen. Je besser die Ausgangslage beschrieben ist, desto sinnvoller fällt die erste Rückmeldung aus.</p>
-                    <div className="request-form-note">{cfg.requestPage.formNote}</div>
-                  </div>
-
-                  {formState === "success" ? (
-                    <div className="soft-box liquid-card subtle success-box">
-                      <CheckCircle2 size={32} className="success-icon" />
-                      <p className="success-title">Anfrage vorbereitet</p>
-                      <p className="body-text">{formMessage}</p>
+              {requestMode === "form" && (
+                <div className="card liquid-card subtle form-card form-card-show">
+                  <div className="card-pad">
+                    <div className="request-form-head">
+                      <div className="eyebrow">Formular</div>
+                      <h3 className="card-title">Detaillierte Projektanfrage</h3>
+                      <p className="body-text">Für strukturierte Anfragen mit Unterlagen, Fotos oder Grundrissen. Je besser die Ausgangslage beschrieben ist, desto sinnvoller fällt die erste Rückmeldung aus.</p>
+                      <div className="request-form-note">{cfg.requestPage.formNote}</div>
                     </div>
-                  ) : (
-                    <form onSubmit={handleFormSubmit} className="form-stack">
-                      <div><label className="field-label">Name *</label><input required className="input glass-input" placeholder="Name" value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} /></div>
-                      <div className="form-grid two">
-                        <div><label className="field-label">E-Mail *</label><input required type="email" className="input glass-input" placeholder="E-Mail" value={formData.email} onChange={e => setFormData(p => ({ ...p, email: e.target.value }))} /></div>
-                        <div><label className="field-label">Telefon</label><input className="input glass-input" placeholder="Telefon" value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} /></div>
+
+                    {formState === "success" ? (
+                      <div className="soft-box liquid-card subtle success-box">
+                        <CheckCircle2 size={32} className="success-icon" />
+                        <p className="success-title">Anfrage vorbereitet</p>
+                        <p className="body-text">{formMessage}</p>
                       </div>
-                      <div><label className="field-label">PLZ / Ort</label><input className="input glass-input" placeholder="PLZ / Ort" value={formData.zip} onChange={e => setFormData(p => ({ ...p, zip: e.target.value }))} /></div>
-                      <div><label className="field-label">Projektart / Thema</label><input className="input glass-input" placeholder="z. B. Sanierung / Altbau, Baubegleitung, Erweiterung" value={formData.projectType} onChange={e => setFormData(p => ({ ...p, projectType: e.target.value }))} /></div>
-                      <div>
-                        <label className="field-label">Unterlagen / Grundriss</label>
-                        <label className="upload-box glass-input">
-                          <Upload size={16} />
-                          <span>{formData.file ? formData.file.name : "Datei auswählen"}</span>
-                          <input hidden type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={e => setFormData(p => ({ ...p, file: e.target.files?.[0] || null }))} />
-                        </label>
-                      </div>
-                      <div><label className="field-label">Beschreibung</label><textarea className="input textarea glass-input" placeholder="Kurze Beschreibung des Projekts" value={formData.description} onChange={e => setFormData(p => ({ ...p, description: e.target.value }))} /></div>
-                      {formState === "error" && (
-                        <div className="soft-box liquid-card subtle error-box">{formMessage}</div>
-                      )}
-                      <Button type="submit" className="full" disabled={formState === "sending"}>
-                        {formState === "sending" ? "Wird gesendet…" : formEndpoint ? "Projektanfrage absenden" : "Anfrage per E-Mail vorbereiten"}
-                      </Button>
-                    </form>
-                  )}
+                    ) : (
+                      <form onSubmit={handleFormSubmit} className="form-stack">
+                        <div><label className="field-label">Name *</label><input required className="input glass-input" placeholder="Name" value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} /></div>
+                        <div className="form-grid two">
+                          <div><label className="field-label">E-Mail *</label><input required type="email" className="input glass-input" placeholder="E-Mail" value={formData.email} onChange={e => setFormData(p => ({ ...p, email: e.target.value }))} /></div>
+                          <div><label className="field-label">Telefon</label><input className="input glass-input" placeholder="Telefon" value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} /></div>
+                        </div>
+                        <div><label className="field-label">PLZ / Ort</label><input className="input glass-input" placeholder="PLZ / Ort" value={formData.zip} onChange={e => setFormData(p => ({ ...p, zip: e.target.value }))} /></div>
+                        <div><label className="field-label">Projektart / Thema</label><input className="input glass-input" placeholder="z. B. Sanierung / Altbau, Baubegleitung, Erweiterung" value={formData.projectType} onChange={e => setFormData(p => ({ ...p, projectType: e.target.value }))} /></div>
+                        <div>
+                          <label className="field-label">Unterlagen / Grundriss</label>
+                          <label className="upload-box glass-input">
+                            <Upload size={16} />
+                            <span>{formData.file ? formData.file.name : "Datei auswählen"}</span>
+                            <input hidden type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={e => setFormData(p => ({ ...p, file: e.target.files?.[0] || null }))} />
+                          </label>
+                        </div>
+                        <div><label className="field-label">Beschreibung</label><textarea className="input textarea glass-input" placeholder="Kurze Beschreibung des Projekts" value={formData.description} onChange={e => setFormData(p => ({ ...p, description: e.target.value }))} /></div>
+                        {formState === "error" && (
+                          <div className="soft-box liquid-card subtle error-box">{formMessage}</div>
+                        )}
+                        <Button type="submit" className="full" disabled={formState === "sending"}>
+                          {formState === "sending" ? "Wird gesendet…" : formEndpoint ? "Projektanfrage absenden" : "Anfrage per E-Mail vorbereiten"}
+                        </Button>
+                      </form>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </main>
