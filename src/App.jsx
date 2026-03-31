@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import {
   CheckCircle2, MessageCircle, Phone, Mail, Menu, X, Zap, Wrench, Network, Sun, Calculator,
-  ClipboardList, Handshake, Gem, Hammer, Upload
+  ClipboardList, Handshake, Gem, Hammer, Upload, Star
 } from "lucide-react";
 import { siteConfig } from "./config/siteConfig";
 import { calculatorConfig } from "./config/calculatorConfig";
@@ -17,12 +17,12 @@ const serviceIconMap = {
   check: CheckCircle2,
 };
 
-function Button({ children, href, outline = false, onClick, type = "button", className = "", target }) {
+function Button({ children, href, outline = false, onClick, type = "button", className = "", target, disabled = false }) {
   const cls = `btn ${outline ? "btn-outline" : ""} ${className}`.trim();
   if (href) {
     return <a className={cls} href={href} target={target} rel={target === "_blank" ? "noreferrer" : undefined}>{children}</a>;
   }
-  return <button className={cls} onClick={onClick} type={type}>{children}</button>;
+  return <button className={cls} onClick={onClick} type={type} disabled={disabled}>{children}</button>;
 }
 
 function SectionTitle({ eyebrow, title, text }) {
@@ -56,7 +56,29 @@ export default function App() {
   const testimonialsRef = useRef(null);
   const begleitungRef = useRef(null);
 
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", zip: "", projectType: "", description: "", file: null });
+  const [formState, setFormState] = useState("idle"); // idle | sending | success | error
+
   const heroExampleResult = useMemo(() => estimatePrice(calculatorConfig.defaults), []);
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email) return;
+    setFormState("sending");
+    try {
+      const body = new FormData();
+      Object.entries(formData).forEach(([k, v]) => { if (v) body.append(k, v); });
+      body.append("_subject", `Neue Anfrage von ${formData.name}`);
+      const res = await fetch("https://formspree.io/f/DEINE_FORMSPREE_ID", {
+        method: "POST",
+        body,
+        headers: { Accept: "application/json" },
+      });
+      setFormState(res.ok ? "success" : "error");
+    } catch {
+      setFormState("error");
+    }
+  };
 
   useEffect(() => {
     const target = activeTab === "begleitung" ? begleitungRef.current : heroRef.current;
@@ -93,6 +115,7 @@ export default function App() {
   const openTab = (key) => {
     setActiveTab(key);
     setMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -118,7 +141,7 @@ export default function App() {
           </nav>
 
           <div className="desktop-cta">
-            <Button onClick={() => openTab("anfrage")}>{cfg.navigation.ctaLabel}</Button>
+            <Button onClick={() => openTab("anfrage")} className={activeTab === "anfrage" ? "btn-active" : ""}>{cfg.navigation.ctaLabel}</Button>
           </div>
 
           <button className="menu-toggle" onClick={() => setMenuOpen((v) => !v)} aria-label="Menü">
@@ -229,7 +252,10 @@ export default function App() {
                 {cfg.testimonials.items.map((item) => (
                   <div key={item.name} className="card liquid-card subtle testimonial-card">
                     <div className="card-pad">
-                      <div className="testimonial-quote-mark">“</div>
+                      <div className="testimonial-stars">
+                        {[...Array(5)].map((_, i) => <Star key={i} size={13} fill="#bfa166" stroke="none" />)}
+                      </div>
+                      <div className="testimonial-quote-mark">"</div>
                       <p className="testimonial-quote">{item.quote}</p>
                       <div className="testimonial-person">
                         <div className="testimonial-avatar" aria-hidden="true">{item.initials}</div>
@@ -363,30 +389,83 @@ export default function App() {
               </div>
 
               <div className={`card liquid-card subtle form-card ${requestMode === "form" ? "form-card-show" : "form-card-muted"}`}>
-                <div className="card-pad stack">
+                <div className="card-pad">
                   <div className="request-form-head">
                     <div className="eyebrow">Formular</div>
                     <h3 className="card-title">Detaillierte Projektanfrage</h3>
                     <p className="body-text">Für strukturierte Anfragen mit Unterlagen, Fotos oder Grundrissen.</p>
                   </div>
-                  <div><label className="field-label">Name</label><input className="input glass-input" placeholder="Name" /></div>
-                  <div className="form-grid two">
-                    <div><label className="field-label">E-Mail</label><input className="input glass-input" placeholder="E-Mail" /></div>
-                    <div><label className="field-label">Telefon</label><input className="input glass-input" placeholder="Telefon" /></div>
-                  </div>
-                  <div><label className="field-label">PLZ / Ort</label><input className="input glass-input" placeholder="PLZ / Ort" /></div>
-                  <div><label className="field-label">Projektart / Thema</label><input className="input glass-input" placeholder="z. B. Sanierung / Altbau, Baubegleitung, Erweiterung" /></div>
-                  <div>
-                    <label className="field-label">Unterlagen / Grundriss</label>
-                    <label className="upload-box glass-input">
-                      <Upload size={16} />
-                      <span>Datei auswählen</span>
-                      <input hidden type="file" accept=".pdf,.jpg,.jpeg,.png" />
-                    </label>
-                  </div>
-                  <div><label className="field-label">Beschreibung</label><textarea className="input textarea glass-input" placeholder="Kurze Beschreibung des Projekts" /></div>
-                  <div className="soft-box liquid-card subtle">{cfg.requestPage.formNote}</div>
+
+                  {formState === "success" ? (
+                    <div className="soft-box liquid-card subtle" style={{ textAlign: "center", padding: "32px 20px", marginTop: "16px" }}>
+                      <CheckCircle2 size={32} style={{ color: "#4ba776", display: "block", margin: "0 auto 10px" }} />
+                      <p style={{ fontWeight: 700, color: "#f4f7ff", marginBottom: 6 }}>Anfrage gesendet!</p>
+                      <p className="body-text">Ich melde mich in der Regel innerhalb von 24 Stunden.</p>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleFormSubmit} className="form-stack">
+                      <div><label className="field-label">Name *</label><input required className="input glass-input" placeholder="Name" value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} /></div>
+                      <div className="form-grid two">
+                        <div><label className="field-label">E-Mail *</label><input required type="email" className="input glass-input" placeholder="E-Mail" value={formData.email} onChange={e => setFormData(p => ({ ...p, email: e.target.value }))} /></div>
+                        <div><label className="field-label">Telefon</label><input className="input glass-input" placeholder="Telefon" value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} /></div>
+                      </div>
+                      <div><label className="field-label">PLZ / Ort</label><input className="input glass-input" placeholder="PLZ / Ort" value={formData.zip} onChange={e => setFormData(p => ({ ...p, zip: e.target.value }))} /></div>
+                      <div><label className="field-label">Projektart / Thema</label><input className="input glass-input" placeholder="z. B. Sanierung / Altbau, Baubegleitung, Erweiterung" value={formData.projectType} onChange={e => setFormData(p => ({ ...p, projectType: e.target.value }))} /></div>
+                      <div>
+                        <label className="field-label">Unterlagen / Grundriss</label>
+                        <label className="upload-box glass-input">
+                          <Upload size={16} />
+                          <span>{formData.file ? formData.file.name : "Datei auswählen"}</span>
+                          <input hidden type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={e => setFormData(p => ({ ...p, file: e.target.files[0] || null }))} />
+                        </label>
+                      </div>
+                      <div><label className="field-label">Beschreibung</label><textarea className="input textarea glass-input" placeholder="Kurze Beschreibung des Projekts" value={formData.description} onChange={e => setFormData(p => ({ ...p, description: e.target.value }))} /></div>
+                      {formState === "error" && (
+                        <div className="soft-box liquid-card subtle" style={{ color: "#f09575" }}>
+                          Fehler beim Senden. Bitte versuche es erneut oder schreib direkt per WhatsApp.
+                        </div>
+                      )}
+                      <Button type="submit" className="full" disabled={formState === "sending"}>
+                        {formState === "sending" ? "Wird gesendet…" : "Anfrage absenden"}
+                      </Button>
+                    </form>
+                  )}
                 </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      )}
+
+      {activeTab === "impressum" && (
+        <main className="section">
+          <div className="container legal-container">
+            <SectionTitle eyebrow="Rechtliches" title="Impressum" text="" />
+            <div className="card liquid-card subtle">
+              <div className="card-pad legal-content">
+                <p><strong>Angaben gemäß § 5 TMG</strong></p>
+                <p>LAHA Baudienstleistungen<br />Vorname Nachname<br />Musterstraße 1<br />33100 Paderborn</p>
+                <p><strong>Kontakt</strong><br />Telefon: {cfg.company.phoneDisplay}<br />E-Mail: {cfg.company.email}</p>
+                <p><strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</strong><br />Vorname Nachname, Anschrift wie oben</p>
+                <p className="legal-hint">⚠️ Bitte ersetze „Vorname Nachname" und „Musterstraße 1" mit deinen echten Daten.</p>
+              </div>
+            </div>
+          </div>
+        </main>
+      )}
+
+      {activeTab === "datenschutz" && (
+        <main className="section">
+          <div className="container legal-container">
+            <SectionTitle eyebrow="Rechtliches" title="Datenschutzerklärung" text="" />
+            <div className="card liquid-card subtle">
+              <div className="card-pad legal-content">
+                <p><strong>1. Verantwortlicher</strong><br />LAHA Baudienstleistungen, {cfg.company.email}</p>
+                <p><strong>2. Erhobene Daten</strong><br />Diese Website erhebt nur Daten, die Sie aktiv im Kontaktformular eingeben (Name, E-Mail, Telefon, Projektbeschreibung). Es werden keine Cookies gesetzt und kein Tracking durchgeführt.</p>
+                <p><strong>3. Zweck der Verarbeitung</strong><br />Die Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet und nicht an Dritte weitergegeben.</p>
+                <p><strong>4. Speicherdauer</strong><br />Ihre Daten werden gelöscht, sobald sie für die Erreichung des Zwecks nicht mehr erforderlich sind.</p>
+                <p><strong>5. Ihre Rechte</strong><br />Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung. Kontakt: {cfg.company.email}</p>
+                <p><strong>6. Formularversand</strong><br />Nachrichten werden über Formspree (formspree.io) übermittelt. Deren Datenschutzerklärung: <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noreferrer">formspree.io/legal/privacy-policy</a></p>
               </div>
             </div>
           </div>
@@ -396,6 +475,37 @@ export default function App() {
       {showSticky && (
         <button className="sticky-contact sticky-contact-compact" onClick={() => openTab("anfrage")}>Anfrage stellen</button>
       )}
+
+      <footer className="site-footer">
+        <div className="container footer-inner">
+          <div className="footer-brand">
+            <Logo />
+            <p className="footer-tagline">Elektroarbeiten & Baubegleitung im Raum Paderborn.</p>
+          </div>
+          <div className="footer-links">
+            <div className="footer-col">
+              <div className="footer-col-title">Leistungen</div>
+              <button onClick={() => openTab("start")}>Elektroinstallation</button>
+              <button onClick={() => openTab("rechner")}>Kostenrechner</button>
+              <button onClick={() => openTab("begleitung")}>Baubegleitung</button>
+            </div>
+            <div className="footer-col">
+              <div className="footer-col-title">Kontakt</div>
+              <a href={cfg.company.phoneLink}>{cfg.company.phoneDisplay}</a>
+              <a href={`mailto:${cfg.company.email}`}>{cfg.company.email}</a>
+              <a href={cfg.company.whatsappLink} target="_blank" rel="noreferrer">WhatsApp</a>
+            </div>
+            <div className="footer-col">
+              <div className="footer-col-title">Rechtliches</div>
+              <button onClick={() => openTab("impressum")}>Impressum</button>
+              <button onClick={() => openTab("datenschutz")}>Datenschutz</button>
+            </div>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <div className="container">© {new Date().getFullYear()} LAHA Baudienstleistungen · Paderborn</div>
+        </div>
+      </footer>
     </div>
   );
 }
