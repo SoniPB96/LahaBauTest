@@ -135,13 +135,34 @@ export default function App() {
                   <span className="badge muted">{cfg.hero.badgeSecondary}</span>
                 </div>
 
-                <h1>{cfg.hero.headline}</h1>
-                <h2 className="hero-subheadline">{cfg.hero.subheadline}</h2>
-                <p>{cfg.hero.text}</p>
-                <p className="hero-trust">{cfg.hero.trustLine}</p>
+                <div className="hero-copy-panel">
+                  <h1>{cfg.hero.headline}</h1>
+                  <h2 className="hero-subheadline">{cfg.hero.subheadline}</h2>
 
-                <div className="button-row hero-cta-row">
-                  <Button onClick={() => openTab("anfrage")}>Anfrage stellen</Button>
+                  <div className="hero-lead-stack">
+                    <p className="hero-lead">{cfg.hero.text}</p>
+                    <p className="hero-trust">{cfg.hero.trustLine}</p>
+                  </div>
+
+                  <div className="hero-proof-grid" aria-label="Vorteile auf einen Blick">
+                    <div className="hero-proof-item glass-inset">
+                      <span className="hero-proof-label">Ablauf</span>
+                      <strong>Klare Abstimmung statt Funkstille</strong>
+                    </div>
+                    <div className="hero-proof-item glass-inset">
+                      <span className="hero-proof-label">Kalkulation</span>
+                      <strong>Realistische Preise ohne Schönrechnen</strong>
+                    </div>
+                    <div className="hero-proof-item glass-inset hero-proof-item-wide">
+                      <span className="hero-proof-label">Zusammenarbeit</span>
+                      <strong>Planung und Ausführung in Zusammenarbeit mit Meisterbetrieb</strong>
+                    </div>
+                  </div>
+
+                  <div className="button-row hero-cta-row hero-cta-row-balanced">
+                    <Button onClick={() => openTab("anfrage")}>Anfrage stellen</Button>
+                    <Button outline onClick={() => openTab("rechner")}>Kosten einschätzen</Button>
+                  </div>
                 </div>
               </div>
 
