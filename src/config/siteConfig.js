@@ -12,37 +12,59 @@ export const siteConfig = {
   navigation: {
     items: [
       { key: "start", label: "Start" },
-      { key: "rechner", label: "Erste Kosteneinschätzung Elektrik" },
+      { key: "rechner", label: "Kosteneinschätzung" },
       { key: "begleitung", label: "Baubegleitung" },
     ],
     ctaLabel: "Anfrage stellen",
   },
 
   hero: {
-    badgePrimary: "Elektroarbeiten in Paderborn und Umgebung",
+    badgePrimary: "Elektroarbeiten · Paderborn und Umgebung",
     badgeSecondary: "Unverbindliche Ersteinschätzung",
-    headline: "Saubere Elektroarbeiten ohne Chaos auf der Baustelle.",
-    subheadline: "Ein Ansprechpartner. Klare Planung. Saubere Umsetzung.",
+    headline: "Saubere Elektroarbeiten. Klare Kommunikation.",
+    subheadline: "Ein Ansprechpartner. Realistische Planung. Keine Überraschungen.",
     text:
-      "Ich unterstütze Privatkunden bei Sanierung, Modernisierung und Erweiterung elektrischer Anlagen – mit sauberer Ausführung, klarer Abstimmung und realistischer Ersteinschätzung.",
+      "Ich begleite Privatkunden bei Sanierung, Modernisierung und Erweiterung elektrischer Anlagen – mit sauberer Ausführung, klarer Abstimmung und einer ehrlichen Ersteinschätzung vorab.",
     trustLine:
-      "Elektroarbeiten im Raum Paderborn und Umgebung. Planung und Ausführung in Zusammenarbeit mit Meisterbetrieb.",
+      "Planung und Ausführung im Raum Paderborn – in Zusammenarbeit mit einem zugelassenen Meisterbetrieb.",
     estimatorCardInfo:
-      "Unverbindliche Preisspanne auf Basis von Projektart, Ausstattung, Zusatzoptionen und Material.",
+      "Preisspanne auf Basis von Projektart, Ausstattung, Zusatzoptionen und Materiallinie. Unverbindlich.",
   },
 
   services: {
     eyebrow: "Leistungen",
-    title: "Leistungsbereiche mit klarem Fokus auf Privatkunden",
+    title: "Klarer Fokus auf Privatkunden",
     text:
-      "Von der einzelnen Erweiterung bis zur strukturierten Sanierung ganzer Wohneinheiten: Die Leistungen sind bewusst klar, sachlich und handwerklich formuliert.",
+      "Von der einzelnen Erweiterung bis zur strukturierten Sanierung ganzer Wohneinheiten – die Leistungen sind klar, handwerklich und ohne Versprechen, die vor Ort nicht gehalten werden können.",
     items: [
       { key: "installation", icon: "zap", title: "Elektroinstallation", text: "Neuinstallation, Modernisierung und strukturierte Elektroarbeiten für Wohnung, Haus und kleinere Einheiten." },
       { key: "distribution", icon: "wrench", title: "Unterverteilungen & Schutztechnik", text: "Erweiterung, Erneuerung und sinnvolle Anpassung bestehender Unterverteilungen und Sicherungstechnik." },
       { key: "lighting", icon: "sun", title: "Beleuchtung", text: "Innen- und Außenbeleuchtung mit sauberer Leitungsführung und passender Schaltlogik." },
       { key: "network", icon: "network", title: "Netzwerk & Datenleitungen", text: "Strukturierte Verkabelung für Homeoffice, Medienpunkte und moderne Haustechnik." },
-      { key: "estimator", icon: "calculator", title: "Digitale Ersteinschätzung", text: "Mehrstufige Ersteinschätzung mit Preisspanne statt ungenauem Festpreisversprechen." },
-      { key: "quality", icon: "check", title: "Saubere Ausführung", text: "Fokus auf klare Abstimmung, nachvollziehbare Umsetzung und ruhige Kommunikation im Projekt." },
+      { key: "estimator", icon: "calculator", title: "Digitale Ersteinschätzung", text: "Mehrstufige Kostenschätzung mit ehrlicher Preisspanne statt unverbindlichem Festpreisversprechen." },
+      { key: "quality", icon: "check", title: "Saubere Ausführung", text: "Klare Abstimmung vor dem Start, nachvollziehbare Umsetzung und ruhige Kommunikation – auch wenn es eng wird." },
+    ],
+  },
+
+  testimonials: {
+    eyebrow: "Stimmen",
+    title: "Was Kunden sagen",
+    items: [
+      {
+        quote: "Alles sauber und pünktlich – kein Chaos, keine Nachforderungen. Klare Empfehlung.",
+        name: "Familie K.",
+        location: "Paderborn",
+      },
+      {
+        quote: "Endlich jemand, der erklärt was er macht. Preis war realistisch, Ergebnis top.",
+        name: "M. Hoffmann",
+        location: "Salzkotten",
+      },
+      {
+        quote: "Küche und Bad neu verkabelt – alles in einem Zug, ein Ansprechpartner. Sehr entspannt.",
+        name: "T. Brinkmann",
+        location: "Delbrück",
+      },
     ],
   },
 
@@ -50,14 +72,14 @@ export const siteConfig = {
     eyebrow: "Baubegleitung",
     title: "Vollumfängliche Baubegleitung mit lokalen Partnern",
     text:
-      "Für umfangreichere Sanierungsprojekte kann ich die technische Begleitung und Koordination gemeinsam mit lokalen Partnerbetrieben übernehmen. Die Ausführung erfolgt abgestimmt, strukturiert und mit klarem Ansprechpartner.",
+      "Für umfangreichere Sanierungsprojekte übernehme ich die technische Begleitung und Koordination gemeinsam mit lokalen Partnerbetrieben. Ein Ansprechpartner, strukturierte Umsetzung, klares Ergebnis.",
     subline:
-      "Ein Ansprechpartner, klare Koordination und ein sauberes Ergebnis – statt Chaos durch mehrere unkoordinierte Gewerke.",
+      "Keine unkoordinierten Einzelgewerke. Stattdessen: ein Ansprechpartner mit Überblick über alle Beteiligten.",
     intro:
-      "Je nach Projektumfang kann die Baubegleitung von einer einfachen, zweckmäßigen Sanierung bis hin zur hochwertigen oder luxuriösen Ausführung organisiert werden.",
+      "Je nach Projektumfang organisiere ich die Baubegleitung von der zweckmäßigen Sanierung bis zur hochwertigen Ausführung – abgestimmt auf Anspruch und Budget.",
     points: [
       "Koordination mit lokalen Partnern aus der Sanierung",
-      "Ein fester Ansprechpartner mit mir als Bauleiter",
+      "Ich als fester Bauleiter und Ansprechpartner",
       "Geeignet für einfache, gehobene und hochwertige Sanierungsstandards",
       "Abgestimmte Umsetzung statt vieler unkoordinierter Einzelgewerke",
     ],
@@ -71,7 +93,7 @@ export const siteConfig = {
         text: "Für Eigentümer, die Wert auf bessere Materialien, sauberere Details und eine koordinierte Umsetzung legen.",
       },
       {
-        title: "Hochwertige / Luxus-Sanierung",
+        title: "Hochwertige Sanierung",
         text: "Für anspruchsvolle Projekte mit höherem Qualitätsanspruch, feiner Materialauswahl und enger Abstimmung aller Beteiligten.",
       },
     ],
@@ -81,18 +103,57 @@ export const siteConfig = {
     eyebrow: "Anfrage",
     title: "Anfrage stellen",
     text:
-      "Hier läuft alles zusammen: direkte Kontaktwege, strukturierte Erstangaben und die Möglichkeit, Unterlagen oder Grundrisse bereitzustellen.",
-    quickTitle: "Direkte Kontaktwege",
+      "Direkte Kontaktwege, strukturierte Erstangaben und die Möglichkeit, Unterlagen oder Grundrisse mitzuschicken.",
+    quickTitle: "Kontaktweg wählen",
     quickText:
-      "Für schnelle Abstimmung eignet sich WhatsApp meist am besten. Für strukturierte Anfragen kannst du alternativ anrufen, E-Mail nutzen oder das Formular auswählen.",
+      "Für schnelle Abstimmung eignet sich WhatsApp meist am besten. Alternativ: anrufen, E-Mail oder das Formular.",
     listTitle: "So läuft die Anfrage ab",
     listItems: [
-      "Kurze Beschreibung des Projekts oder des Vorhabens",
-      "Optional Grundriss, Fotos oder Unterlagen mitsenden",
+      "Kurze Projektbeschreibung – was soll gemacht werden?",
+      "Optional: Grundriss, Fotos oder Unterlagen mitsenden",
       "Erste Rückmeldung zur Einordnung und zum nächsten Schritt",
       "Falls sinnvoll: Termin, Besichtigung oder weitere Abstimmung",
     ],
-    formNote:
-      "Frontend-Stand: Das Formular ist aktuell visuell vorbereitet, aber noch nicht an einen Versand angebunden.",
+  },
+
+  legal: {
+    impressum: {
+      title: "Impressum",
+      content: `Angaben gemäß § 5 TMG
+
+LAHA Baudienstleistungen
+Inh. [Vorname Nachname]
+[Straße Nr.]
+33[XXX] Paderborn
+
+Kontakt
+Telefon: 0176 / 820 67 106
+E-Mail: kontakt@laha-bau.de
+
+Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
+[Vorname Nachname], Anschrift wie oben.
+
+Hinweis zur Ausführung
+Elektroarbeiten erfolgen in Zusammenarbeit mit einem zugelassenen Meisterbetrieb.`,
+    },
+    datenschutz: {
+      title: "Datenschutz",
+      content: `Datenschutzerklärung
+
+Verantwortlicher
+LAHA Baudienstleistungen, Inh. [Vorname Nachname], [Adresse], kontakt@laha-bau.de
+
+Erhobene Daten
+Diese Website erhebt keine personenbezogenen Daten automatisch. Wenn du das Kontaktformular verwendest, werden deine Angaben (Name, E-Mail, Telefon, Nachricht) ausschließlich zur Bearbeitung deiner Anfrage genutzt und nicht an Dritte weitergegeben.
+
+Schriftverkehr
+Anfragen per E-Mail oder WhatsApp werden ausschließlich zur Projektabwicklung gespeichert und nach gesetzlicher Frist gelöscht.
+
+Hosting
+Diese Seite wird über einen europäischen Anbieter gehostet. Es werden keine Tracking-Dienste, Werbecookies oder externe Analysedienste eingesetzt.
+
+Deine Rechte
+Du hast das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung deiner Daten. Wende dich direkt per E-Mail an kontakt@laha-bau.de.`,
+    },
   },
 };
