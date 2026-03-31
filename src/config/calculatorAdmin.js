@@ -39,32 +39,32 @@ export const calculatorAdmin = {
 
   texts: {
     titleEyebrow: "Erste Kosteneinschätzung Elektrik",
-    title: "Unverbindliche Kosteneinschätzung für Elektroarbeiten",
+    title: "Erste Kosteneinschätzung für Elektroarbeiten",
     intro:
-      "Der Rechner dient ausschließlich als erste Orientierung. Er ersetzt kein Aufmaß, keine technische Prüfung und kein verbindliches Angebot.",
+      "Der Rechner dient als erste Orientierung und ersetzt kein verbindliches Angebot.",
     disclaimer:
-      "Dies ist nur eine unverbindliche erste Kostenschätzung und ersetzt kein verbindliches Angebot vor Ort.",
+      "Unverbindliche Ersteinschätzung ohne Vor-Ort-Prüfung.",
     sidebarTitle: "Kurzübersicht",
-    resultFactorsTitle: "Wovon der Endpreis abhängt",
+    resultFactorsTitle: "Preisfaktoren",
     resultFactors: [
       "Projektart und Umfang",
-      "Bestand und Zustand der Anlage",
-      "Anzahl der Räume ohne Küche und Badezimmer",
-      "Ausstattung in den übrigen Räumen",
-      "Zusatzoptionen wie Unterverteilung, Küche, Bad oder Außenbereich",
-      "Schalterprogramm und gewünschtes Niveau",
+      "Bestand und Zustand",
+      "Raumanzahl",
+      "Ausstattung",
+      "Zusatzoptionen",
+      "Materiallinie",
     ],
     requestNote:
-      "Die Anfrage wird aktuell noch nicht direkt aus dem Rechner versendet. Nach dem letzten Schritt gelangst du zur Anfrageseite und kannst dort den Kontaktweg wählen.",
+      "Nach dem letzten Schritt geht es direkt zur Anfrageseite.",
     optionsTitle: "Zusatzoptionen",
     optionsHint:
-      "Wähle hier aus, welche Zusatzbereiche oder Vorbereitungen im Projekt berücksichtigt werden sollen.",
-    roomInfoTitle: "Ausstattung ohne Küche und Badezimmer",
+      "Wähle nur die Zusatzbereiche, die wirklich relevant sind.",
+    roomInfoTitle: "Ausstattung ohne Küche und Bad",
     roomInfoText:
-      "Bitte gib hier zuerst an, wie viele Räume das Objekt ohne Küche und Badezimmer hat. Erst danach folgt die Ausstattung für diese übrigen Räume.",
+      "Zuerst Raumanzahl, danach die Ausstattung dieser Räume.",
     materialTitle: "Schalterprogramm / Materiallinie",
     materialInfo:
-      "Hier wählst du das gewünschte Schalterprogramm. Die Auswahl beeinflusst vor allem das Materialniveau und den späteren Preisbereich.",
+      "Die Auswahl beeinflusst Materialniveau und Preisbereich.",
   },
 
   // Objektarten beeinflussen den Preis nur leicht.
