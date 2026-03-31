@@ -169,49 +169,22 @@ export default function App() {
               <div className="hero-side">
                 <div className="card liquid-card glow hero-main-card">
                   <div className="hero-accent-line" aria-hidden="true" />
-                  <div className="card-pad hero-card-pad">
-                    <div className="hero-card-head">
-                      <div className="eyebrow">Digitale Ersteinschätzung</div>
-                      <h3 className="card-title hero-card-title">Erste Kosteneinschätzung Elektrik</h3>
-                      <p className="hero-card-intro">Schnelle Orientierung für Privatkunden im Raum Paderborn, bevor ein Vor-Ort-Termin nötig wird.</p>
+                  <div className="card-pad">
+                    <div className="eyebrow">Digitale Ersteinschätzung</div>
+                    <h3 className="card-title">Erste Kosteneinschätzung Elektrik</h3>
+                    <div className="result-box glass-inset">
+                      <div className="result-top">
+                        <span>Beispiel: Wohnung, {calculatorConfig.defaults.sqm} m²</span>
+                        <span>Sanierung / Altbau</span>
+                      </div>
+                      <div className="hero-price hero-price-strong">{formatEUR(heroExampleResult.low)} – {formatEUR(heroExampleResult.high)}</div>
+                      <p>{cfg.hero.estimatorCardInfo}</p>
                     </div>
-
-                    <div className="result-box glass-inset hero-result-box">
-                      <div className="hero-result-meta-grid">
-                        <div className="hero-meta-item">
-                          <span className="hero-meta-label">Objekt</span>
-                          <strong>Wohnung</strong>
-                        </div>
-                        <div className="hero-meta-item">
-                          <span className="hero-meta-label">Fläche</span>
-                          <strong>{calculatorConfig.defaults.sqm} m²</strong>
-                        </div>
-                        <div className="hero-meta-item hero-meta-item-wide">
-                          <span className="hero-meta-label">Projektart</span>
-                          <strong>Sanierung / Altbau</strong>
-                        </div>
-                      </div>
-
-                      <div className="hero-price-wrap">
-                        <div className="hero-price-label">Unverbindlicher Richtpreis</div>
-                        <div className="hero-price hero-price-strong hero-price-gradient">{formatEUR(heroExampleResult.low)} – {formatEUR(heroExampleResult.high)}</div>
-                      </div>
-
-                      <p className="hero-result-note">{cfg.hero.estimatorCardInfo}</p>
+                    <div className="hero-mini-boxes">
+                      <div className="soft-box liquid-card subtle">Mehrstufige Eingabe</div>
+                      <div className="soft-box liquid-card subtle">Richtpreis statt Festpreis</div>
                     </div>
-
-                    <div className="hero-mini-boxes hero-mini-boxes-compact">
-                      <div className="soft-box liquid-card subtle hero-feature-pill">
-                        <span className="hero-feature-title">Mehrstufige Eingabe</span>
-                        <span className="hero-feature-text">Schritt für Schritt statt unübersichtlichem Formular.</span>
-                      </div>
-                      <div className="soft-box liquid-card subtle hero-feature-pill">
-                        <span className="hero-feature-title">Richtpreis statt Festpreis</span>
-                        <span className="hero-feature-text">Ehrliche Preisspanne vor der Detailplanung.</span>
-                      </div>
-                    </div>
-
-                    <Button className="full hero-main-cta" onClick={() => openTab("rechner")}>
+                    <Button className="full" onClick={() => openTab("rechner")}>
                       Rechner öffnen
                     </Button>
                   </div>
