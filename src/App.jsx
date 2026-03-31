@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import {
   CheckCircle2, MessageCircle, Phone, Mail, Menu, X, Zap, Wrench, Network, Sun, Calculator,
-  ClipboardList, Handshake, Gem, Hammer, Upload, Star
+  ClipboardList, Handshake, Gem, Hammer, Upload, Star, MapPin, ChevronDown
 } from "lucide-react";
 import { siteConfig } from "./config/siteConfig";
 import { calculatorConfig } from "./config/calculatorConfig";
@@ -44,6 +44,18 @@ function Logo() {
   );
 }
 
+function FaqItem({ question, answer }) {
+  return (
+    <details className="faq-item liquid-card subtle">
+      <summary>
+        <span>{question}</span>
+        <ChevronDown size={18} />
+      </summary>
+      <div className="faq-answer">{answer}</div>
+    </details>
+  );
+}
+
 export default function App() {
   const cfg = siteConfig;
   const [activeTab, setActiveTab] = useState("start");
@@ -55,9 +67,10 @@ export default function App() {
   const heroRef = useRef(null);
   const testimonialsRef = useRef(null);
   const begleitungRef = useRef(null);
+  const requestFormRef = useRef(null);
 
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", zip: "", projectType: "", description: "", file: null });
-  const [formState, setFormState] = useState("idle"); // idle | sending | success | error
+  const [formState, setFormState] = useState("idle");
 
   const heroExampleResult = useMemo(() => estimatePrice(calculatorConfig.defaults), []);
 
@@ -86,10 +99,7 @@ export default function App() {
       setTopInView(true);
       return;
     }
-    const observer = new IntersectionObserver(
-      ([entry]) => setTopInView(entry.isIntersecting),
-      { threshold: 0.12 }
-    );
+    const observer = new IntersectionObserver(([entry]) => setTopInView(entry.isIntersecting), { threshold: 0.12 });
     observer.observe(target);
     return () => observer.disconnect();
   }, [activeTab]);
@@ -99,10 +109,7 @@ export default function App() {
       setStickyBlocked(false);
       return;
     }
-    const observer = new IntersectionObserver(
-      ([entry]) => setStickyBlocked(entry.isIntersecting),
-      { threshold: 0.18 }
-    );
+    const observer = new IntersectionObserver(([entry]) => setStickyBlocked(entry.isIntersecting), { threshold: 0.18 });
     observer.observe(testimonialsRef.current);
     return () => observer.disconnect();
   }, [activeTab]);
@@ -115,7 +122,17 @@ export default function App() {
   const openTab = (key) => {
     setActiveTab(key);
     setMenuOpen(false);
+    if (key !== "anfrage") setRequestMode("whatsapp");
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const changeRequestMode = (mode) => {
+    setRequestMode(mode);
+    if (mode === "form") {
+      setTimeout(() => {
+        requestFormRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 180);
+    }
   };
 
   return (
@@ -153,11 +170,7 @@ export default function App() {
           <div className="mobile-menu">
             <div className="container mobile-menu-inner">
               {cfg.navigation.items.map((item) => (
-                <button
-                  key={item.key}
-                  className={activeTab === item.key ? "nav-active" : ""}
-                  onClick={() => openTab(item.key)}
-                >
+                <button key={item.key} className={activeTab === item.key ? "nav-active" : ""} onClick={() => openTab(item.key)}>
                   {item.label}
                 </button>
               ))}
@@ -170,41 +183,34 @@ export default function App() {
       {activeTab === "start" && (
         <main>
           <section className="hero" ref={heroRef}>
-            <div className="container hero-grid">
-              <div className="hero-copy clean-hero-copy">
-                <div className="hero-copy-panel">
-                  <h1>{cfg.hero.headline}</h1>
-                  <h2 className="hero-subheadline">{cfg.hero.subheadline}</h2>
+            <div className="container hero-grid hero-grid-refined">
+              <div className="hero-copy hero-copy-refined">
+                <div className="badge-row hero-badges-row">
+                  <span className="badge">{cfg.hero.badgePrimary}</span>
+                  <span className="badge muted">{cfg.hero.badgeSecondary}</span>
+                </div>
+                <h1>{cfg.hero.headline}</h1>
+                <h2 className="hero-subheadline">{cfg.hero.subheadline}</h2>
+                <p className="hero-lead hero-lead-compact">{cfg.hero.text}</p>
+                <p className="hero-trust hero-trust-compact">{cfg.hero.trustLine}</p>
 
-                  <div className="hero-lead-stack">
-                    <p className="hero-lead">{cfg.hero.text}</p>
-                    <p className="hero-trust">{cfg.hero.trustLine}</p>
-                  </div>
-
-                  <div className="hero-proof-grid" aria-label="Vorteile auf einen Blick">
-                    <div className="hero-proof-item glass-inset">
-                      <span className="hero-proof-label">Ansprechpartner</span>
-                      <strong>Fester Ansprechpartner ohne wechselnde Zuständigkeiten.</strong>
+                <div className="hero-proof-grid hero-proof-grid-compact" aria-label="Vorteile auf einen Blick">
+                  {cfg.hero.highlights.map((item) => (
+                    <div key={item.label} className="hero-proof-item glass-inset">
+                      <span className="hero-proof-label">{item.label}</span>
+                      <strong>{item.text}</strong>
                     </div>
-                    <div className="hero-proof-item glass-inset">
-                      <span className="hero-proof-label">Ersteinschätzung</span>
-                      <strong>Früh einordnen, was technisch sinnvoll und preislich realistisch ist.</strong>
-                    </div>
-                    <div className="hero-proof-item glass-inset hero-proof-item-wide">
-                      <span className="hero-proof-label">Meisterbetrieb</span>
-                      <strong>Planung und Ausführung fachlich sauber abgestimmt für Privatkunden im Raum Paderborn.</strong>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="hero-side">
-                <div className="card liquid-card glow hero-main-card">
+              <div className="hero-side hero-side-refined">
+                <div className="card liquid-card glow hero-main-card hero-calculator-card">
                   <div className="hero-accent-line" aria-hidden="true" />
                   <div className="card-pad">
                     <div className="eyebrow">Digitale Ersteinschätzung</div>
                     <h3 className="card-title">Erste Kosteneinschätzung Elektrik</h3>
-                    <div className="result-box glass-inset">
+                    <div className="result-box glass-inset hero-result-box">
                       <div className="result-top">
                         <span>Beispiel: Wohnung, {calculatorConfig.defaults.sqm} m²</span>
                         <span>Sanierung / Altbau</span>
@@ -212,13 +218,12 @@ export default function App() {
                       <div className="hero-price hero-price-strong">{formatEUR(heroExampleResult.low)} – {formatEUR(heroExampleResult.high)}</div>
                       <p>{cfg.hero.estimatorCardInfo}</p>
                     </div>
-                    <div className="hero-mini-boxes">
-                      <div className="soft-box liquid-card subtle">Mehrstufige Eingabe</div>
-                      <div className="soft-box liquid-card subtle">Richtpreis statt Festpreis</div>
+                    <div className="hero-mini-boxes hero-mini-boxes-refined">
+                      {cfg.hero.estimatorFeatures.map((feature) => (
+                        <div key={feature} className="soft-box liquid-card subtle">{feature}</div>
+                      ))}
                     </div>
-                    <Button className="full" onClick={() => openTab("rechner")}>
-                      Rechner öffnen
-                    </Button>
+                    <Button className="full" onClick={() => openTab("rechner")}>Zum Rechner</Button>
                   </div>
                 </div>
               </div>
@@ -245,6 +250,42 @@ export default function App() {
             </div>
           </section>
 
+          <section className="section">
+            <div className="container">
+              <SectionTitle eyebrow={cfg.process.eyebrow} title={cfg.process.title} text={cfg.process.text} />
+              <div className="process-grid">
+                {cfg.process.steps.map((step) => (
+                  <div key={step.number} className="card liquid-card subtle process-card">
+                    <div className="card-pad">
+                      <div className="process-step-badge">{step.number}</div>
+                      <h3 className="card-title process-card-title">{step.title}</h3>
+                      <p className="body-text">{step.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="section section-tight-top">
+            <div className="container">
+              <div className="card liquid-card glow region-panel">
+                <div className="card-pad region-panel-inner">
+                  <div>
+                    <p className="eyebrow">{cfg.region.eyebrow}</p>
+                    <h3 className="card-title region-title">{cfg.region.title}</h3>
+                    <p className="body-text">{cfg.region.text}</p>
+                  </div>
+                  <div className="region-chip-row">
+                    {cfg.region.areas.map((area) => (
+                      <div key={area} className="region-chip"><MapPin size={14} /> {area}</div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <section className="section testimonials-section" ref={testimonialsRef}>
             <div className="container">
               <SectionTitle eyebrow={cfg.testimonials.eyebrow} title={cfg.testimonials.title} text={cfg.testimonials.text} />
@@ -266,6 +307,17 @@ export default function App() {
                       </div>
                     </div>
                   </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="section faq-section">
+            <div className="container">
+              <SectionTitle eyebrow={cfg.faq.eyebrow} title={cfg.faq.title} text={cfg.faq.text} />
+              <div className="faq-list">
+                {cfg.faq.items.map((item) => (
+                  <FaqItem key={item.question} question={item.question} answer={item.answer} />
                 ))}
               </div>
             </div>
@@ -326,51 +378,56 @@ export default function App() {
         <main className="section">
           <div className="container">
             <SectionTitle eyebrow={cfg.requestPage.eyebrow} title={cfg.requestPage.title} text={cfg.requestPage.text} />
-            <div className="request-layout">
-              <div className="card liquid-card glow">
+            <div className={`request-layout ${requestMode === "form" ? "request-layout-open" : "request-layout-collapsed"}`}>
+              <div className="card liquid-card glow request-card-primary">
                 <div className="card-pad">
                   <div className="eyebrow">{cfg.requestPage.quickTitle}</div>
                   <h3 className="card-title">Wähle deinen bevorzugten Kontaktweg</h3>
                   <p className="body-text">{cfg.requestPage.quickText}</p>
 
                   <div className="request-selector">
-                    <button className={`request-option request-option-primary ${requestMode==="whatsapp" ? "active" : ""}`} onClick={() => setRequestMode("whatsapp")}>
+                    <button className={`request-option request-option-primary ${requestMode === "whatsapp" ? "active" : ""}`} onClick={() => changeRequestMode("whatsapp")}>
                       <MessageCircle size={18} />
                       <div className="request-option-text">
                         <span>WhatsApp</span>
                         <small>Empfohlen</small>
                       </div>
                     </button>
-                    <button className={`request-option ${requestMode==="phone" ? "active" : ""}`} onClick={() => setRequestMode("phone")}>
+                    <button className={`request-option ${requestMode === "phone" ? "active" : ""}`} onClick={() => changeRequestMode("phone")}>
                       <Phone size={18} />
                       <div className="request-option-text"><span>Anrufen</span></div>
                     </button>
-                    <button className={`request-option ${requestMode==="email" ? "active" : ""}`} onClick={() => setRequestMode("email")}>
+                    <button className={`request-option ${requestMode === "email" ? "active" : ""}`} onClick={() => changeRequestMode("email")}>
                       <Mail size={18} />
                       <div className="request-option-text"><span>E-Mail</span></div>
                     </button>
-                    <button className={`request-option ${requestMode==="form" ? "active" : ""}`} onClick={() => setRequestMode("form")}>
-                      <Calculator size={18} />
+                    <button className={`request-option ${requestMode === "form" ? "active" : ""}`} onClick={() => changeRequestMode("form")}>
+                      <ClipboardList size={18} />
                       <div className="request-option-text"><span>Formular</span></div>
                     </button>
                   </div>
 
                   {requestMode === "whatsapp" && (
                     <div className="request-panel liquid-card subtle">
-                      <p className="body-text">Schnellste Abstimmung direkt per WhatsApp.</p>
+                      <p className="body-text">Schnellste Abstimmung für erste Fragen, Fotos und kurze Einordnung direkt per WhatsApp.</p>
                       <Button href={cfg.company.whatsappLink} target="_blank"><MessageCircle size={16} /> WhatsApp schreiben</Button>
                     </div>
                   )}
                   {requestMode === "phone" && (
                     <div className="request-panel liquid-card subtle">
-                      <p className="body-text">Direkter Anruf für schnelle Klärung.</p>
+                      <p className="body-text">Direkter Anruf für schnelle Klärung und erste Einordnung.</p>
                       <Button href={cfg.company.phoneLink}><Phone size={16} /> Jetzt anrufen</Button>
                     </div>
                   )}
                   {requestMode === "email" && (
                     <div className="request-panel liquid-card subtle">
-                      <p className="body-text">Für strukturierte Anfragen per E-Mail.</p>
+                      <p className="body-text">Für strukturierte Anfragen per E-Mail mit Fotos oder Grundriss im Anhang.</p>
                       <Button href={`mailto:${cfg.company.email}`}><Mail size={16} /> E-Mail senden</Button>
+                    </div>
+                  )}
+                  {requestMode === "form" && (
+                    <div className="request-panel liquid-card subtle">
+                      <p className="body-text">Für strukturierte Projektanfragen mit mehreren Punkten, Fotos, Grundriss oder Unterlagen.</p>
                     </div>
                   )}
 
@@ -388,50 +445,52 @@ export default function App() {
                 </div>
               </div>
 
-              <div className={`card liquid-card subtle form-card ${requestMode === "form" ? "form-card-show" : "form-card-muted"}`}>
-                <div className="card-pad">
-                  <div className="request-form-head">
-                    <div className="eyebrow">Formular</div>
-                    <h3 className="card-title">Detaillierte Projektanfrage</h3>
-                    <p className="body-text">Für strukturierte Anfragen mit Unterlagen, Fotos oder Grundrissen.</p>
-                  </div>
-
-                  {formState === "success" ? (
-                    <div className="soft-box liquid-card subtle" style={{ textAlign: "center", padding: "32px 20px", marginTop: "16px" }}>
-                      <CheckCircle2 size={32} style={{ color: "#4ba776", display: "block", margin: "0 auto 10px" }} />
-                      <p style={{ fontWeight: 700, color: "#f4f7ff", marginBottom: 6 }}>Anfrage gesendet!</p>
-                      <p className="body-text">Ich melde mich in der Regel innerhalb von 24 Stunden.</p>
+              {requestMode === "form" && (
+                <div ref={requestFormRef} className="card liquid-card subtle form-card form-card-show">
+                  <div className="card-pad">
+                    <div className="request-form-head">
+                      <div className="eyebrow">Formular</div>
+                      <h3 className="card-title">Detaillierte Projektanfrage</h3>
+                      <p className="body-text">Für strukturierte Anfragen mit Unterlagen, Fotos oder Grundrissen.</p>
                     </div>
-                  ) : (
-                    <form onSubmit={handleFormSubmit} className="form-stack">
-                      <div><label className="field-label">Name *</label><input required className="input glass-input" placeholder="Name" value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} /></div>
-                      <div className="form-grid two">
-                        <div><label className="field-label">E-Mail *</label><input required type="email" className="input glass-input" placeholder="E-Mail" value={formData.email} onChange={e => setFormData(p => ({ ...p, email: e.target.value }))} /></div>
-                        <div><label className="field-label">Telefon</label><input className="input glass-input" placeholder="Telefon" value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} /></div>
+
+                    {formState === "success" ? (
+                      <div className="soft-box liquid-card subtle form-success-box">
+                        <CheckCircle2 size={32} className="form-success-icon" />
+                        <p className="form-success-title">Anfrage gesendet!</p>
+                        <p className="body-text">Ich melde mich in der Regel innerhalb von 24 Stunden.</p>
                       </div>
-                      <div><label className="field-label">PLZ / Ort</label><input className="input glass-input" placeholder="PLZ / Ort" value={formData.zip} onChange={e => setFormData(p => ({ ...p, zip: e.target.value }))} /></div>
-                      <div><label className="field-label">Projektart / Thema</label><input className="input glass-input" placeholder="z. B. Sanierung / Altbau, Baubegleitung, Erweiterung" value={formData.projectType} onChange={e => setFormData(p => ({ ...p, projectType: e.target.value }))} /></div>
-                      <div>
-                        <label className="field-label">Unterlagen / Grundriss</label>
-                        <label className="upload-box glass-input">
-                          <Upload size={16} />
-                          <span>{formData.file ? formData.file.name : "Datei auswählen"}</span>
-                          <input hidden type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={e => setFormData(p => ({ ...p, file: e.target.files[0] || null }))} />
-                        </label>
-                      </div>
-                      <div><label className="field-label">Beschreibung</label><textarea className="input textarea glass-input" placeholder="Kurze Beschreibung des Projekts" value={formData.description} onChange={e => setFormData(p => ({ ...p, description: e.target.value }))} /></div>
-                      {formState === "error" && (
-                        <div className="soft-box liquid-card subtle" style={{ color: "#f09575" }}>
-                          Fehler beim Senden. Bitte versuche es erneut oder schreib direkt per WhatsApp.
+                    ) : (
+                      <form onSubmit={handleFormSubmit} className="form-stack">
+                        <div><label className="field-label">Name *</label><input required className="input glass-input" placeholder="Name" value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} /></div>
+                        <div className="form-grid two">
+                          <div><label className="field-label">E-Mail *</label><input required type="email" className="input glass-input" placeholder="E-Mail" value={formData.email} onChange={e => setFormData(p => ({ ...p, email: e.target.value }))} /></div>
+                          <div><label className="field-label">Telefon</label><input className="input glass-input" placeholder="Telefon" value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} /></div>
                         </div>
-                      )}
-                      <Button type="submit" className="full" disabled={formState === "sending"}>
-                        {formState === "sending" ? "Wird gesendet…" : "Anfrage absenden"}
-                      </Button>
-                    </form>
-                  )}
+                        <div><label className="field-label">PLZ / Ort</label><input className="input glass-input" placeholder="PLZ / Ort" value={formData.zip} onChange={e => setFormData(p => ({ ...p, zip: e.target.value }))} /></div>
+                        <div><label className="field-label">Projektart / Thema</label><input className="input glass-input" placeholder="z. B. Sanierung / Altbau, Baubegleitung, Erweiterung" value={formData.projectType} onChange={e => setFormData(p => ({ ...p, projectType: e.target.value }))} /></div>
+                        <div>
+                          <label className="field-label">Unterlagen / Grundriss</label>
+                          <label className="upload-box glass-input">
+                            <Upload size={16} />
+                            <span>{formData.file ? formData.file.name : "Datei auswählen"}</span>
+                            <input hidden type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={e => setFormData(p => ({ ...p, file: e.target.files[0] || null }))} />
+                          </label>
+                        </div>
+                        <div><label className="field-label">Beschreibung</label><textarea className="input textarea glass-input" placeholder="Kurze Beschreibung des Projekts" value={formData.description} onChange={e => setFormData(p => ({ ...p, description: e.target.value }))} /></div>
+                        {formState === "error" && (
+                          <div className="soft-box liquid-card subtle form-error-box">
+                            Fehler beim Senden. Bitte versuche es erneut oder schreib direkt per WhatsApp.
+                          </div>
+                        )}
+                        <Button type="submit" className="full" disabled={formState === "sending"}>
+                          {formState === "sending" ? "Wird gesendet…" : "Anfrage absenden"}
+                        </Button>
+                      </form>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </main>
@@ -473,7 +532,7 @@ export default function App() {
       )}
 
       {showSticky && (
-        <button className="sticky-contact sticky-contact-compact" onClick={() => openTab("anfrage")}>Anfrage stellen</button>
+        <button className="sticky-contact sticky-contact-compact" onClick={() => openTab("anfrage")}>Projekt anfragen</button>
       )}
 
       <footer className="site-footer">
