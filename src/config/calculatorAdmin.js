@@ -32,7 +32,7 @@ export const calculatorAdmin = {
     safeToEdit:
       "Texte, Preise, Faktoren, Labels und Standardwerte dürfen geändert werden. Feld-Schlüssel wie 'key' oder 'value' nur ändern, wenn auch die Logik darauf angepasst wird.",
     pricingModel:
-      "Gesamtpreis = Grundpreis der Projektart + Flächenpreis + Ausstattungswerte + Zusatzoptionen. Der Markenfaktor wirkt nur auf die materialrelevanten Teilblöcke; danach wirkt der Objektfaktor auf den Gesamtwert.",
+      "Gesamtpreis = Grundpreis der Projektart + Flächenpreis + Ausstattungswerte + Zusatzoptionen. Danach wirken Objektfaktor und Materiallinien-Faktor auf den Gesamtwert.",
     importantWarning:
       "Große Preissprünge nicht aus dem Bauch heraus eintragen. Besser an realen Angeboten, Einkaufspreisen oder Erfahrungswerten aus ähnlichen Projekten orientieren.",
   },
@@ -131,8 +131,6 @@ export const calculatorAdmin = {
       label: "Neubau / Neuinstallation",
       basePrice: 2600,
       sqmPrice: 75,
-      baseMaterialShare: 0.18,
-      sqmMaterialShare: 0.24,
       note: "Höherer Flächenpreis, weil hier meist die vollständige Neuinstallation mit größerem Umfang gemeint ist.",
     },
     {
@@ -140,8 +138,6 @@ export const calculatorAdmin = {
       label: "Sanierung / Altbau",
       basePrice: 1600,
       sqmPrice: 46,
-      baseMaterialShare: 0.16,
-      sqmMaterialShare: 0.22,
       note: "Eigene Kalkulation, weil im Bestand oft andere Muster gelten als im reinen Neubau.",
     },
     {
@@ -169,15 +165,15 @@ export const calculatorAdmin = {
   // Lieber wenige, verständliche Optionen mit brauchbarer Pauschale,
   // als zu viele Mini-Optionen, die normale Kunden verwirren.
   extraOptions: [
-    { key: "uv", label: "Neue Unterverteilung", price: 1450, materialShare: 0.62, note: "Pauschaler Zusatz für Material, Verdrahtung und typischen Mehraufwand." },
-    { key: "zaehlerschrank", label: "Zählerschrank erneuern", price: 3200, materialShare: 0.68, note: "Nur verwenden, wenn dieser Punkt im Standard-Rechner zusätzlich berücksichtigt werden soll." },
-    { key: "lan", label: "LAN / Netzwerk verlegen", price: 820, materialShare: 0.52, note: "Grundaufschlag für Netzwerkbereich. Zusätzliche Dosen kommen über das Ausstattungsfeld dazu." },
-    { key: "aussenbereich", label: "Außenbereich", price: 990, materialShare: 0.48, note: "Zusatz für typische Leitungswege, Schutzanforderungen und Außenpunkte." },
-    { key: "kueche", label: "Küche neu installieren", price: 2600, materialShare: 0.44, note: "Eigener Block, weil Küchen meist deutlich mehr Stromkreise und Anschlüsse brauchen." },
-    { key: "bad", label: "Bad neu installieren", price: 2200, materialShare: 0.42, note: "Eigener Block wegen Feuchtraum-Anforderungen und typischer Zusatzpunkte." },
-    { key: "fussbodenheizung", label: "Fußbodenheizung", price: 1250, materialShare: 0.5, note: "Aktiviert zusätzlich auch die Raumthermostate im Ausstattungsbereich." },
-    { key: "waermepumpe", label: "Vorbereitung für Wärmepumpe", price: 920, materialShare: 0.47, note: "Pauschale Vorbereitung. Kein vollständiger Ersatz für eine Einzelfallprüfung vor Ort." },
-    { key: "wallbox", label: "Vorbereitung für Wallbox", price: 1180, materialShare: 0.46, note: "Grundaufschlag für die typische Vorbereitung. Details können projektabhängig stark schwanken." },
+    { key: "uv", label: "Neue Unterverteilung", price: 1450, note: "Pauschaler Zusatz für Material, Verdrahtung und typischen Mehraufwand." },
+    { key: "zaehlerschrank", label: "Zählerschrank erneuern", price: 3200, note: "Nur verwenden, wenn dieser Punkt im Standard-Rechner zusätzlich berücksichtigt werden soll." },
+    { key: "lan", label: "LAN / Netzwerk verlegen", price: 820, note: "Grundaufschlag für Netzwerkbereich. Zusätzliche Dosen kommen über das Ausstattungsfeld dazu." },
+    { key: "aussenbereich", label: "Außenbereich", price: 990, note: "Zusatz für typische Leitungswege, Schutzanforderungen und Außenpunkte." },
+    { key: "kueche", label: "Küche neu installieren", price: 2600, note: "Eigener Block, weil Küchen meist deutlich mehr Stromkreise und Anschlüsse brauchen." },
+    { key: "bad", label: "Bad neu installieren", price: 2200, note: "Eigener Block wegen Feuchtraum-Anforderungen und typischer Zusatzpunkte." },
+    { key: "fussbodenheizung", label: "Fußbodenheizung", price: 1250, note: "Aktiviert zusätzlich auch die Raumthermostate im Ausstattungsbereich." },
+    { key: "waermepumpe", label: "Vorbereitung für Wärmepumpe", price: 920, note: "Pauschale Vorbereitung. Kein vollständiger Ersatz für eine Einzelfallprüfung vor Ort." },
+    { key: "wallbox", label: "Vorbereitung für Wallbox", price: 1180, note: "Grundaufschlag für die typische Vorbereitung. Details können projektabhängig stark schwanken." },
   ],
 
   // Ausstattungsfelder werden pro Stück oder Menge berechnet.
@@ -193,13 +189,13 @@ export const calculatorAdmin = {
   // - Wenn du aus echten Projekten merkst, dass bestimmte Ausstattungswerte dauerhaft falsch liegen
   // - Wenn du deine interne Kalkulationslogik anpasst
   roomEquipment: [
-    { key: "rooms", label: "Raumanzahl ohne Küche und Badezimmer", unitPrice: 220, materialShare: 0.12, min: 1, max: 100, note: "Kein echter Einzelartikel, sondern ein Strukturwert für typische Grundausstattung je Raum." },
-    { key: "steckdosen", label: "Steckdosen", unitPrice: 98, materialShare: 0.52, min: 0, max: 250, note: "Interner Kalkulationswert pro zusätzlicher Steckdose im Orientierungspreis." },
-    { key: "schalter", label: "Lichtschalter", unitPrice: 82, materialShare: 0.46, min: 0, max: 150, note: "Interner Kalkulationswert pro Lichtschalter." },
-    { key: "netzwerkdosen", label: "Netzwerkdosen", unitPrice: 149, materialShare: 0.58, min: 0, max: 60, requiresOption: "lan", note: "Nur relevant, wenn LAN / Netzwerk verlegen aktiv ist." },
-    { key: "lampenauslaesse", label: "Lampenauslässe", unitPrice: 92, materialShare: 0.41, min: 0, max: 150, note: "Typischer Richtwert pro Lichtauslass." },
-    { key: "rollladenschalter", label: "Rollladenschalter", unitPrice: 136, materialShare: 0.49, min: 0, max: 60, note: "Eigener Wert wegen zusätzlichem Material- und Leitungsaufwand." },
-    { key: "raumthermostate", label: "Raumthermostate für Fußbodenheizung", unitPrice: 210, materialShare: 0.57, min: 0, max: 60, requiresOption: "fussbodenheizung", note: "Nur relevant bei aktivierter Fußbodenheizung." },
+    { key: "rooms", label: "Raumanzahl ohne Küche und Badezimmer", unitPrice: 220, note: "Kein echter Einzelartikel, sondern ein Strukturwert für typische Grundausstattung je Raum." },
+    { key: "steckdosen", label: "Steckdosen", unitPrice: 98, note: "Interner Kalkulationswert pro zusätzlicher Steckdose im Orientierungspreis." },
+    { key: "schalter", label: "Lichtschalter", unitPrice: 82, note: "Interner Kalkulationswert pro Lichtschalter." },
+    { key: "netzwerkdosen", label: "Netzwerkdosen", unitPrice: 149, requiresOption: "lan", note: "Nur relevant, wenn LAN / Netzwerk verlegen aktiv ist." },
+    { key: "lampenauslaesse", label: "Lampenauslässe", unitPrice: 92, note: "Typischer Richtwert pro Lichtauslass." },
+    { key: "rollladenschalter", label: "Rollladenschalter", unitPrice: 136, note: "Eigener Wert wegen zusätzlichem Material- und Leitungsaufwand." },
+    { key: "raumthermostate", label: "Raumthermostate für Fußbodenheizung", unitPrice: 210, requiresOption: "fussbodenheizung", note: "Nur relevant bei aktivierter Fußbodenheizung." },
   ],
 
   // Materiallinien / Markenfaktoren
@@ -336,18 +332,10 @@ export const calculatorAdmin = {
     range: 0.14,
     laborShare: 0.56,
     materialShare: 0.31,
-    defaultBaseMaterialShare: 0.18,
-    defaultSqmMaterialShare: 0.24,
-    defaultComponentMaterialShare: 0.31,
-    defaultOptionMaterialShare: 0.45,
     notes: {
       range: "Steuert die Breite des ausgegebenen Preisrahmens. Höher = vorsichtiger, niedriger = präziser wirkend.",
       laborShare: "Anteil für Arbeitsleistung in der Ergebnisdarstellung.",
       materialShare: "Anteil für Material in der Ergebnisdarstellung.",
-      defaultBaseMaterialShare: "Materialanteil des projektbezogenen Grundaufwands. Eher niedrig, weil hier viel Organisation und Arbeitszeit steckt.",
-      defaultSqmMaterialShare: "Standard-Materialanteil des flächenabhängigen Blocks. Dient als Fallback, wenn ein Projekttyp keinen eigenen Wert hat.",
-      defaultComponentMaterialShare: "Fallback-Materialanteil für Ausstattungsfelder ohne eigenen Anteil.",
-      defaultOptionMaterialShare: "Fallback-Materialanteil für Zusatzoptionen ohne eigenen Anteil.",
     },
   },
 };

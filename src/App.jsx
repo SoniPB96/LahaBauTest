@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import {
   CheckCircle2, MessageCircle, Phone, Mail, Menu, X, Zap, Wrench, Network, Sun, Calculator,
-  ClipboardList, Handshake, Gem, Hammer, Upload, ArrowUpRight
+  ClipboardList, Handshake, Gem, Hammer, Upload
 } from "lucide-react";
 import { siteConfig } from "./config/siteConfig";
+import { calculatorConfig } from "./config/calculatorConfig";
+import { estimatePrice, formatEUR } from "./components/calculatorLogic";
+import CalculatorPanel from "./components/CalculatorPanel";
 
 const serviceIconMap = {
   zap: Zap,
@@ -41,26 +44,6 @@ function Logo() {
   );
 }
 
-function FaqSection({ cfg }) {
-  return (
-    <main className="section">
-      <div className="container">
-        <SectionTitle eyebrow={cfg.faq.eyebrow} title={cfg.faq.title} text={cfg.faq.text} />
-        <div className="faq-grid">
-          {cfg.faq.items.map((item) => (
-            <div key={item.q} className="card liquid-card subtle">
-              <div className="card-pad">
-                <h3 className="card-title faq-title">{item.q}</h3>
-                <p className="body-text">{item.a}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </main>
-  );
-}
-
 export default function App() {
   const cfg = siteConfig;
   const [activeTab, setActiveTab] = useState("start");
@@ -69,11 +52,13 @@ export default function App() {
   const [showSticky, setShowSticky] = useState(false);
   const heroRef = useRef(null);
 
+  const heroExampleResult = useMemo(() => estimatePrice(calculatorConfig.defaults), []);
+
   useEffect(() => {
     if (!heroRef.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const shouldShow = !entry.isIntersecting && !menuOpen && (activeTab === "start" || activeTab === "begleitung" || activeTab === "faq");
+        const shouldShow = !entry.isIntersecting && !menuOpen && (activeTab === "start" || activeTab === "begleitung");
         setShowSticky(shouldShow);
       },
       { threshold: 0.15 }
@@ -105,7 +90,6 @@ export default function App() {
             {cfg.navigation.items.map((item) => (
               <button key={item.key} onClick={() => openTab(item.key)}>{item.label}</button>
             ))}
-            <a href={cfg.calculator.href}>{cfg.calculator.label}</a>
           </nav>
 
           <div className="desktop-cta">
@@ -123,7 +107,6 @@ export default function App() {
               {cfg.navigation.items.map((item) => (
                 <button key={item.key} onClick={() => openTab(item.key)}>{item.label}</button>
               ))}
-              <a className="btn btn-outline" href={cfg.calculator.href}>{cfg.calculator.label}</a>
               <Button onClick={() => openTab("anfrage")}>{cfg.navigation.ctaLabel}</Button>
             </div>
           </div>
@@ -147,7 +130,6 @@ export default function App() {
 
                 <div className="button-row hero-cta-row">
                   <Button onClick={() => openTab("anfrage")}>Anfrage stellen</Button>
-                  <Button href={cfg.calculator.href} outline>Zum Kostenrechner</Button>
                 </div>
               </div>
 
@@ -155,23 +137,22 @@ export default function App() {
                 <div className="card liquid-card glow">
                   <div className="card-pad">
                     <div className="eyebrow">Digitale Ersteinschätzung</div>
-                    <h3 className="card-title">{cfg.calculator.label}</h3>
+                    <h3 className="card-title">Erste Kosteneinschätzung Elektrik</h3>
                     <div className="result-box glass-inset">
                       <div className="result-top">
-                        <span>Beispielspanne für typische Sanierung</span>
-                        <span>unverbindlich</span>
+                        <span>Beispiel: Wohnung, {calculatorConfig.defaults.sqm} m²</span>
+                        <span>Sanierung / Altbau</span>
                       </div>
-                      <div className="hero-price hero-price-strong">{cfg.calculator.teaserRange}</div>
+                      <div className="hero-price hero-price-strong">{formatEUR(heroExampleResult.low)} – {formatEUR(heroExampleResult.high)}</div>
                       <p>{cfg.hero.estimatorCardInfo}</p>
                     </div>
                     <div className="hero-mini-boxes">
-                      <div className="soft-box liquid-card subtle">Separate Rechner-Logik</div>
-                      <div className="soft-box liquid-card subtle">Website bleibt stabil getrennt</div>
+                      <div className="soft-box liquid-card subtle">Mehrstufige Eingabe</div>
+                      <div className="soft-box liquid-card subtle">Richtpreis statt Festpreis</div>
                     </div>
-                    <Button className="full" href={cfg.calculator.href}>
-                      Rechner öffnen <ArrowUpRight size={16} />
+                    <Button className="full" onClick={() => openTab("rechner")}>
+                      Rechner öffnen
                     </Button>
-                    <p className="separation-note">{cfg.calculator.teaserNote}</p>
                   </div>
                 </div>
               </div>
@@ -201,7 +182,7 @@ export default function App() {
       )}
 
       {activeTab === "begleitung" && (
-        <main className="section" ref={heroRef}>
+        <main className="section">
           <div className="container">
             <SectionTitle eyebrow={cfg.begleitung.eyebrow} title={cfg.begleitung.title} text={cfg.begleitung.text} />
             <p className="begleitung-subline">{cfg.begleitung.subline}</p>
@@ -240,10 +221,17 @@ export default function App() {
         </main>
       )}
 
-      {activeTab === "faq" && <FaqSection cfg={cfg} />}
+      {activeTab === "rechner" && (
+        <main className="section">
+          <div className="container">
+            <SectionTitle eyebrow={calculatorConfig.titleEyebrow} title={calculatorConfig.title} text={calculatorConfig.text} />
+            <CalculatorPanel onOpenRequestPage={() => openTab("anfrage")} />
+          </div>
+        </main>
+      )}
 
       {activeTab === "anfrage" && (
-        <main className="section" ref={heroRef}>
+        <main className="section">
           <div className="container">
             <SectionTitle eyebrow={cfg.requestPage.eyebrow} title={cfg.requestPage.title} text={cfg.requestPage.text} />
             <div className="request-layout">
@@ -270,7 +258,7 @@ export default function App() {
                       <div className="request-option-text"><span>E-Mail</span></div>
                     </button>
                     <button className={`request-option ${requestMode==="form" ? "active" : ""}`} onClick={() => setRequestMode("form")}>
-                      <ClipboardList size={18} />
+                      <Calculator size={18} />
                       <div className="request-option-text"><span>Formular</span></div>
                     </button>
                   </div>

@@ -9,26 +9,18 @@ export const siteConfig = {
     region: "Paderborn und Umland",
   },
 
-  calculator: {
-    label: "Erste Kosteneinschätzung Elektrik",
-    href: "/elektro-kostenrechner",
-    teaserRange: "ca. 7.630 € – 10.114 €",
-    teaserNote:
-      "Der Rechner wird separat weiterentwickelt und ist bewusst nicht Teil dieser Website-Datei. Der Einstieg bleibt aber kompatibel.",
-  },
-
   navigation: {
     items: [
       { key: "start", label: "Start" },
+      { key: "rechner", label: "Erste Kosteneinschätzung Elektrik" },
       { key: "begleitung", label: "Baubegleitung" },
-      { key: "faq", label: "FAQ" },
     ],
     ctaLabel: "Anfrage stellen",
   },
 
   hero: {
     badgePrimary: "Elektroarbeiten in Paderborn und Umgebung",
-    badgeSecondary: "Klare Erstorientierung für Privatkunden",
+    badgeSecondary: "Unverbindliche Ersteinschätzung",
     headline: "Saubere Elektroarbeiten ohne Chaos auf der Baustelle.",
     subheadline: "Ein Ansprechpartner. Klare Planung. Saubere Umsetzung.",
     text:
@@ -36,7 +28,7 @@ export const siteConfig = {
     trustLine:
       "Elektroarbeiten im Raum Paderborn und Umgebung. Planung und Ausführung in Zusammenarbeit mit Meisterbetrieb.",
     estimatorCardInfo:
-      "Für eine erste Orientierung gibt es einen separaten Kostenrechner. Diese Website bleibt bewusst unabhängig davon, damit Inhalte und Seitenlogik stabil bleiben.",
+      "Unverbindliche Preisspanne auf Basis von Projektart, Ausstattung, Zusatzoptionen und Material.",
   },
 
   services: {
@@ -49,7 +41,7 @@ export const siteConfig = {
       { key: "distribution", icon: "wrench", title: "Unterverteilungen & Schutztechnik", text: "Erweiterung, Erneuerung und sinnvolle Anpassung bestehender Unterverteilungen und Sicherungstechnik." },
       { key: "lighting", icon: "sun", title: "Beleuchtung", text: "Innen- und Außenbeleuchtung mit sauberer Leitungsführung und passender Schaltlogik." },
       { key: "network", icon: "network", title: "Netzwerk & Datenleitungen", text: "Strukturierte Verkabelung für Homeoffice, Medienpunkte und moderne Haustechnik." },
-      { key: "estimator", icon: "calculator", title: "Digitale Ersteinschätzung", text: "Separater Kostenrechner für eine grobe Preisspanne vor der eigentlichen Anfrage." },
+      { key: "estimator", icon: "calculator", title: "Digitale Ersteinschätzung", text: "Mehrstufige Ersteinschätzung mit Preisspanne statt ungenauem Festpreisversprechen." },
       { key: "quality", icon: "check", title: "Saubere Ausführung", text: "Fokus auf klare Abstimmung, nachvollziehbare Umsetzung und ruhige Kommunikation im Projekt." },
     ],
   },
@@ -79,32 +71,8 @@ export const siteConfig = {
         text: "Für Eigentümer, die Wert auf bessere Materialien, sauberere Details und eine koordinierte Umsetzung legen.",
       },
       {
-        title: "Hochwertige Sanierung",
-        text: "Für anspruchsvollere Projekte mit höherem Qualitätsanspruch, feiner Materialauswahl und enger Abstimmung aller Beteiligten.",
-      },
-    ],
-  },
-
-  faq: {
-    eyebrow: "FAQ",
-    title: "Häufige Fragen von Privatkunden",
-    text: "Die wichtigsten Punkte vor einer Anfrage kurz und verständlich beantwortet.",
-    items: [
-      {
-        q: "Arbeitest du nur in Paderborn?",
-        a: "Der Schwerpunkt liegt auf Paderborn und Umgebung. Je nach Projektgröße ist auch das Umland möglich.",
-      },
-      {
-        q: "Kann ich erst einmal nur eine grobe Einschätzung bekommen?",
-        a: "Ja. Dafür ist der separate Kostenrechner gedacht. Er liefert eine grobe Preisspanne und ersetzt keine Besichtigung oder verbindliche Kalkulation.",
-      },
-      {
-        q: "Ist auch Zusammenarbeit mit Meisterbetrieb möglich?",
-        a: "Ja. Planung und Ausführung erfolgen je nach Projekt in Zusammenarbeit mit Meisterbetrieb und lokalen Partnern.",
-      },
-      {
-        q: "Was sollte ich bei einer Anfrage direkt mitsenden?",
-        a: "Am hilfreichsten sind Fotos, kurze Beschreibung, Ort des Projekts und falls vorhanden ein Grundriss oder bestehende Unterlagen.",
+        title: "Hochwertige / Luxus-Sanierung",
+        text: "Für anspruchsvolle Projekte mit höherem Qualitätsanspruch, feiner Materialauswahl und enger Abstimmung aller Beteiligten.",
       },
     ],
   },

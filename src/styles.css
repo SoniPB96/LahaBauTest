@@ -359,26 +359,3 @@ a { color: inherit; text-decoration: none; }
   .logo-cut.c2 { left: 5px; top: 14px; width: 7px; }
   .logo-cut.c3 { left: 11px; top: 9px; width: 7px; }
 }
-
-.faq-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
-.faq-title { font-size: 1.15rem; margin-bottom: 10px; }
-.separation-note { margin: 12px 4px 0; color: #b7bfce; line-height: 1.55; font-size: 0.92rem; }
-.stack { display: grid; gap: 16px; }
-.request-panel { border-radius: 24px; margin: 16px 0; }
-.request-steps { border-radius: 24px; margin-top: 18px; }
-.request-selector { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; margin: 22px 0 10px; }
-.request-option {
-  min-height: 78px; padding: 16px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.09);
-  background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02));
-  color: #f4f6fb; text-align: left; display: flex; gap: 12px; align-items: center;
-}
-.request-option.active { background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(236,238,244,0.88)); color: #09090b; border-color: rgba(255,255,255,0.9); }
-.request-option-text { display: grid; gap: 3px; }
-.request-option-text small { opacity: 0.75; }
-.form-grid.two { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
-.form-card { min-height: 100%; }
-.form-card-muted { opacity: 0.88; }
-.form-card-show { opacity: 1; }
-@media (max-width: 900px) {
-  .faq-grid, .services-grid, .begleitung-cards, .request-layout, .hero-grid, .form-grid.two, .request-selector { grid-template-columns: 1fr; }
-}
