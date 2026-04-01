@@ -50,11 +50,12 @@ export function StepZusatzmodule({ selected, onToggle }: Props) {
               type="button"
               onClick={() => onToggle(mod.id)}
               aria-pressed={sel}
-              className="flex flex-col items-start text-left rounded-2xl p-4
-                         transition-all duration-200 relative"
+              className="flex flex-col items-start text-left rounded-2xl p-4 transition-all duration-200 relative active:scale-[0.985]"
               style={{
                 border: sel ? '2px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.08)',
-                background: sel ? 'rgba(201,170,114,0.07)' : 'rgba(255,255,255,0.02)',
+                background: sel ? 'rgba(201,170,114,0.09)' : 'rgba(255,255,255,0.02)',
+                boxShadow: sel ? '0 0 0 1px rgba(201,170,114,0.08), 0 10px 28px rgba(0,0,0,0.22)' : 'none',
+                transform: sel ? 'translateY(-1px)' : 'translateY(0)',
               }}
             >
               {/* Checkmark top-right */}
@@ -80,8 +81,19 @@ export function StepZusatzmodule({ selected, onToggle }: Props) {
                 {ICONS[mod.id]}
               </span>
 
-              {/* Label */}
-              <p className="text-[0.85rem] text-text-1 leading-snug mb-1 pr-4">{mod.label}</p>
+              <div className="flex items-start justify-between gap-3 w-full mb-1">
+                <p className="text-[0.85rem] text-text-1 leading-snug pr-4">{mod.label}</p>
+                <span
+                  className="shrink-0 text-[0.62rem] uppercase tracking-[0.14em] rounded-full px-2 py-1 transition-all duration-200"
+                  style={{
+                    color: sel ? '#c9aa72' : 'rgba(255,255,255,0.26)',
+                    background: sel ? 'rgba(201,170,114,0.12)' : 'rgba(255,255,255,0.03)',
+                    border: sel ? '1px solid rgba(201,170,114,0.22)' : '1px solid rgba(255,255,255,0.06)',
+                  }}
+                >
+                  {sel ? 'Aktiv' : 'Optional'}
+                </span>
+              </div>
 
               {/* Price */}
               {mod.price > 0 && (
@@ -93,9 +105,19 @@ export function StepZusatzmodule({ selected, onToggle }: Props) {
           )
         })}
       </div>
-      <p className="text-[0.72rem] px-1 mt-1 leading-relaxed" style={{ color: 'rgba(255,255,255,0.28)' }}>
-        Mehrfachauswahl möglich. Nichts auswählen ist auch in Ordnung.
-      </p>
+      <div
+        className="flex items-start gap-3 rounded-xl mt-1"
+        style={{ padding: '0.9rem 1.1rem', background: 'rgba(201,170,114,0.06)', border: '1px solid rgba(201,170,114,0.14)' }}
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 mt-0.5" aria-hidden="true">
+          <circle cx="8" cy="8" r="7" stroke="#c9aa72" strokeWidth="1.2"/>
+          <path d="M8 7v4M8 5.5v.5" stroke="#c9aa72" strokeWidth="1.3" strokeLinecap="round"/>
+        </svg>
+        <p className="text-[0.78rem] leading-relaxed" style={{ color: 'rgba(201,170,114,0.85)' }}>
+          <strong className="font-normal" style={{ color: '#c9aa72' }}>Mehrfachauswahl möglich:</strong>{' '}
+          Wählen Sie nur, was zusätzlich gewünscht ist. Nicht ausgewählte Punkte werden nicht mitgerechnet.
+        </p>
+      </div>
     </div>
   )
 }

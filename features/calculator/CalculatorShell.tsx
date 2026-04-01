@@ -25,29 +25,41 @@ const STEP_META: Record<string, { title: string; hint?: string }> = {
   direktanfrage: { title: 'Persönliche Beratung',                  hint: undefined },
 }
 
-// ── Fade-only transition — no layout shift ───────────────────
-// We render both old and new content, crossfade between them.
-// This avoids any height change during transition.
+// ── Subtle fade + slide transition ─────────────────────────────
 function FadeStep({ id, children }: { id: string; children: React.ReactNode }) {
   const [current, setCurrent] = useState({ id, children })
-  const [next, setNext] = useState<{ id: string; children: React.ReactNode } | null>(null)
-  const [opacity, setOpacity] = useState(1)
+  const [phase, setPhase] = useState<'idle' | 'out' | 'in'>('idle')
   const t = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (id === current.id) return
     if (t.current) clearTimeout(t.current)
-    // Fade out
-    setOpacity(0)
+
+    setPhase('out')
     t.current = setTimeout(() => {
       setCurrent({ id, children })
-      setOpacity(1)
-    }, 180)
+      setPhase('in')
+      t.current = setTimeout(() => setPhase('idle'), 220)
+    }, 140)
+
     return () => { if (t.current) clearTimeout(t.current) }
   }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const style =
+    phase === 'out'
+      ? { opacity: 0, transform: 'translateY(8px)' }
+      : phase === 'in'
+      ? { opacity: 1, transform: 'translateY(0)' }
+      : { opacity: 1, transform: 'translateY(0)' }
+
   return (
-    <div style={{ opacity, transition: 'opacity 0.18s ease', willChange: 'opacity' }}>
+    <div
+      style={{
+        ...style,
+        transition: 'opacity 0.2s ease, transform 0.22s ease',
+        willChange: 'opacity, transform',
+      }}
+    >
       {current.children}
     </div>
   )

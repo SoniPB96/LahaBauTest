@@ -62,7 +62,7 @@ export function StepErgebnis({ state }: Props) {
   const summary = buildSummary(state, result.low, result.high)
   const encoded = encodeURIComponent(summary)
 
-  const waHref    = `https://wa.me/4915200000000?text=${encoded}`
+  const waHref    = `https://wa.me/4917682067106?text=${encoded}`
   const mailHref  = `mailto:info@laha-bau.de?subject=${encodeURIComponent('Kostenschätzung – Anfrage')}&body=${encoded}`
   const formHref  = `/anfrage?summary=${encoded}`
 

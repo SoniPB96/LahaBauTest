@@ -54,11 +54,13 @@ export function StepQualitaet({ value, onChange }: Props) {
             type="button"
             onClick={() => onChange(id)}
             aria-pressed={sel}
-            className="flex items-start gap-4 text-left w-full rounded-2xl transition-all duration-200"
+            className="flex items-start gap-4 text-left w-full rounded-2xl transition-all duration-200 active:scale-[0.985]"
             style={{
               padding: '1.1rem 1.4rem',
               border: sel ? '2px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.08)',
-              background: sel ? 'rgba(201,170,114,0.07)' : 'rgba(255,255,255,0.02)',
+              background: sel ? 'rgba(201,170,114,0.09)' : 'rgba(255,255,255,0.02)',
+              boxShadow: sel ? '0 0 0 1px rgba(201,170,114,0.08), 0 10px 28px rgba(0,0,0,0.22)' : 'none',
+              transform: sel ? 'translateY(-1px)' : 'translateY(0)',
             }}
           >
             {/* Radio */}
@@ -110,9 +112,19 @@ export function StepQualitaet({ value, onChange }: Props) {
         )
       })}
 
-      <p className="text-[0.7rem] px-1 mt-0.5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.22)' }}>
-        Alle Varianten werden mit Gira System 55 ausgeführt. Detailabstimmung erfolgt vor Ort.
-      </p>
+      <div
+        className="flex items-start gap-3 rounded-xl mt-1"
+        style={{ padding: '0.9rem 1.1rem', background: 'rgba(201,170,114,0.06)', border: '1px solid rgba(201,170,114,0.14)' }}
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 mt-0.5" aria-hidden="true">
+          <circle cx="8" cy="8" r="7" stroke="#c9aa72" strokeWidth="1.2"/>
+          <path d="M8 7v4M8 5.5v.5" stroke="#c9aa72" strokeWidth="1.3" strokeLinecap="round"/>
+        </svg>
+        <p className="text-[0.78rem] leading-relaxed" style={{ color: 'rgba(201,170,114,0.85)' }}>
+          <strong className="font-normal" style={{ color: '#c9aa72' }}>Ausführung:</strong>{' '}
+          Alle Varianten werden mit Gira System 55 ausgeführt. Detailabstimmung erfolgt vor Ort.
+        </p>
+      </div>
     </div>
   )
 }
