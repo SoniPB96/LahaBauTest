@@ -1,48 +1,65 @@
-import type { ObjektType, ProjektType, MaterialType } from '@/config/pricing'
+import type {
+  StartMode,
+  ObjektType,
+  ProjektType,
+  QualitaetType,
+} from '@/config/pricing'
 
-export type { ObjektType, ProjektType, MaterialType }
+export type { StartMode, ObjektType, ProjektType, QualitaetType }
 
 export type StepId =
-  | 'objekt'
-  | 'projekt'
-  | 'optionen'
-  | 'ausstattung'
-  | 'material'
+  | 'start'
+  | 'objektart'
+  | 'projektart'
+  | 'eckdaten'
+  | 'zusatzmodule'
+  | 'qualitaet'
+  | 'feinanpassung'
   | 'ergebnis'
-  | 'anfrage'
+  | 'direktanfrage'
 
 export interface StepMeta {
   id: StepId
   label: string
+  /** Display index shown in progress bubbles — direktanfrage shares the anfrage slot */
   index: number
 }
 
+// Steps shown in the progress indicator.
+// 'direktanfrage' is not listed — it replaces the normal flow without a dedicated bubble.
 export const STEPS: StepMeta[] = [
-  { id: 'objekt',      label: 'Objekt',      index: 1 },
-  { id: 'projekt',     label: 'Projekt',     index: 2 },
-  { id: 'optionen',    label: 'Optionen',    index: 3 },
-  { id: 'ausstattung', label: 'Ausstattung', index: 4 },
-  { id: 'material',    label: 'Material',    index: 5 },
-  { id: 'ergebnis',    label: 'Ergebnis',    index: 6 },
-  { id: 'anfrage',     label: 'Anfrage',     index: 7 },
+  { id: 'start',        label: 'Start',      index: 1 },
+  { id: 'objektart',    label: 'Objekt',     index: 2 },
+  { id: 'projektart',   label: 'Projekt',    index: 3 },
+  { id: 'eckdaten',     label: 'Eckdaten',   index: 4 },
+  { id: 'zusatzmodule', label: 'Extras',     index: 5 },
+  { id: 'qualitaet',    label: 'Qualität',   index: 6 },
+  { id: 'ergebnis',     label: 'Ergebnis',   index: 7 },
 ]
 
 export interface CalculatorState {
   currentStep: StepId
+  startMode: StartMode | ''
   objekt: ObjektType | ''
-  m2: number
+  /** Only 'neubau' | 'altbau' are calculable; others route to direktanfrage */
   projekt: ProjektType | ''
-  selectedOptions: string[]
-  quantities: Record<string, number>
-  material: MaterialType
+  m2: number
+  rooms: number
+  bathrooms: number
+  addOns: string[]
+  fineQty: Record<string, number>
+  qualitaet: QualitaetType
 }
 
 export const INITIAL_STATE: CalculatorState = {
-  currentStep: 'objekt',
+  currentStep: 'start',
+  startMode: '',
   objekt: '',
-  m2: 80,
   projekt: '',
-  selectedOptions: [],
-  quantities: {},
-  material: 'standard',
+  m2: 80,
+  rooms: 4,
+  bathrooms: 1,
+  addOns: [],
+  fineQty: {},
+  qualitaet: 'standard',
 }
