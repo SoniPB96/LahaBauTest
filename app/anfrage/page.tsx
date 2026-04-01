@@ -5,7 +5,7 @@ import { AnfrageForm } from './AnfrageForm'
 export const metadata: Metadata = {
   title: 'Anfrage stellen',
   description:
-    'Schildern Sie Ihr Elektroprojekt – wir melden uns innerhalb eines Werktags mit einem konkreten Angebot.',
+    'Schildern Sie Ihr Elektroprojekt – wir melden uns innerhalb eines Werktags mit einem konkreten Festpreisangebot.',
 }
 
 const CONTACT_METHODS = [
@@ -13,8 +13,7 @@ const CONTACT_METHODS = [
     icon: (
       <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
         <path d="M9 1.5C4.86 1.5 1.5 4.86 1.5 9c0 1.34.35 2.6.96 3.7L1.5 16.5l3.93-1.02A7.47 7.47 0 0 0 9 16.5c4.14 0 7.5-3.36 7.5-7.5S13.14 1.5 9 1.5z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/>
-        <path d="M6.5 7.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5c0 1.5-2 2-2 3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-        <circle cx="9" cy="12.5" r=".5" fill="currentColor"/>
+        <path d="M6.75 6.75s.375 0 .563.563c.187.562.562 1.687.562 1.687s.188.375-.375.938l-.187.187s.562 1.125 1.5 1.875l.187-.188c.563-.562.938-.375.938-.375s1.125.375 1.688.563c.562.187.562.562.562.562v1.688s0 .562-.75.562c-3.375 0-6-2.625-6-6 0-.75.563-.75.563-.75h1.687z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/>
       </svg>
     ),
     iconBg: 'rgba(37,211,102,0.10)',
@@ -22,6 +21,7 @@ const CONTACT_METHODS = [
     label: 'WhatsApp',
     sub: 'Schnell & unkompliziert',
     href: 'https://wa.me/4915200000000',
+    external: true,
   },
   {
     icon: (
@@ -34,6 +34,7 @@ const CONTACT_METHODS = [
     label: 'Anruf',
     sub: 'Mo–Fr, 8–17 Uhr',
     href: 'tel:+495251000000',
+    external: false,
   },
   {
     icon: (
@@ -47,6 +48,7 @@ const CONTACT_METHODS = [
     label: 'E-Mail',
     sub: 'info@laha-bau.de',
     href: 'mailto:info@laha-bau.de',
+    external: false,
   },
 ]
 
@@ -65,20 +67,21 @@ export default function AnfragePage() {
         subtitle="Schildern Sie Ihr Vorhaben kurz – wir melden uns innerhalb eines Werktags."
       />
 
-      <div className="grid md:grid-cols-[1fr_1.5fr] gap-14 md:gap-16">
+      <div className="grid md:grid-cols-[1fr_1.5fr] gap-12 md:gap-16">
         {/* Left column */}
         <div>
           <p className="text-[0.68rem] tracking-[0.12em] uppercase text-text-4 mb-4 font-normal">
             Direktkontakt
           </p>
           <div className="flex flex-col gap-3 mb-10">
-            {CONTACT_METHODS.map(({ icon, iconBg, iconColor, label, sub, href }) => (
+            {CONTACT_METHODS.map(({ icon, iconBg, iconColor, label, sub, href, external }) => (
               <a
                 key={label}
                 href={href}
-                className="flex items-center gap-4 px-4 py-4 border rounded-lg bg-bg-2
-                           transition-colors hover:border-muted hover:bg-bg-3 no-underline"
-                style={{ borderColor: 'rgba(255,255,255,0.06)' }}
+                className="flex items-center gap-4 px-4 py-4 rounded-lg bg-bg-2
+                           transition-colors hover:bg-bg-3 no-underline min-h-[64px]"
+                style={{ border: '1px solid rgba(255,255,255,0.06)' }}
+                {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               >
                 <span
                   className="w-[38px] h-[38px] rounded-lg flex items-center justify-center shrink-0"
@@ -97,14 +100,14 @@ export default function AnfragePage() {
           <p className="text-[0.68rem] tracking-[0.12em] uppercase text-text-4 mb-3 font-normal">
             Wie es weitergeht
           </p>
-          <div className="flex flex-col divide-y" style={{ '--tw-divide-opacity': 1 } as React.CSSProperties}>
+          <div className="flex flex-col">
             {PROCESS_STEPS.map((text, i) => (
               <div
                 key={i}
-                className="flex gap-3 py-3 first:pt-0 last:pb-0"
-                style={{ borderColor: 'rgba(255,255,255,0.06)' }}
+                className="flex gap-3 py-3"
+                style={i < PROCESS_STEPS.length - 1 ? { borderBottom: '1px solid rgba(255,255,255,0.06)' } : undefined}
               >
-                <span className="text-[0.68rem] text-gold font-medium min-w-[18px] pt-0.5">
+                <span className="text-[0.68rem] text-gold font-medium min-w-[18px] pt-0.5 shrink-0">
                   0{i + 1}
                 </span>
                 <p className="text-[0.82rem] text-text-2 leading-[1.65]">{text}</p>

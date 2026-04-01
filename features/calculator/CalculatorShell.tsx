@@ -176,7 +176,7 @@ export function CalculatorShell() {
             <button
               type="button"
               onClick={handleBack}
-              className="flex items-center gap-1.5 px-5 py-3 border rounded text-[0.85rem]
+              className="flex items-center gap-1.5 px-5 py-3 border rounded text-[0.85rem] min-h-[44px]
                          text-text-2 font-normal transition-colors hover:border-muted hover:text-text-1
                          bg-transparent font-sans cursor-pointer"
               style={{ borderColor: 'rgba(255,255,255,0.11)' }}
@@ -189,7 +189,7 @@ export function CalculatorShell() {
           <button
             type="button"
             onClick={handleNext}
-            className="flex items-center gap-1.5 px-6 py-3 bg-gold text-[#1a1400] rounded
+            className="flex items-center gap-1.5 px-6 py-3 bg-gold text-[#1a1400] rounded min-h-[44px]
                        text-[0.88rem] font-medium transition-opacity hover:opacity-85
                        active:scale-[0.97] border-none font-sans cursor-pointer"
           >
