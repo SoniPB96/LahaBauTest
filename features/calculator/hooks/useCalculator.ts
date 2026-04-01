@@ -10,15 +10,17 @@ import {
   type ObjektType,
   type ProjektType,
   type QualitaetType,
+  type RoomConfig,
 } from '../types'
-import { DIRECT_ANFRAGE_TYPES } from '@/config/pricing'
+import {
+  DIRECT_ANFRAGE_TYPES,
+  buildDefaultRoomConfigs,
+} from '@/config/pricing'
 
 export function useCalculator() {
   const [state, setState] = useState<CalculatorState>(INITIAL_STATE)
   const [validationError, setValidationError] = useState(false)
 
-  // Progress is based on STEPS that have index values.
-  // 'direktanfrage' sits outside the normal flow.
   const currentStepMeta =
     STEPS.find((s) => s.id === state.currentStep) ??
     STEPS[STEPS.length - 1]
@@ -62,16 +64,22 @@ export function useCalculator() {
     })
   }, [])
 
-  const setFineQty = useCallback((id: string, value: number) => {
-    setState((prev) => ({
-      ...prev,
-      fineQty: { ...prev.fineQty, [id]: Math.max(0, value) },
-    }))
-  }, [])
-
   const setQualitaet = useCallback((qualitaet: QualitaetType) => {
     setState((prev) => ({ ...prev, qualitaet }))
   }, [])
+
+  /** Update a single field on one RoomConfig by id */
+  const updateRoomConfig = useCallback(
+    (roomId: string, patch: Partial<Omit<RoomConfig, 'id' | 'kind' | 'label'>>) => {
+      setState((prev) => ({
+        ...prev,
+        roomConfigs: prev.roomConfigs.map((rc) =>
+          rc.id === roomId ? { ...rc, ...patch } : rc,
+        ),
+      }))
+    },
+    [],
+  )
 
   const setStep = useCallback((id: StepId) => {
     setState((prev) => ({ ...prev, currentStep: id }))
@@ -85,12 +93,8 @@ export function useCalculator() {
 
   // ── Navigation ─────────────────────────────────────────────
 
-  /**
-   * Advance to the next logical step.
-   * Returns false if validation fails (shell shows inline error).
-   */
   const next = useCallback((): boolean => {
-    const { currentStep, startMode, objekt, projekt } = state
+    const { currentStep, startMode, objekt, projekt, rooms, bathrooms, addOns } = state
 
     setValidationError(false)
 
@@ -109,7 +113,6 @@ export function useCalculator() {
     if (currentStep === 'projektart') {
       if (!projekt) { setValidationError(true); return false }
       if (DIRECT_ANFRAGE_TYPES.includes(projekt as ProjektType)) {
-        // Non-calculable: show explanation step, then route to /anfrage
         setState((prev) => ({ ...prev, currentStep: 'direktanfrage' }))
       } else {
         setState((prev) => ({ ...prev, currentStep: 'eckdaten' }))
@@ -128,16 +131,18 @@ export function useCalculator() {
     }
 
     if (currentStep === 'qualitaet') {
-      // "Etwas genauer" mode includes the fine-adjustment step
+      // "Etwas genauer" → show Raum-Editor; "Einfach & schnell" → skip to result
       if (startMode === 'genauer') {
-        setState((prev) => ({ ...prev, currentStep: 'feinanpassung' }))
+        // Build default room configs from current rooms/bathrooms/addOns
+        const configs = buildDefaultRoomConfigs(rooms, bathrooms, addOns)
+        setState((prev) => ({ ...prev, roomConfigs: configs, currentStep: 'raumeditor' }))
       } else {
         setState((prev) => ({ ...prev, currentStep: 'ergebnis' }))
       }
       return true
     }
 
-    if (currentStep === 'feinanpassung') {
+    if (currentStep === 'raumeditor') {
       setState((prev) => ({ ...prev, currentStep: 'ergebnis' }))
       return true
     }
@@ -149,35 +154,32 @@ export function useCalculator() {
     const { currentStep, startMode } = state
     setValidationError(false)
 
-    const normalOrder: StepId[] = [
-      'start', 'objektart', 'projektart', 'eckdaten',
-      'zusatzmodule', 'qualitaet', 'feinanpassung', 'ergebnis',
-    ]
-
     if (currentStep === 'direktanfrage') {
       setState((prev) => ({ ...prev, currentStep: 'projektart' }))
       return
     }
 
-    if (currentStep === 'ergebnis' && startMode !== 'genauer') {
-      // Schnell mode skips feinanpassung — go back to qualitaet
-      setState((prev) => ({ ...prev, currentStep: 'qualitaet' }))
+    if (currentStep === 'ergebnis') {
+      if (startMode === 'genauer') {
+        setState((prev) => ({ ...prev, currentStep: 'raumeditor' }))
+      } else {
+        setState((prev) => ({ ...prev, currentStep: 'qualitaet' }))
+      }
       return
     }
 
-    const idx = normalOrder.indexOf(currentStep)
+    const order: StepId[] = [
+      'start', 'objektart', 'projektart', 'eckdaten',
+      'zusatzmodule', 'qualitaet', 'raumeditor', 'ergebnis',
+    ]
+    const idx = order.indexOf(currentStep)
     if (idx > 0) {
-      setState((prev) => ({ ...prev, currentStep: normalOrder[idx - 1] }))
+      setState((prev) => ({ ...prev, currentStep: order[idx - 1] }))
     }
   }, [state])
 
   const isDirectAnfrage =
     !!state.projekt && DIRECT_ANFRAGE_TYPES.includes(state.projekt as ProjektType)
-
-  const isCalculable =
-    !!state.objekt &&
-    !!state.projekt &&
-    !isDirectAnfrage
 
   return {
     state,
@@ -186,7 +188,6 @@ export function useCalculator() {
     totalSteps,
     validationError,
     isDirectAnfrage,
-    isCalculable,
     setStartMode,
     setObjekt,
     setProjekt,
@@ -194,8 +195,8 @@ export function useCalculator() {
     setRooms,
     setBathrooms,
     toggleAddOn,
-    setFineQty,
     setQualitaet,
+    updateRoomConfig,
     setStep,
     next,
     back,

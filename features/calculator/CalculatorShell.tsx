@@ -8,7 +8,7 @@ import { StepProjektart }     from './steps/StepProjektart'
 import { StepEckdaten }       from './steps/StepEckdaten'
 import { StepZusatzmodule }   from './steps/StepZusatzmodule'
 import { StepQualitaet }      from './steps/StepQualitaet'
-import { StepFeinanpassung }  from './steps/StepFeinanpassung'
+import { StepRaumeditor }     from './steps/StepRaumeditor'
 import { StepErgebnis }       from './steps/StepErgebnis'
 import { StepDirektanfrage }  from './steps/StepDirektanfrage'
 import { cn } from '@/lib/utils'
@@ -20,7 +20,7 @@ const STEP_TITLES: Record<string, string> = {
   eckdaten:       'Ein paar Eckdaten zu Ihrem Objekt',
   zusatzmodule:   'Welche Extras möchten Sie?',
   qualitaet:      'Welche Ausstattungsqualität wünschen Sie sich?',
-  feinanpassung:  'Haben Sie schon konkretere Vorstellungen?',
+  raumeditor:     'Passen Sie jeden Raum individuell an',
   ergebnis:       'Ihre erste Einschätzung',
   direktanfrage:  'Wir helfen Ihnen persönlich weiter',
 }
@@ -29,14 +29,11 @@ export function CalculatorShell() {
   const calc = useCalculator()
   const { state, currentStepMeta, progress, totalSteps, validationError } = calc
 
-  const isDirektanfrage  = state.currentStep === 'direktanfrage'
-  const isErgebnis       = state.currentStep === 'ergebnis'
-  const isTerminalStep   = isDirektanfrage || isErgebnis
+  const isDirektanfrage = state.currentStep === 'direktanfrage'
+  const isErgebnis      = state.currentStep === 'ergebnis'
+  const isTerminalStep  = isDirektanfrage || isErgebnis
 
-  // Back button is hidden only on first step and terminal steps
   const showBackButton = state.currentStep !== 'start' && !isTerminalStep
-
-  // Nav buttons hidden on terminal steps (those have their own CTAs)
   const showNavButtons = !isTerminalStep
 
   return (
@@ -46,7 +43,7 @@ export function CalculatorShell() {
         <p className="text-[0.68rem] tracking-[0.15em] uppercase text-gold font-normal mb-3">
           Erste Kosteneinschätzung
         </p>
-        <h1 className="font-serif text-[clamp(1.45rem,3vw,1.9rem)] text-text-1 tracking-[-0.02em] leading-snug">
+        <h1 className="font-serif text-[clamp(1.35rem,3vw,1.85rem)] text-text-1 tracking-[-0.02em] leading-snug">
           {STEP_TITLES[state.currentStep]}
         </h1>
       </div>
@@ -97,7 +94,7 @@ export function CalculatorShell() {
                   </span>
                   <span
                     className={cn(
-                      'text-[0.55rem] hidden sm:block tracking-wide',
+                      'text-[0.52rem] hidden sm:block tracking-wide',
                       active ? 'text-gold' : 'text-text-4',
                     )}
                   >
@@ -113,7 +110,7 @@ export function CalculatorShell() {
       {/* Step content */}
       <div
         className="rounded-lg p-6 md:p-8 mb-5"
-        style={{ borderColor: 'rgba(255,255,255,0.06)', background: '#111115', border: '1px solid rgba(255,255,255,0.06)' }}
+        style={{ border: '1px solid rgba(255,255,255,0.06)', background: '#111115' }}
       >
         {state.currentStep === 'start' && (
           <StepStart
@@ -158,10 +155,12 @@ export function CalculatorShell() {
             onChange={calc.setQualitaet}
           />
         )}
-        {state.currentStep === 'feinanpassung' && (
-          <StepFeinanpassung
-            fineQty={state.fineQty}
-            onQtyChange={calc.setFineQty}
+        {state.currentStep === 'raumeditor' && (
+          <StepRaumeditor
+            roomConfigs={state.roomConfigs}
+            addOns={state.addOns}
+            qualitaet={state.qualitaet}
+            onUpdate={calc.updateRoomConfig}
           />
         )}
         {state.currentStep === 'ergebnis' && (

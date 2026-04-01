@@ -18,7 +18,7 @@ interface Props {
 }
 
 export function StepErgebnis({ state }: Props) {
-  const { objekt, projekt, m2, rooms, bathrooms, addOns, fineQty, qualitaet } = state
+  const { objekt, projekt, m2, rooms, bathrooms, addOns, roomConfigs, qualitaet } = state
 
   if (!objekt || !projekt || projekt === 'komplettsanierung' || projekt === 'teilsanierung' || projekt === 'zaehler' || projekt === 'sonderfall') {
     return null
@@ -31,7 +31,7 @@ export function StepErgebnis({ state }: Props) {
     rooms,
     bathrooms,
     addOns,
-    fineQty,
+    roomConfigs,
     qualitaet: qualitaet as QualitaetType,
   })
 
@@ -47,11 +47,11 @@ export function StepErgebnis({ state }: Props) {
         <p className="text-[0.65rem] tracking-[0.13em] uppercase text-text-4 mb-2 font-normal">
           Erste Orientierung
         </p>
-        <div className="flex items-baseline gap-2 mb-1">
-          <span className="font-serif text-[2.4rem] text-text-1 tracking-[-0.03em] leading-none">
+        <div className="flex items-baseline gap-2 flex-wrap mb-1">
+          <span className="font-serif text-[2.2rem] text-text-1 tracking-[-0.03em] leading-none">
             {result.low.toLocaleString('de-DE')} –
           </span>
-          <span className="font-serif text-[2.4rem] text-text-1 tracking-[-0.03em] leading-none">
+          <span className="font-serif text-[2.2rem] text-text-1 tracking-[-0.03em] leading-none">
             {result.high.toLocaleString('de-DE')} €
           </span>
         </div>
@@ -66,11 +66,11 @@ export function StepErgebnis({ state }: Props) {
         style={{ border: '1px solid rgba(255,255,255,0.06)' }}
       >
         {[
-          { label: 'Objekt',      value: OBJEKT_LABELS[objekt as ObjektType] },
-          { label: 'Projekt',     value: PROJEKT_LABELS[projekt as ProjektType] },
-          { label: 'Wohnfläche',  value: `ca. ${m2} m²` },
-          { label: 'Räume',       value: `${rooms} Räume, ${bathrooms} ${bathrooms === 1 ? 'Bad' : 'Bäder'}` },
-          { label: 'Qualität',    value: QUALITAET_LABELS[qualitaet as QualitaetType] },
+          { label: 'Objekt',     value: OBJEKT_LABELS[objekt as ObjektType] },
+          { label: 'Projekt',    value: PROJEKT_LABELS[projekt as ProjektType] },
+          { label: 'Wohnfläche', value: `ca. ${m2} m²` },
+          { label: 'Räume',      value: `${rooms} Räume, ${bathrooms} ${bathrooms === 1 ? 'Bad' : 'Bäder'}, Küche` },
+          { label: 'Qualität',   value: QUALITAET_LABELS[qualitaet as QualitaetType] },
           ...(activeAddOns.length > 0
             ? [{ label: 'Extras', value: activeAddOns.map((m) => m.label).join(', ') }]
             : []),
@@ -93,7 +93,7 @@ export function StepErgebnis({ state }: Props) {
         Wir erstellen Ihnen gern ein kostenloses, verbindliches Angebot.
       </p>
 
-      {/* CTAs */}
+      {/* CTA */}
       <div className="flex flex-col sm:flex-row gap-3 pt-1">
         <Link
           href="/anfrage"

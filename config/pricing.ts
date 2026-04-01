@@ -6,9 +6,9 @@
 // ─────────────────────────────────────────────────────────────
 
 // ── Core domain types ─────────────────────────────────────────
-export type StartMode  = 'schnell' | 'genauer'
-export type ObjektType = 'wohnung' | 'haus'
-export type ProjektType =
+export type StartMode     = 'schnell' | 'genauer'
+export type ObjektType    = 'wohnung' | 'haus'
+export type ProjektType   =
   | 'neubau'
   | 'altbau'
   | 'komplettsanierung'
@@ -16,9 +16,9 @@ export type ProjektType =
   | 'zaehler'
   | 'sonderfall'
 export type QualitaetType = 'einfach' | 'standard' | 'premium'
+export type RoomKind      = 'room' | 'bathroom' | 'kitchen'
 
 // ── Project types that cannot be auto-calculated ──────────────
-// These receive a dedicated explanation step, then route to Anfrage.
 export const DIRECT_ANFRAGE_TYPES: ProjektType[] = [
   'komplettsanierung',
   'teilsanierung',
@@ -28,38 +28,61 @@ export const DIRECT_ANFRAGE_TYPES: ProjektType[] = [
 
 // ── Base prices per object × project combination ──────────────
 // Reference: 80 m², 4 rooms, 1 bathroom.
-// These are V1 rough estimates — intentionally displayed as ranges.
 export const BASE_PRICES: Record<ObjektType, Record<'neubau' | 'altbau', number>> = {
-  wohnung: { neubau: 5800,  altbau: 4200  },
-  haus:    { neubau: 9500,  altbau: 7200  },
+  wohnung: { neubau: 5800, altbau: 4200 },
+  haus:    { neubau: 9500, altbau: 7200 },
 }
 
-// ── Per-m² rate above the 80 m² baseline ─────────────────────
-export const PRICE_PER_SQM_ABOVE_BASELINE = 28 // EUR per m²
-export const BASELINE_SQM = 80
-
-// ── Per-room surcharge (above 4 rooms baseline) ───────────────
-export const PRICE_PER_ROOM_ABOVE_BASELINE = 350
-export const BASELINE_ROOMS = 4
-
-// ── Per-bathroom surcharge (above 1 bathroom baseline) ────────
-export const PRICE_PER_BATHROOM_ABOVE_BASELINE = 600
-export const BASELINE_BATHROOMS = 1
+// ── Size / room / bathroom adjustments ────────────────────────
+export const PRICE_PER_SQM_ABOVE_BASELINE       = 28
+export const BASELINE_SQM                        = 80
+export const PRICE_PER_ROOM_ABOVE_BASELINE       = 350
+export const BASELINE_ROOMS                      = 4
+export const PRICE_PER_BATHROOM_ABOVE_BASELINE   = 600
+export const BASELINE_BATHROOMS                  = 1
 
 // ── Quality multipliers ────────────────────────────────────────
-// Applied to the full subtotal before display rounding.
 export const QUALITAET_MULTIPLIERS: Record<QualitaetType, number> = {
   einfach:  0.85,
   standard: 1.00,
   premium:  1.25,
 }
 
+// ── Base fittings per room by quality (informational + used in pricing) ──
+// sockets: Steckdosen, switches: Lichtschalter
+export interface RoomFittings {
+  sockets: number
+  switches: number
+}
+
+export const BASE_FITTINGS_ROOM: Record<QualitaetType, RoomFittings> = {
+  einfach:  { sockets: 4, switches: 1 },
+  standard: { sockets: 6, switches: 1 },
+  premium:  { sockets: 8, switches: 2 },
+}
+
+export const BASE_FITTINGS_BATHROOM: Record<QualitaetType, RoomFittings> = {
+  einfach:  { sockets: 2, switches: 1 },
+  standard: { sockets: 3, switches: 1 },
+  premium:  { sockets: 4, switches: 1 },
+}
+
+export const BASE_FITTINGS_KITCHEN: Record<QualitaetType, RoomFittings> = {
+  einfach:  { sockets: 6, switches: 1 },
+  standard: { sockets: 8, switches: 1 },
+  premium:  { sockets: 10, switches: 2 },
+}
+
+// ── Prices for room-level extras ──────────────────────────────
+// These are added per unit in the Raum-Editor.
+export const PRICE_LAN_PER_ROOM    = 180  // one network drop per room
+export const PRICE_JALOUSIE_UNIT   = 220  // per motorised blind/shutter drive
+export const PRICE_FUSSBODENHEIZUNG_ROOM = 420 // per room thermostat + wiring
+
 // ── Display range spread ───────────────────────────────────────
-// Result is shown as a range: [total * (1 - RANGE_SPREAD), total * (1 + RANGE_SPREAD)]
-// Keeps honesty: this is an orientation, not a quote.
 export const RANGE_SPREAD = 0.15
 
-// ── Add-on modules (flat price each) ─────────────────────────
+// ── Add-on modules (flat price each, shown in Zusatzmodule step) ─
 export interface AddOnModule {
   id: string
   label: string
@@ -94,55 +117,68 @@ export const ADD_ON_MODULES: AddOnModule[] = [
   },
 ]
 
-// ── Fine-adjustment items (only shown in "Etwas genauer" mode) ─
-export interface FineItem {
+// ─────────────────────────────────────────────────────────────
+// Room configuration (Raum-Editor)
+// ─────────────────────────────────────────────────────────────
+
+/** Per-room extra configuration set by the user in the Raum-Editor step */
+export interface RoomConfig {
+  /** Unique id, e.g. "room-1", "bathroom-2", "kitchen" */
   id: string
+  kind: RoomKind
+  /** Display label, e.g. "Raum 1", "Bad 2", "Küche" */
   label: string
-  description: string
-  pricePerUnit: number
-  defaultQty: number
-  min: number
-  max: number
+  /** How many LAN drops the user wants here (0 if LAN add-on not selected) */
+  lan: number
+  /** How many jalousie drives the user wants here (0 if jalousien add-on not selected) */
+  jalousien: number
+  /** Whether floor heating is active in this room (only if fussbodenheizung add-on selected) */
+  fussbodenheizung: boolean
 }
 
-export const FINE_ITEMS: FineItem[] = [
-  {
-    id: 'steckdosen',
-    label: 'Zusätzliche Steckdosen',
-    description: 'Pro Steckdose / Schalter',
-    pricePerUnit: 55,
-    defaultQty: 0,
-    min: 0,
-    max: 40,
-  },
-  {
-    id: 'netzwerkdosen',
-    label: 'Netzwerkdosen (RJ45)',
-    description: 'Pro Dose (nur mit LAN-Modul sinnvoll)',
-    pricePerUnit: 95,
-    defaultQty: 0,
-    min: 0,
-    max: 30,
-  },
-  {
-    id: 'thermostate',
-    label: 'Raumthermostate',
-    description: 'Pro Thermostat',
-    pricePerUnit: 185,
-    defaultQty: 0,
-    min: 0,
-    max: 15,
-  },
-  {
-    id: 'jalousien_qty',
-    label: 'Jalousien-Antriebe',
-    description: 'Pro Motor / Fenstergruppe',
-    pricePerUnit: 220,
-    defaultQty: 0,
-    min: 0,
-    max: 20,
-  },
-]
+/** Build the default RoomConfig list from room/bathroom counts and active add-ons */
+export function buildDefaultRoomConfigs(
+  rooms: number,
+  bathrooms: number,
+  addOns: string[],
+): RoomConfig[] {
+  const hasFbh = addOns.includes('fussbodenheizung')
+  const configs: RoomConfig[] = []
+
+  for (let i = 1; i <= rooms; i++) {
+    configs.push({
+      id: `room-${i}`,
+      kind: 'room',
+      label: `Raum ${i}`,
+      lan: 0,
+      jalousien: 0,
+      fussbodenheizung: hasFbh, // default: all rooms get floor heating if module selected
+    })
+  }
+
+  for (let i = 1; i <= bathrooms; i++) {
+    configs.push({
+      id: `bathroom-${i}`,
+      kind: 'bathroom',
+      label: bathrooms === 1 ? 'Bad' : `Bad ${i}`,
+      lan: 0,
+      jalousien: 0,
+      fussbodenheizung: false, // floor heating not typical in bathrooms
+    })
+  }
+
+  // Kitchen is always included automatically
+  configs.push({
+    id: 'kitchen',
+    kind: 'kitchen',
+    label: 'Küche',
+    lan: 0,
+    jalousien: 0,
+    fussbodenheizung: hasFbh,
+  })
+
+  return configs
+}
 
 // ─────────────────────────────────────────────────────────────
 // Calculation
@@ -155,51 +191,46 @@ export interface CalculatorInput {
   rooms: number
   bathrooms: number
   addOns: string[]
-  fineQty: Record<string, number>
+  roomConfigs: RoomConfig[]
   qualitaet: QualitaetType
 }
 
 export interface PriceResult {
-  /** Lower bound of the range (rounded to nearest 100) */
   low: number
-  /** Upper bound of the range (rounded to nearest 100) */
   high: number
-  /** Midpoint, for reference in breakdown */
   mid: number
 }
 
 export function calculatePrice(input: CalculatorInput): PriceResult {
-  const { objekt, projekt, m2, rooms, bathrooms, addOns, fineQty, qualitaet } = input
+  const { objekt, projekt, m2, rooms, bathrooms, addOns, roomConfigs, qualitaet } = input
 
   // Base
   const base = BASE_PRICES[objekt][projekt]
 
-  // Size adjustment
+  // Size / room / bathroom adjustments
   const sizeAdj = Math.max(0, m2 - BASELINE_SQM) * PRICE_PER_SQM_ABOVE_BASELINE
-
-  // Room adjustment
   const roomAdj = Math.max(0, rooms - BASELINE_ROOMS) * PRICE_PER_ROOM_ABOVE_BASELINE
-
-  // Bathroom adjustment
   const bathAdj = Math.max(0, bathrooms - BASELINE_BATHROOMS) * PRICE_PER_BATHROOM_ABOVE_BASELINE
 
-  // Add-on modules
+  // Flat add-on modules (wallbox, LAN base, fussbodenheizung base, jalousien base)
   const addOnTotal = ADD_ON_MODULES
     .filter((m) => addOns.includes(m.id))
     .reduce((sum, m) => sum + m.price, 0)
 
-  // Fine adjustments
-  const fineTotal = FINE_ITEMS.reduce((sum, item) => {
-    return sum + (fineQty[item.id] ?? 0) * item.pricePerUnit
-  }, 0)
+  // Per-room extras from Raum-Editor
+  let roomExtrasTotal = 0
+  for (const rc of roomConfigs) {
+    roomExtrasTotal += rc.lan * PRICE_LAN_PER_ROOM
+    roomExtrasTotal += rc.jalousien * PRICE_JALOUSIE_UNIT
+    if (rc.fussbodenheizung) roomExtrasTotal += PRICE_FUSSBODENHEIZUNG_ROOM
+  }
 
-  const subtotal = base + sizeAdj + roomAdj + bathAdj + addOnTotal + fineTotal
+  const subtotal = base + sizeAdj + roomAdj + bathAdj + addOnTotal + roomExtrasTotal
 
   // Quality multiplier
   const qualMul = QUALITAET_MULTIPLIERS[qualitaet]
   const mid = subtotal * qualMul
 
-  // Range
   const low  = Math.round((mid * (1 - RANGE_SPREAD)) / 100) * 100
   const high = Math.round((mid * (1 + RANGE_SPREAD)) / 100) * 100
 
@@ -216,12 +247,12 @@ export const OBJEKT_LABELS: Record<ObjektType, string> = {
 }
 
 export const PROJEKT_LABELS: Record<ProjektType, string> = {
-  neubau:           'Neubau',
-  altbau:           'Altbau / Bestand',
-  komplettsanierung:'Komplettsanierung',
-  teilsanierung:    'Teil-Erneuerung / Nachinstallation',
-  zaehler:          'Zählerschrank / Unterverteilung',
-  sonderfall:       'Sonderfall',
+  neubau:            'Neubau',
+  altbau:            'Altbau / Bestand',
+  komplettsanierung: 'Komplettsanierung',
+  teilsanierung:     'Teil-Erneuerung / Nachinstallation',
+  zaehler:           'Zählerschrank / Unterverteilung',
+  sonderfall:        'Sonderfall',
 }
 
 export const QUALITAET_LABELS: Record<QualitaetType, string> = {
@@ -230,7 +261,6 @@ export const QUALITAET_LABELS: Record<QualitaetType, string> = {
   premium:  'Premium',
 }
 
-// Why a direct-Anfrage project type can't be auto-calculated — shown to the user
 export const DIRECT_ANFRAGE_REASONS: Record<string, string> = {
   komplettsanierung:
     'Eine Komplettsanierung hängt stark vom Zustand des Gebäudes ab. Ohne eine kurze Einschätzung vor Ort können wir keinen sinnvollen Richtwert geben.',
