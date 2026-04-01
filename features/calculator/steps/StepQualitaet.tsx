@@ -1,85 +1,90 @@
 'use client'
 
 import type { QualitaetType } from '../types'
-import { QUALITAET_MULTIPLIERS } from '@/config/pricing'
 
 interface Props {
   value: QualitaetType
   onChange: (v: QualitaetType) => void
 }
 
-const OPTIONS: {
-  id: QualitaetType
-  label: string
-  sub: string
-  details: string
-}[] = [
+const OPTIONS: { id: QualitaetType; label: string; tag: string; details: string; example: string }[] = [
   {
     id: 'einfach',
     label: 'Einfach',
-    sub: 'Solide und funktional',
-    details:
-      'Bewährte Markenmaterialien, schlichte Schalterserien. Alles funktioniert zuverlässig – ohne besondere Extras.',
+    tag: '−15 %',
+    details: 'Solide Markenmaterialien, schlichte Schalter.',
+    example: 'z.B. Busch-Jaeger Basic 55',
   },
   {
     id: 'standard',
     label: 'Standard',
-    sub: 'Gut ausgestattet – die häufigste Wahl',
-    details:
-      'Hochwertige Schalterserien, mehr Steckdosen pro Raum, bessere Verkabelung. Ein angenehmes Wohnkomfort-Niveau.',
+    tag: 'Basispreis',
+    details: 'Hochwertigere Schalterserien, mehr Steckdosen pro Raum.',
+    example: 'z.B. Gira E2 oder Jung LS990',
   },
   {
     id: 'premium',
     label: 'Premium',
-    sub: 'Komfort und Qualität ohne Kompromisse',
-    details:
-      'Designschalter, großzügige Ausstattung, besonders sorgfältige Ausführung. Für anspruchsvolle Ansprüche.',
+    tag: '+25 %',
+    details: 'Designschalter, großzügige Ausstattung, besondere Ausführung.',
+    example: 'z.B. Busch-Jaeger Axcent, Gira Esprit',
   },
 ]
 
 export function StepQualitaet({ value, onChange }: Props) {
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-[0.82rem] text-text-2 leading-relaxed mb-1">
-        Die Qualitätsstufe beschreibt, wie hochwertig die Materialien und wie umfangreich die
-        Ausstattung sein soll.
-      </p>
-      {OPTIONS.map(({ id, label, sub, details }) => {
-        const selected = value === id
-        const surcharge = Math.round((QUALITAET_MULTIPLIERS[id] - 1) * 100)
+      {OPTIONS.map(({ id, label, tag, details, example }) => {
+        const sel = value === id
+        const isStandard = id === 'standard'
         return (
           <button
             key={id}
             type="button"
             onClick={() => onChange(id)}
-            aria-pressed={selected}
-            className="flex items-start gap-4 px-5 py-5 rounded-lg border text-left w-full transition-colors"
+            aria-pressed={sel}
+            className="flex items-start gap-4 text-left w-full rounded-2xl
+                       transition-all duration-200 relative"
             style={{
-              borderColor: selected ? '#c9aa72' : 'rgba(255,255,255,0.06)',
-              background: selected ? 'rgba(201,170,114,0.06)' : 'transparent',
+              padding: '1.1rem 1.4rem',
+              border: sel ? '2px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.08)',
+              background: sel ? 'rgba(201,170,114,0.07)' : 'rgba(255,255,255,0.02)',
             }}
           >
+            {/* Radio */}
             <span
-              className="mt-0.5 w-4 h-4 rounded-full border-[1.5px] flex items-center justify-center shrink-0"
+              className="mt-0.5 shrink-0 w-4 h-4 rounded-full flex items-center justify-center transition-all duration-200"
               style={{
-                borderColor: selected ? '#c9aa72' : 'rgba(255,255,255,0.25)',
-                background: selected ? '#c9aa72' : 'transparent',
+                border: sel ? '2px solid #c9aa72' : '2px solid rgba(255,255,255,0.18)',
+                background: sel ? '#c9aa72' : 'transparent',
               }}
             >
-              {selected && <span className="block w-[6px] h-[6px] rounded-full bg-[#1a1400]" />}
+              {sel && <span className="block w-[5px] h-[5px] rounded-full" style={{ background: '#1a1400' }} />}
             </span>
-            <div className="flex-1">
-              <div className="flex items-center justify-between gap-3 flex-wrap mb-1">
-                <div>
-                  <span className="text-[0.92rem] text-text-1 font-normal">{label}</span>
-                  <span className="text-[0.75rem] text-text-3 ml-2">{sub}</span>
-                </div>
-                <span className="text-[0.72rem] text-text-3 shrink-0">
-                  {surcharge > 0 ? `+${surcharge}%` : surcharge < 0 ? `${surcharge}%` : 'Basispreis'}
-                </span>
+
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2.5 flex-wrap mb-1">
+                <span className="text-[0.97rem] text-text-1 font-normal">{label}</span>
+                {isStandard && (
+                  <span
+                    className="text-[0.6rem] font-medium tracking-wide rounded-full px-2 py-0.5"
+                    style={{ background: 'rgba(201,170,114,0.12)', color: '#c9aa72', border: '1px solid rgba(201,170,114,0.2)' }}
+                  >
+                    Beliebt
+                  </span>
+                )}
               </div>
-              <p className="text-[0.75rem] text-text-3 leading-[1.6]">{details}</p>
+              <p className="text-[0.78rem] leading-snug mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>{details}</p>
+              <p className="text-[0.68rem]" style={{ color: 'rgba(255,255,255,0.25)' }}>{example}</p>
             </div>
+
+            {/* Price tag */}
+            <span
+              className="shrink-0 text-[0.72rem] font-medium self-start mt-0.5"
+              style={{ color: sel ? '#c9aa72' : 'rgba(255,255,255,0.3)' }}
+            >
+              {tag}
+            </span>
           </button>
         )
       })}

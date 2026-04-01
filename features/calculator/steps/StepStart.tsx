@@ -1,7 +1,6 @@
 'use client'
 
 import type { StartMode } from '../types'
-import { cn } from '@/lib/utils'
 
 interface Props {
   value: StartMode | ''
@@ -9,16 +8,18 @@ interface Props {
   error: boolean
 }
 
-const OPTIONS: { id: StartMode; label: string; sub: string }[] = [
+const OPTIONS: { id: StartMode; label: string; sub: string; tag: string }[] = [
   {
     id: 'schnell',
-    label: 'Einfach & schnell',
-    sub: 'Ich möchte nur eine grobe Orientierung.',
+    label: 'Schnell orientieren',
+    sub: 'Ich möchte wissen, ob das Projekt in meinem Budget liegt.',
+    tag: '~1 min',
   },
   {
     id: 'genauer',
-    label: 'Etwas genauer',
-    sub: 'Ich weiß schon ungefähr, was ich brauche.',
+    label: 'Genauer planen',
+    sub: 'Ich kenne mein Objekt bereits und möchte jeden Raum einrichten.',
+    tag: '~3 min',
   },
 ]
 
@@ -26,41 +27,55 @@ export function StepStart({ value, onChange, error }: Props) {
   return (
     <div className="flex flex-col gap-3">
       {error && (
-        <p className="text-[0.78rem] text-danger mb-1" role="alert">
-          Bitte wählen Sie eine Option aus.
+        <p className="text-[0.78rem] mb-2 px-3 py-2 rounded-lg"
+          style={{ color: '#e05252', background: 'rgba(224,82,82,0.08)', border: '1px solid rgba(224,82,82,0.2)' }}
+          role="alert">
+          Bitte eine Option auswählen.
         </p>
       )}
-      {OPTIONS.map(({ id, label, sub }) => {
-        const selected = value === id
+      {OPTIONS.map(({ id, label, sub, tag }) => {
+        const sel = value === id
         return (
           <button
             key={id}
             type="button"
             onClick={() => onChange(id)}
-            aria-pressed={selected}
-            className={cn(
-              'flex items-start gap-4 px-5 py-5 rounded-lg border text-left w-full transition-colors',
-            )}
+            aria-pressed={sel}
+            className="group flex items-center gap-5 text-left w-full rounded-2xl
+                       transition-all duration-200"
             style={{
-              borderColor: selected ? '#c9aa72' : 'rgba(255,255,255,0.06)',
-              background: selected ? 'rgba(201,170,114,0.06)' : 'transparent',
+              padding: '1.25rem 1.5rem',
+              border: sel ? '2px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.08)',
+              background: sel ? 'rgba(201,170,114,0.07)' : 'rgba(255,255,255,0.02)',
             }}
           >
+            {/* Radio dot */}
             <span
-              className="mt-0.5 w-4 h-4 rounded-full border-[1.5px] flex items-center justify-center shrink-0"
+              className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-all duration-200"
               style={{
-                borderColor: selected ? '#c9aa72' : 'rgba(255,255,255,0.25)',
-                background: selected ? '#c9aa72' : 'transparent',
+                border: sel ? '2px solid #c9aa72' : '2px solid rgba(255,255,255,0.2)',
+                background: sel ? '#c9aa72' : 'transparent',
               }}
             >
-              {selected && (
-                <span className="block w-[6px] h-[6px] rounded-full bg-[#1a1400]" />
-              )}
+              {sel && <span className="block w-2 h-2 rounded-full" style={{ background: '#1a1400' }} />}
             </span>
-            <div>
-              <p className="text-[0.92rem] text-text-1 font-normal leading-snug mb-1">{label}</p>
-              <p className="text-[0.78rem] text-text-3 leading-snug">{sub}</p>
+
+            {/* Text */}
+            <div className="flex-1 min-w-0">
+              <p className="text-[0.97rem] text-text-1 font-normal leading-snug mb-0.5">{label}</p>
+              <p className="text-[0.78rem] leading-relaxed" style={{ color: 'rgba(255,255,255,0.38)' }}>{sub}</p>
             </div>
+
+            {/* Time tag */}
+            <span
+              className="shrink-0 text-[0.65rem] font-medium tracking-wide rounded-full px-2.5 py-1"
+              style={{
+                color: sel ? '#c9aa72' : 'rgba(255,255,255,0.3)',
+                background: sel ? 'rgba(201,170,114,0.12)' : 'rgba(255,255,255,0.05)',
+              }}
+            >
+              {tag}
+            </span>
           </button>
         )
       })}

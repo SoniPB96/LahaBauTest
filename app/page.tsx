@@ -83,48 +83,71 @@ export default function HomePage() {
           {/* Preview card – desktop only */}
           <div className="hidden md:block" aria-hidden="true">
             <div
-              className="bg-bg-3 rounded-xl p-7 relative overflow-hidden"
-              style={{ border: '1px solid rgba(255,255,255,0.06)' }}
+              className="rounded-2xl p-6 relative overflow-hidden"
+              style={{ background: '#111115', border: '1px solid rgba(255,255,255,0.08)' }}
             >
+              {/* Gold accent line */}
               <div
-                className="absolute top-0 left-1/4 right-1/4 h-px"
-                style={{ background: 'linear-gradient(90deg,transparent,rgba(201,170,114,0.35),transparent)' }}
+                className="absolute top-0 left-0 right-0 h-[2px]"
+                style={{ background: 'linear-gradient(90deg,transparent 10%,rgba(201,170,114,0.5) 50%,transparent 90%)' }}
               />
-              <p className="text-[0.65rem] tracking-[0.14em] uppercase text-text-4 font-normal mb-5">
-                Erste Kosteneinschätzung
+
+              {/* Label */}
+              <p className="text-[0.6rem] tracking-[0.18em] uppercase mb-5 font-normal"
+                style={{ color: 'rgba(255,255,255,0.3)' }}>
+                Beispielrechnung
               </p>
-              <div className="flex flex-col gap-2 mb-5">
-                {['Sanierung / Renovierung', 'Modernisierung', 'Neubau / Erweiterung'].map((s, i) => (
-                  <div
-                    key={s}
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors"
-                    style={{
-                      background: i === 0 ? '#1e1e24' : 'transparent',
-                      border: i === 0 ? '1px solid rgba(255,255,255,0.11)' : '1px solid transparent',
-                    }}
+
+              {/* Example spec pills */}
+              <div className="flex flex-wrap gap-2 mb-5">
+                {['Altbau', 'Haus', '120 m²', '5 Zimmer', 'Standard'].map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-[0.7rem] px-2.5 py-1 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)' }}
                   >
-                    <span
-                      className="w-[18px] h-[18px] rounded-full shrink-0"
-                      style={{
-                        border: i === 0 ? '1.5px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.11)',
-                        background: i === 0 ? '#c9aa72' : 'transparent',
-                      }}
-                    />
-                    <span className="text-[0.85rem] text-text-1">{s}</span>
-                  </div>
+                    {tag}
+                  </span>
                 ))}
               </div>
+
+              {/* Price range */}
+              <div className="mb-5">
+                <p className="text-[0.68rem] mb-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Erste Einschätzung</p>
+                <div className="flex items-baseline gap-2">
+                  <span
+                    className="font-serif tracking-tight"
+                    style={{ fontSize: '2rem', color: '#ededeb', letterSpacing: '-0.03em' }}
+                  >
+                    9.500 –
+                  </span>
+                  <span
+                    className="font-serif tracking-tight"
+                    style={{ fontSize: '2rem', color: '#ededeb', letterSpacing: '-0.03em' }}
+                  >
+                    12.900 €
+                  </span>
+                </div>
+                <p className="text-[0.65rem] mt-0.5" style={{ color: 'rgba(255,255,255,0.25)' }}>
+                  Netto · Orientierungswert
+                </p>
+              </div>
+
+              {/* CTA */}
               <Link
                 href="/kosteneinschaetzung"
-                className="flex items-center justify-between px-4 py-3 rounded-lg no-underline
-                           transition-colors hover:opacity-90"
+                className="flex items-center justify-between rounded-xl no-underline
+                           transition-all hover:opacity-90 active:scale-[0.98]"
                 style={{
-                  background: 'rgba(201,170,114,0.08)',
-                  border: '1px solid rgba(201,170,114,0.22)',
+                  padding: '0.85rem 1.1rem',
+                  background: '#c9aa72',
+                  color: '#1a1400',
                 }}
               >
-                <span className="text-[0.82rem] text-gold font-medium">Einschätzung starten</span>
-                <span className="text-gold">→</span>
+                <span className="text-[0.85rem] font-medium">Ihr Projekt berechnen</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </Link>
             </div>
           </div>
