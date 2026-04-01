@@ -37,23 +37,25 @@ const STEP_META: Record<string, { title: string; hint?: string }> = {
 }
 
 function FadeStep({ id, children }: { id: string; children: React.ReactNode }) {
-  const [current, setCurrent] = useState({ id, children })
   const [phase, setPhase] = useState<'idle' | 'out' | 'in'>('idle')
+  const previousId = useRef(id)
   const t = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    if (id === current.id) return
+    if (id === previousId.current) return
     if (t.current) clearTimeout(t.current)
 
+    previousId.current = id
     setPhase('out')
     t.current = setTimeout(() => {
-      setCurrent({ id, children })
       setPhase('in')
       t.current = setTimeout(() => setPhase('idle'), 260)
     }, 150)
 
-    return () => { if (t.current) clearTimeout(t.current) }
-  }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
+    return () => {
+      if (t.current) clearTimeout(t.current)
+    }
+  }, [id])
 
   const style =
     phase === 'out'
@@ -64,13 +66,14 @@ function FadeStep({ id, children }: { id: string; children: React.ReactNode }) {
 
   return (
     <div
+      key={id}
       style={{
         ...style,
         transition: 'opacity 0.24s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)',
         willChange: 'opacity, transform',
       }}
     >
-      {current.children}
+      {children}
     </div>
   )
 }
