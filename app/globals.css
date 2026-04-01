@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap');
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-bg text-text-1 font-sans antialiased overflow-x-hidden;
+    font-weight: 300;
+    line-height: 1.65;
+  }
+
+  ::selection {
+    background: rgba(201, 170, 114, 0.2);
+    color: #ededeb;
+  }
+
+  :focus-visible {
+    outline: 2px solid #c9aa72;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  /* Named border-color utilities for rgba values Tailwind can't JIT */
+  .border-subtle  { border-color: rgba(255,255,255,0.06); }
+  .border-muted   { border-color: rgba(255,255,255,0.11); }
+  .border-strong  { border-color: rgba(255,255,255,0.18); }
+  .bg-gold-tint   { background-color: rgba(201,170,114,0.08); }
+  .border-gold    { border-color: rgba(201,170,114,0.22); }
+  .bg-danger-tint { background-color: rgba(224,82,82,0.08); }
+  .border-danger  { border-color: rgba(224,82,82,0.25); }
+  .bg-success-tint{ background-color: rgba(76,175,130,0.08); }
+}
