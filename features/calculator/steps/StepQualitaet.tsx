@@ -1,5 +1,6 @@
 'use client'
 
+import { cn } from '@/lib/utils'
 import type { QualitaetType } from '../types'
 
 interface Props {
@@ -54,75 +55,56 @@ export function StepQualitaet({ value, onChange }: Props) {
             type="button"
             onClick={() => onChange(id)}
             aria-pressed={sel}
-            className="flex items-start gap-4 text-left w-full rounded-2xl transition-all duration-200 active:scale-[0.985]"
-            style={{
-              padding: '1.1rem 1.4rem',
-              border: sel ? '2px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.08)',
-              background: sel ? 'rgba(201,170,114,0.09)' : 'rgba(255,255,255,0.02)',
-              boxShadow: sel ? '0 0 0 1px rgba(201,170,114,0.08), 0 10px 28px rgba(0,0,0,0.22)' : 'none',
-              transform: sel ? 'translateY(-1px)' : 'translateY(0)',
-            }}
+            className={cn(
+              'calc-choice-card w-full px-5 py-5 flex items-start gap-4 text-left active:scale-[0.985]',
+              sel && 'calc-choice-card-selected',
+            )}
           >
-            {/* Radio */}
             <span
-              className="mt-0.5 shrink-0 w-4 h-4 rounded-full flex items-center justify-center transition-all duration-200"
-              style={{
-                border: sel ? '2px solid #c9aa72' : '2px solid rgba(255,255,255,0.18)',
-                background: sel ? '#c9aa72' : 'transparent',
-              }}
-            >
-              {sel && <span className="block w-[5px] h-[5px] rounded-full" style={{ background: '#1a1400' }} />}
-            </span>
+              className={cn(
+                'calc-choice-indicator calc-radio-indicator mt-1 relative z-[1]',
+                sel && 'calc-radio-indicator-selected',
+              )}
+              aria-hidden="true"
+            />
 
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                <span className="text-[0.97rem] text-text-1 font-normal">{label}</span>
-                {popular && (
-                  <span
-                    className="text-[0.6rem] font-medium tracking-wide rounded-full px-2 py-0.5"
-                    style={{ background: 'rgba(201,170,114,0.12)', color: '#c9aa72', border: '1px solid rgba(201,170,114,0.2)' }}
-                  >
-                    Beliebt
-                  </span>
-                )}
+            <div className="flex-1 min-w-0 relative z-[1]">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                <span className="text-[1rem] text-text-1 font-normal">{label}</span>
+                {popular && <span className="calc-choice-badge calc-choice-badge-active">Beliebt</span>}
+                {sel && <span className="calc-choice-badge calc-choice-badge-active">Ausgewählt</span>}
               </div>
 
-              {/* Fittings display */}
-              <div className="flex gap-4 mb-1.5">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[0.65rem] uppercase tracking-wide" style={{ color: 'rgba(255,255,255,0.3)' }}>Steckdosen</span>
-                  <span className="text-[0.78rem]" style={{ color: sel ? 'rgba(201,170,114,0.9)' : 'rgba(255,255,255,0.55)' }}>{steckdosen}</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2.5">
+                <div className="rounded-xl px-3 py-2" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <span className="text-[0.62rem] uppercase tracking-[0.16em]" style={{ color: 'rgba(255,255,255,0.34)' }}>Steckdosen</span>
+                  <div className="text-[0.8rem] mt-1" style={{ color: sel ? '#e5c995' : 'rgba(255,255,255,0.58)' }}>{steckdosen}</div>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[0.65rem] uppercase tracking-wide" style={{ color: 'rgba(255,255,255,0.3)' }}>Schalter</span>
-                  <span className="text-[0.78rem]" style={{ color: sel ? 'rgba(201,170,114,0.9)' : 'rgba(255,255,255,0.55)' }}>{schalter}</span>
+                <div className="rounded-xl px-3 py-2" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <span className="text-[0.62rem] uppercase tracking-[0.16em]" style={{ color: 'rgba(255,255,255,0.34)' }}>Schalter</span>
+                  <div className="text-[0.8rem] mt-1" style={{ color: sel ? '#e5c995' : 'rgba(255,255,255,0.58)' }}>{schalter}</div>
                 </div>
               </div>
 
-              <p className="text-[0.72rem] leading-snug" style={{ color: 'rgba(255,255,255,0.32)' }}>{note}</p>
+              <p className="text-[0.74rem] leading-relaxed" style={{ color: sel ? 'rgba(255,255,255,0.66)' : 'rgba(255,255,255,0.38)' }}>
+                {note}
+              </p>
             </div>
 
-            <span
-              className="shrink-0 text-[0.72rem] font-medium self-start mt-0.5 whitespace-nowrap"
-              style={{ color: sel ? '#c9aa72' : 'rgba(255,255,255,0.28)' }}
-            >
+            <span className={cn('calc-choice-badge self-start relative z-[1]', sel && 'calc-choice-badge-active')}>
               {tag}
             </span>
           </button>
         )
       })}
 
-      <div
-        className="flex items-start gap-3 rounded-xl mt-1"
-        style={{ padding: '0.9rem 1.1rem', background: 'rgba(201,170,114,0.06)', border: '1px solid rgba(201,170,114,0.14)' }}
-      >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 mt-0.5" aria-hidden="true">
-          <circle cx="8" cy="8" r="7" stroke="#c9aa72" strokeWidth="1.2"/>
-          <path d="M8 7v4M8 5.5v.5" stroke="#c9aa72" strokeWidth="1.3" strokeLinecap="round"/>
+      <div className="calc-hint-box">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="calc-hint-icon" aria-hidden="true">
+          <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.2"/>
+          <path d="M8 7v4M8 5.5v.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
         </svg>
-        <p className="text-[0.78rem] leading-relaxed" style={{ color: 'rgba(201,170,114,0.85)' }}>
-          <strong className="font-normal" style={{ color: '#c9aa72' }}>Ausführung:</strong>{' '}
-          Alle Varianten werden mit Gira System 55 ausgeführt. Detailabstimmung erfolgt vor Ort.
+        <p className="calc-hint-text">
+          <strong>Ausführung:</strong> Alle Varianten werden mit Gira System 55 ausgeführt. Detailabstimmung erfolgt vor Ort.
         </p>
       </div>
     </div>

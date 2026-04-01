@@ -16,34 +16,71 @@ function BigStepper({
   onDecrement: () => void; onIncrement: () => void; min: number; max: number
 }) {
   return (
-    <div
-      className="flex items-center justify-between rounded-2xl"
-      style={{ padding: '1rem 1.25rem', border: '1.5px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}
-    >
-      <div>
-        <p className="text-[0.9rem] text-text-1">{label}</p>
-        {note && <p className="text-[0.68rem] mt-0.5" style={{ color: 'rgba(255,255,255,0.28)' }}>{note}</p>}
+    <div className="calc-choice-card px-4 py-4 md:px-5 md:py-4 flex items-center justify-between gap-4">
+      <div className="relative z-[1]">
+        <p className="text-[0.92rem] text-text-1">{label}</p>
+        {note && <p className="text-[0.68rem] mt-1" style={{ color: 'rgba(255,255,255,0.34)' }}>{note}</p>}
       </div>
-      <div className="flex items-center gap-3 shrink-0">
+      <div className="flex items-center gap-2 md:gap-3 shrink-0 relative z-[1]">
         <button
-          type="button" onClick={onDecrement} disabled={value <= min}
+          type="button"
+          onClick={onDecrement}
+          disabled={value <= min}
           aria-label={`${label} verringern`}
-          className="w-10 h-10 rounded-xl flex items-center justify-center disabled:opacity-25 disabled:cursor-not-allowed"
-          style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.65)', border: '1px solid rgba(255,255,255,0.08)', fontSize: '1.2rem', transition: 'background 0.15s' }}
-          onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.09)')}
-          onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.05)')}
+          className="w-11 h-11 rounded-2xl flex items-center justify-center disabled:opacity-25 disabled:cursor-not-allowed transition-all active:scale-[0.96]"
+          style={{
+            background: 'rgba(255,255,255,0.05)',
+            color: 'rgba(255,255,255,0.72)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            fontSize: '1.15rem',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.03)',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = 'rgba(201,170,114,0.12)'
+            e.currentTarget.style.borderColor = 'rgba(201,170,114,0.22)'
+            e.currentTarget.style.color = '#dfc28e'
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = 'rgba(255,255,255,0.05)'
+            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'
+            e.currentTarget.style.color = 'rgba(255,255,255,0.72)'
+          }}
         >−</button>
-        <span className="font-serif tabular-nums text-center min-w-[80px]"
-          style={{ fontSize: '1.4rem', color: '#ededeb', letterSpacing: '-0.02em' }}>
+        <span
+          className="font-serif tabular-nums text-center min-w-[84px] rounded-2xl px-3 py-2"
+          style={{
+            fontSize: '1.35rem',
+            color: '#ededeb',
+            letterSpacing: '-0.02em',
+            background: 'rgba(255,255,255,0.025)',
+            border: '1px solid rgba(255,255,255,0.05)',
+          }}
+        >
           {display}
         </span>
         <button
-          type="button" onClick={onIncrement} disabled={value >= max}
+          type="button"
+          onClick={onIncrement}
+          disabled={value >= max}
           aria-label={`${label} erhöhen`}
-          className="w-10 h-10 rounded-xl flex items-center justify-center disabled:opacity-25 disabled:cursor-not-allowed"
-          style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.65)', border: '1px solid rgba(255,255,255,0.08)', fontSize: '1.2rem', transition: 'background 0.15s' }}
-          onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.09)')}
-          onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.05)')}
+          className="w-11 h-11 rounded-2xl flex items-center justify-center disabled:opacity-25 disabled:cursor-not-allowed transition-all active:scale-[0.96]"
+          style={{
+            background: 'rgba(255,255,255,0.05)',
+            color: 'rgba(255,255,255,0.72)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            fontSize: '1.15rem',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.03)',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = 'rgba(201,170,114,0.12)'
+            e.currentTarget.style.borderColor = 'rgba(201,170,114,0.22)'
+            e.currentTarget.style.color = '#dfc28e'
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = 'rgba(255,255,255,0.05)'
+            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'
+            e.currentTarget.style.color = 'rgba(255,255,255,0.72)'
+          }}
         >+</button>
       </div>
     </div>
@@ -79,18 +116,13 @@ export function StepEckdaten({ m2, rooms, bathrooms, onM2Change, onRoomsChange, 
         min={1} max={6}
       />
 
-      {/* Kitchen/hallway notice — prominent block */}
-      <div
-        className="flex items-start gap-3 rounded-xl mt-1"
-        style={{ padding: '0.9rem 1.1rem', background: 'rgba(201,170,114,0.06)', border: '1px solid rgba(201,170,114,0.14)' }}
-      >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 mt-0.5" aria-hidden="true">
-          <circle cx="8" cy="8" r="7" stroke="#c9aa72" strokeWidth="1.2"/>
-          <path d="M8 7v4M8 5.5v.5" stroke="#c9aa72" strokeWidth="1.3" strokeLinecap="round"/>
+      <div className="calc-hint-box">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="calc-hint-icon" aria-hidden="true">
+          <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.2"/>
+          <path d="M8 7v4M8 5.5v.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
         </svg>
-        <p className="text-[0.78rem] leading-relaxed" style={{ color: 'rgba(201,170,114,0.85)' }}>
-          <strong className="font-normal" style={{ color: '#c9aa72' }}>Bitte nicht mitzählen:</strong>{' '}
-          Küche und Flur sind automatisch in der Kalkulation enthalten.
+        <p className="calc-hint-text">
+          <strong>Bitte nicht mitzählen:</strong> Küche und Flur sind automatisch in der Kalkulation enthalten.
         </p>
       </div>
     </div>

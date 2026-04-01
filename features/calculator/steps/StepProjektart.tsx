@@ -1,7 +1,8 @@
 'use client'
 
-import type { ProjektType } from '../types'
 import { DIRECT_ANFRAGE_TYPES } from '@/config/pricing'
+import { cn } from '@/lib/utils'
+import type { ProjektType } from '../types'
 
 interface Props {
   value: ProjektType | ''
@@ -10,12 +11,12 @@ interface Props {
 }
 
 const OPTIONS: { id: ProjektType; label: string; sub: string }[] = [
-  { id: 'neubau',           label: 'Neubau',                          sub: 'Komplette Elektroinstallation im Neubau' },
-  { id: 'altbau',           label: 'Altbau / Bestand',                sub: 'Erneuerung in einem bestehenden Gebäude' },
-  { id: 'komplettsanierung',label: 'Komplettsanierung',               sub: 'Komplette Erneuerung der gesamten Elektrik' },
-  { id: 'teilsanierung',    label: 'Teil-Erneuerung',                 sub: 'Einzelne Bereiche oder Leitungen nachrüsten' },
-  { id: 'zaehler',          label: 'Zählerschrank / Sicherungskasten',sub: 'Austausch oder Aufrüstung' },
-  { id: 'sonderfall',       label: 'Ich bin noch unsicher',           sub: 'Wir beraten Sie gerne persönlich' },
+  { id: 'neubau',            label: 'Neubau',                           sub: 'Komplette Elektroinstallation im Neubau' },
+  { id: 'altbau',            label: 'Altbau / Bestand',                 sub: 'Erneuerung in einem bestehenden Gebäude' },
+  { id: 'komplettsanierung', label: 'Komplettsanierung',                sub: 'Komplette Erneuerung der gesamten Elektrik' },
+  { id: 'teilsanierung',     label: 'Teil-Erneuerung',                  sub: 'Einzelne Bereiche oder Leitungen nachrüsten' },
+  { id: 'zaehler',           label: 'Zählerschrank / Sicherungskasten', sub: 'Austausch oder Aufrüstung' },
+  { id: 'sonderfall',        label: 'Ich bin noch unsicher',            sub: 'Wir beraten Sie gerne persönlich' },
 ]
 
 export function StepProjektart({ value, onChange, error }: Props) {
@@ -29,7 +30,7 @@ export function StepProjektart({ value, onChange, error }: Props) {
         </p>
       )}
       {OPTIONS.map(({ id, label, sub }) => {
-        const sel      = value === id
+        const sel = value === id
         const isDirect = DIRECT_ANFRAGE_TYPES.includes(id)
         return (
           <button
@@ -37,35 +38,34 @@ export function StepProjektart({ value, onChange, error }: Props) {
             type="button"
             onClick={() => onChange(id)}
             aria-pressed={sel}
-            className="flex items-center gap-4 text-left w-full rounded-xl
-                       transition-all duration-200"
-            style={{
-              padding: '1rem 1.25rem',
-              border: sel ? '2px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.07)',
-              background: sel ? 'rgba(201,170,114,0.07)' : 'rgba(255,255,255,0.02)',
-            }}
+            className={cn(
+              'calc-choice-card w-full px-4 py-4 flex items-center gap-4 text-left active:scale-[0.985]',
+              sel && 'calc-choice-card-selected',
+            )}
           >
-            {/* Radio */}
             <span
-              className="shrink-0 w-4 h-4 rounded-full flex items-center justify-center transition-all duration-200"
-              style={{
-                border: sel ? '2px solid #c9aa72' : '2px solid rgba(255,255,255,0.18)',
-                background: sel ? '#c9aa72' : 'transparent',
-              }}
-            >
-              {sel && <span className="block w-[6px] h-[6px] rounded-full" style={{ background: '#1a1400' }} />}
-            </span>
+              className={cn(
+                'calc-choice-indicator calc-radio-indicator relative z-[1]',
+                sel && 'calc-radio-indicator-selected',
+              )}
+              aria-hidden="true"
+            />
 
-            <div className="flex-1 min-w-0">
-              <p className="text-[0.9rem] text-text-1 leading-snug">{label}</p>
-              <p className="text-[0.72rem] mt-0.5 leading-snug" style={{ color: 'rgba(255,255,255,0.35)' }}>{sub}</p>
+            <div className="flex-1 min-w-0 relative z-[1]">
+              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                <p className="text-[0.92rem] text-text-1 leading-snug">{label}</p>
+                {sel && <span className="calc-choice-badge calc-choice-badge-active">Ausgewählt</span>}
+              </div>
+              <p
+                className="text-[0.73rem] leading-relaxed"
+                style={{ color: sel ? 'rgba(255,255,255,0.66)' : 'rgba(255,255,255,0.36)' }}
+              >
+                {sub}
+              </p>
             </div>
 
             {isDirect && (
-              <span
-                className="shrink-0 text-[0.6rem] font-medium tracking-wide rounded-full px-2 py-0.5"
-                style={{ color: 'rgba(201,170,114,0.8)', background: 'rgba(201,170,114,0.08)', border: '1px solid rgba(201,170,114,0.15)' }}
-              >
+              <span className={cn('calc-choice-badge relative z-[1]', sel && 'calc-choice-badge-active')}>
                 Anfrage
               </span>
             )}

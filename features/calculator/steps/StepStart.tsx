@@ -1,5 +1,6 @@
 'use client'
 
+import { cn } from '@/lib/utils'
 import type { StartMode } from '../types'
 
 interface Props {
@@ -41,39 +42,35 @@ export function StepStart({ value, onChange, error }: Props) {
             type="button"
             onClick={() => onChange(id)}
             aria-pressed={sel}
-            className="group flex items-center gap-5 text-left w-full rounded-2xl
-                       transition-all duration-200"
-            style={{
-              padding: '1.25rem 1.5rem',
-              border: sel ? '2px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.08)',
-              background: sel ? 'rgba(201,170,114,0.07)' : 'rgba(255,255,255,0.02)',
-            }}
+            className={cn(
+              'calc-choice-card w-full text-left px-5 py-5 flex items-center gap-4 md:gap-5 active:scale-[0.985]',
+              sel && 'calc-choice-card-selected',
+            )}
           >
-            {/* Radio dot */}
             <span
-              className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-all duration-200"
-              style={{
-                border: sel ? '2px solid #c9aa72' : '2px solid rgba(255,255,255,0.2)',
-                background: sel ? '#c9aa72' : 'transparent',
-              }}
-            >
-              {sel && <span className="block w-2 h-2 rounded-full" style={{ background: '#1a1400' }} />}
-            </span>
+              className={cn(
+                'calc-choice-indicator calc-radio-indicator',
+                sel && 'calc-radio-indicator-selected',
+              )}
+              aria-hidden="true"
+            />
 
-            {/* Text */}
-            <div className="flex-1 min-w-0">
-              <p className="text-[0.97rem] text-text-1 font-normal leading-snug mb-0.5">{label}</p>
-              <p className="text-[0.78rem] leading-relaxed" style={{ color: 'rgba(255,255,255,0.38)' }}>{sub}</p>
+            <div className="flex-1 min-w-0 relative z-[1]">
+              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                <p className="text-[0.98rem] text-text-1 font-normal leading-snug">{label}</p>
+                {sel && (
+                  <span className="calc-choice-badge calc-choice-badge-active">Ausgewählt</span>
+                )}
+              </div>
+              <p
+                className="text-[0.78rem] leading-relaxed transition-colors"
+                style={{ color: sel ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.42)' }}
+              >
+                {sub}
+              </p>
             </div>
 
-            {/* Time tag */}
-            <span
-              className="shrink-0 text-[0.65rem] font-medium tracking-wide rounded-full px-2.5 py-1"
-              style={{
-                color: sel ? '#c9aa72' : 'rgba(255,255,255,0.3)',
-                background: sel ? 'rgba(201,170,114,0.12)' : 'rgba(255,255,255,0.05)',
-              }}
-            >
+            <span className={cn('calc-choice-badge relative z-[1]', sel && 'calc-choice-badge-active')}>
               {tag}
             </span>
           </button>

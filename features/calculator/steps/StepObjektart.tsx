@@ -1,5 +1,6 @@
 'use client'
 
+import { cn } from '@/lib/utils'
 import type { ObjektType } from '../types'
 
 interface Props {
@@ -57,17 +58,31 @@ export function StepObjektart({ value, onChange, error }: Props) {
               type="button"
               onClick={() => onChange(id)}
               aria-pressed={sel}
-              className="flex flex-col items-center text-center rounded-2xl
-                         transition-all duration-200 py-8 px-4"
-              style={{
-                border: sel ? '2px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.08)',
-                background: sel ? 'rgba(201,170,114,0.07)' : 'rgba(255,255,255,0.02)',
-                color: sel ? '#c9aa72' : 'rgba(255,255,255,0.45)',
-              }}
+              className={cn(
+                'calc-choice-card min-h-[210px] px-4 py-5 flex flex-col items-center text-center justify-between active:scale-[0.985]',
+                sel && 'calc-choice-card-selected',
+              )}
             >
-              <span className="mb-3 transition-colors duration-200">{icon}</span>
-              <p className="text-[1rem] font-normal mb-1" style={{ color: sel ? '#ededeb' : '#ededeb' }}>{label}</p>
-              <p className="text-[0.72rem] leading-snug" style={{ color: 'rgba(255,255,255,0.35)' }}>{sub}</p>
+              <span className={cn('calc-choice-badge self-end relative z-[1]', sel && 'calc-choice-badge-active')}>
+                {sel ? 'Aktiv' : 'Wählen'}
+              </span>
+
+              <span
+                className="mb-2 transition-all duration-200 relative z-[1]"
+                style={{ color: sel ? '#dfc28e' : 'rgba(255,255,255,0.42)', transform: sel ? 'scale(1.05)' : 'scale(1)' }}
+              >
+                {icon}
+              </span>
+
+              <div className="relative z-[1]">
+                <p className="text-[1rem] font-normal mb-1 text-text-1">{label}</p>
+                <p
+                  className="text-[0.72rem] leading-relaxed"
+                  style={{ color: sel ? 'rgba(255,255,255,0.66)' : 'rgba(255,255,255,0.36)' }}
+                >
+                  {sub}
+                </p>
+              </div>
             </button>
           )
         })}

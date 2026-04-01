@@ -1,6 +1,7 @@
 'use client'
 
 import { ADD_ON_MODULES } from '@/config/pricing'
+import { cn } from '@/lib/utils'
 
 interface Props {
   selected: string[]
@@ -50,72 +51,65 @@ export function StepZusatzmodule({ selected, onToggle }: Props) {
               type="button"
               onClick={() => onToggle(mod.id)}
               aria-pressed={sel}
-              className="flex flex-col items-start text-left rounded-2xl p-4 transition-all duration-200 relative active:scale-[0.985]"
-              style={{
-                border: sel ? '2px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.08)',
-                background: sel ? 'rgba(201,170,114,0.09)' : 'rgba(255,255,255,0.02)',
-                boxShadow: sel ? '0 0 0 1px rgba(201,170,114,0.08), 0 10px 28px rgba(0,0,0,0.22)' : 'none',
-                transform: sel ? 'translateY(-1px)' : 'translateY(0)',
-              }}
+              className={cn(
+                'calc-choice-card min-h-[172px] px-4 py-4 flex flex-col items-start text-left justify-between active:scale-[0.985]',
+                sel && 'calc-choice-card-selected',
+              )}
             >
-              {/* Checkmark top-right */}
-              <span
-                className="absolute top-3 right-3 w-4 h-4 rounded flex items-center justify-center transition-all duration-200"
-                style={{
-                  border: sel ? '1.5px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.15)',
-                  background: sel ? '#c9aa72' : 'transparent',
-                }}
-              >
-                {sel && (
-                  <svg width="8" height="6" viewBox="0 0 8 6" fill="none" aria-hidden="true">
-                    <path d="M1 3l2 2 4-4" stroke="#1a1400" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                )}
-              </span>
-
-              {/* Icon */}
-              <span
-                className="mb-3 transition-colors duration-200"
-                style={{ color: sel ? '#c9aa72' : 'rgba(255,255,255,0.35)' }}
-              >
-                {ICONS[mod.id]}
-              </span>
-
-              <div className="flex items-start justify-between gap-3 w-full mb-1">
-                <p className="text-[0.85rem] text-text-1 leading-snug pr-4">{mod.label}</p>
+              <div className="w-full flex items-start justify-between gap-3 relative z-[1]">
                 <span
-                  className="shrink-0 text-[0.62rem] uppercase tracking-[0.14em] rounded-full px-2 py-1 transition-all duration-200"
+                  className="w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-200"
                   style={{
-                    color: sel ? '#c9aa72' : 'rgba(255,255,255,0.26)',
-                    background: sel ? 'rgba(201,170,114,0.12)' : 'rgba(255,255,255,0.03)',
-                    border: sel ? '1px solid rgba(201,170,114,0.22)' : '1px solid rgba(255,255,255,0.06)',
+                    background: sel ? 'rgba(201,170,114,0.14)' : 'rgba(255,255,255,0.04)',
+                    border: sel ? '1px solid rgba(201,170,114,0.22)' : '1px solid rgba(255,255,255,0.05)',
+                    color: sel ? '#dfc28e' : 'rgba(255,255,255,0.4)',
+                    boxShadow: sel ? '0 12px 26px rgba(0,0,0,0.18)' : 'none',
                   }}
                 >
-                  {sel ? 'Aktiv' : 'Optional'}
+                  {ICONS[mod.id]}
+                </span>
+
+                <span
+                  className={cn(
+                    'calc-choice-indicator calc-check-indicator',
+                    sel && 'calc-check-indicator-selected',
+                  )}
+                  aria-hidden="true"
+                >
+                  {sel && (
+                    <svg width="8" height="6" viewBox="0 0 8 6" fill="none" aria-hidden="true">
+                      <path d="M1 3l2 2 4-4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  )}
                 </span>
               </div>
 
-              {/* Price */}
-              {mod.price > 0 && (
-                <p className="text-[0.7rem]" style={{ color: 'rgba(255,255,255,0.35)' }}>
-                  + ca. {mod.price.toLocaleString('de-DE')} €
-                </p>
-              )}
+              <div className="w-full relative z-[1]">
+                <div className="flex items-start justify-between gap-2 w-full mb-2 flex-wrap">
+                  <p className="text-[0.9rem] text-text-1 leading-snug pr-2">{mod.label}</p>
+                  <span className={cn('calc-choice-badge', sel && 'calc-choice-badge-active')}>
+                    {sel ? 'Aktiv' : 'Optional'}
+                  </span>
+                </div>
+
+                {mod.price > 0 && (
+                  <p className="text-[0.72rem]" style={{ color: sel ? 'rgba(255,255,255,0.66)' : 'rgba(255,255,255,0.38)' }}>
+                    + ca. {mod.price.toLocaleString('de-DE')} €
+                  </p>
+                )}
+              </div>
             </button>
           )
         })}
       </div>
-      <div
-        className="flex items-start gap-3 rounded-xl mt-1"
-        style={{ padding: '0.9rem 1.1rem', background: 'rgba(201,170,114,0.06)', border: '1px solid rgba(201,170,114,0.14)' }}
-      >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 mt-0.5" aria-hidden="true">
-          <circle cx="8" cy="8" r="7" stroke="#c9aa72" strokeWidth="1.2"/>
-          <path d="M8 7v4M8 5.5v.5" stroke="#c9aa72" strokeWidth="1.3" strokeLinecap="round"/>
+
+      <div className="calc-hint-box">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="calc-hint-icon" aria-hidden="true">
+          <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.2"/>
+          <path d="M8 7v4M8 5.5v.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
         </svg>
-        <p className="text-[0.78rem] leading-relaxed" style={{ color: 'rgba(201,170,114,0.85)' }}>
-          <strong className="font-normal" style={{ color: '#c9aa72' }}>Mehrfachauswahl möglich:</strong>{' '}
-          Wählen Sie nur, was zusätzlich gewünscht ist. Nicht ausgewählte Punkte werden nicht mitgerechnet.
+        <p className="calc-hint-text">
+          <strong>Mehrfachauswahl möglich:</strong> Wählen Sie nur, was zusätzlich gewünscht ist. Nicht ausgewählte Punkte werden nicht mitgerechnet.
         </p>
       </div>
     </div>

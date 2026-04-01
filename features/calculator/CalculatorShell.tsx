@@ -1,31 +1,41 @@
 'use client'
 
-import { useRef, useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { cn } from '@/lib/utils'
 import { useCalculator } from './hooks/useCalculator'
-import { STEPS } from './types'
-import { StepStart }         from './steps/StepStart'
-import { StepObjektart }     from './steps/StepObjektart'
-import { StepProjektart }    from './steps/StepProjektart'
-import { StepEckdaten }      from './steps/StepEckdaten'
-import { StepZusatzmodule }  from './steps/StepZusatzmodule'
-import { StepQualitaet }     from './steps/StepQualitaet'
-import { StepRaumeditor }    from './steps/StepRaumeditor'
-import { StepErgebnis }      from './steps/StepErgebnis'
+import { StepStart } from './steps/StepStart'
+import { StepObjektart } from './steps/StepObjektart'
+import { StepProjektart } from './steps/StepProjektart'
+import { StepEckdaten } from './steps/StepEckdaten'
+import { StepZusatzmodule } from './steps/StepZusatzmodule'
+import { StepQualitaet } from './steps/StepQualitaet'
+import { StepRaumeditor } from './steps/StepRaumeditor'
+import { StepErgebnis } from './steps/StepErgebnis'
 import { StepDirektanfrage } from './steps/StepDirektanfrage'
 
+const STEPS = [
+  { id: 'start', label: 'Start', index: 0 },
+  { id: 'objektart', label: 'Objekt', index: 1 },
+  { id: 'projektart', label: 'Projekt', index: 2 },
+  { id: 'eckdaten', label: 'Eckdaten', index: 3 },
+  { id: 'zusatzmodule', label: 'Extras', index: 4 },
+  { id: 'qualitaet', label: 'Qualität', index: 5 },
+  { id: 'raumeditor', label: 'Räume', index: 6 },
+  { id: 'ergebnis', label: 'Ergebnis', index: 7 },
+] as const
+
 const STEP_META: Record<string, { title: string; hint?: string }> = {
-  start:         { title: 'Wie möchten Sie starten?',              hint: 'Dauert weniger als 2 Minuten.' },
-  objektart:     { title: 'Was für ein Objekt ist es?',            hint: 'Wohnung oder Haus – das beeinflusst die Grundkalkulation.' },
-  projektart:    { title: 'Was planen Sie?',                       hint: 'Wählen Sie das, was am ehesten passt.' },
-  eckdaten:      { title: 'Wie groß ist das Objekt?',              hint: 'Ungefähre Angaben reichen völlig aus.' },
-  zusatzmodule:  { title: 'Welche Extras kommen dazu?',            hint: 'Nur auswählen, was Sie wirklich wollen.' },
-  qualitaet:     { title: 'Wie viel Ausstattung soll es sein?',    hint: 'Mehr Ausstattung = mehr Steckdosen und Schalter pro Raum.' },
-  raumeditor:    { title: 'Jeden Raum individuell einstellen',     hint: 'Passen Sie nur an, was von der Voreinstellung abweicht.' },
-  ergebnis:      { title: 'Ihre erste Kostenschätzung',            hint: undefined },
-  direktanfrage: { title: 'Persönliche Beratung',                  hint: undefined },
+  start:         { title: 'Wie möchten Sie starten?', hint: 'Wählen Sie die passende Tiefe für Ihre Einschätzung.' },
+  objektart:     { title: 'Welches Objekt möchten Sie einschätzen?', hint: 'Die Objektart beeinflusst typische Verteilungen und Installationsaufwand.' },
+  projektart:    { title: 'Um welche Art von Projekt geht es?', hint: 'Wählen Sie den Fall, der Ihrem Vorhaben am nächsten kommt.' },
+  eckdaten:      { title: 'Ein paar Eckdaten zu Ihrem Projekt', hint: 'So entsteht eine erste belastbare Größenordnung.' },
+  zusatzmodule:  { title: 'Welche Extras sollen berücksichtigt werden?', hint: 'Nur auswählen, wenn diese Punkte wirklich gewünscht sind.' },
+  qualitaet:     { title: 'Welche Ausstattungsqualität wünschen Sie?', hint: 'Die Qualität beeinflusst Umfang und Komfort der Basisausstattung.' },
+  raumeditor:    { title: 'Räume individuell anpassen', hint: 'Hier können Sie Zusatzpunkte pro Raum feiner einstellen.' },
+  ergebnis:      { title: 'Ihre erste Kosteneinschätzung', hint: 'Dies ist eine strukturierte Orientierung – kein finales Angebot.' },
+  direktanfrage: { title: 'Kurze Anfrage stellen', hint: 'Für diesen Fall ist eine direkte Rückmeldung sinnvoller als eine Pauschalkalkulation.' },
 }
 
-// ── Subtle fade + slide transition ─────────────────────────────
 function FadeStep({ id, children }: { id: string; children: React.ReactNode }) {
   const [current, setCurrent] = useState({ id, children })
   const [phase, setPhase] = useState<'idle' | 'out' | 'in'>('idle')
@@ -39,24 +49,24 @@ function FadeStep({ id, children }: { id: string; children: React.ReactNode }) {
     t.current = setTimeout(() => {
       setCurrent({ id, children })
       setPhase('in')
-      t.current = setTimeout(() => setPhase('idle'), 220)
-    }, 140)
+      t.current = setTimeout(() => setPhase('idle'), 260)
+    }, 150)
 
     return () => { if (t.current) clearTimeout(t.current) }
   }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const style =
     phase === 'out'
-      ? { opacity: 0, transform: 'translateY(8px)' }
+      ? { opacity: 0, transform: 'translateY(12px) scale(0.992)' }
       : phase === 'in'
-      ? { opacity: 1, transform: 'translateY(0)' }
-      : { opacity: 1, transform: 'translateY(0)' }
+      ? { opacity: 1, transform: 'translateY(0) scale(1)' }
+      : { opacity: 1, transform: 'translateY(0) scale(1)' }
 
   return (
     <div
       style={{
         ...style,
-        transition: 'opacity 0.2s ease, transform 0.22s ease',
+        transition: 'opacity 0.24s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)',
         willChange: 'opacity, transform',
       }}
     >
@@ -65,7 +75,6 @@ function FadeStep({ id, children }: { id: string; children: React.ReactNode }) {
   )
 }
 
-// ── Progress bar ─────────────────────────────────────────────
 function ProgressBar({ steps, currentIndex }: { steps: typeof STEPS; currentIndex: number }) {
   return (
     <div className="mb-8">
@@ -103,15 +112,14 @@ function ProgressBar({ steps, currentIndex }: { steps: typeof STEPS; currentInde
   )
 }
 
-// ── Main shell ────────────────────────────────────────────────
 export function CalculatorShell() {
   const calc = useCalculator()
   const { state, currentStepMeta, validationError } = calc
 
   const isDirektanfrage = state.currentStep === 'direktanfrage'
-  const isTerminalStep  = isDirektanfrage || state.currentStep === 'ergebnis'
-  const showNav         = !isTerminalStep
-  const showBack        = showNav && state.currentStep !== 'start'
+  const isTerminalStep = isDirektanfrage || state.currentStep === 'ergebnis'
+  const showNav = !isTerminalStep
+  const showBack = showNav && state.currentStep !== 'start'
 
   const meta = STEP_META[state.currentStep] ?? { title: '' }
 
@@ -128,8 +136,12 @@ export function CalculatorShell() {
       )}
       {state.currentStep === 'eckdaten' && (
         <StepEckdaten
-          m2={state.m2} rooms={state.rooms} bathrooms={state.bathrooms}
-          onM2Change={calc.setM2} onRoomsChange={calc.setRooms} onBathroomsChange={calc.setBathrooms}
+          m2={state.m2}
+          rooms={state.rooms}
+          bathrooms={state.bathrooms}
+          onM2Change={calc.setM2}
+          onRoomsChange={calc.setRooms}
+          onBathroomsChange={calc.setBathrooms}
         />
       )}
       {state.currentStep === 'zusatzmodule' && (
@@ -140,8 +152,10 @@ export function CalculatorShell() {
       )}
       {state.currentStep === 'raumeditor' && (
         <StepRaumeditor
-          roomConfigs={state.roomConfigs} addOns={state.addOns}
-          qualitaet={state.qualitaet} onUpdate={calc.updateRoomConfig}
+          roomConfigs={state.roomConfigs}
+          addOns={state.addOns}
+          qualitaet={state.qualitaet}
+          onUpdate={calc.updateRoomConfig}
         />
       )}
       {state.currentStep === 'ergebnis' && <StepErgebnis state={state} />}
@@ -152,82 +166,100 @@ export function CalculatorShell() {
   )
 
   return (
-    <div className="max-w-[600px] mx-auto px-4 md:px-0 py-12 md:py-20">
+    <div className="max-w-[640px] mx-auto px-4 md:px-0 py-12 md:py-20">
+      {!isDirektanfrage && <ProgressBar steps={STEPS} currentIndex={currentStepMeta.index} />}
 
-      {/* Progress — stable, never fades */}
-      {!isDirektanfrage && (
-        <ProgressBar steps={STEPS} currentIndex={currentStepMeta.index} />
-      )}
+      <div className="calc-shell-panel rounded-[28px] px-4 py-5 md:px-6 md:py-6">
+        <FadeStep id={`title-${state.currentStep}`}>
+          <div className="mb-7 relative z-[1]">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="calc-choice-badge calc-choice-badge-active">Schritt {currentStepMeta.index + 1}</span>
+              {!isDirektanfrage && <span className="calc-choice-badge">Kostenrechner</span>}
+            </div>
+            <h1
+              className="font-serif text-text-1 leading-tight mb-2"
+              style={{ fontSize: 'clamp(1.55rem, 4vw, 2.2rem)', letterSpacing: '-0.03em' }}
+            >
+              {meta.title}
+            </h1>
+            {meta.hint && (
+              <p className="text-[0.84rem] leading-relaxed max-w-[48ch]" style={{ color: 'rgba(255,255,255,0.46)' }}>
+                {meta.hint}
+              </p>
+            )}
+          </div>
+        </FadeStep>
 
-      {/* Title — fades independently */}
-      <FadeStep id={`title-${state.currentStep}`}>
-        <div className="mb-7">
-          <h1
-            className="font-serif text-text-1 leading-tight mb-2"
-            style={{ fontSize: 'clamp(1.5rem, 4vw, 2.1rem)', letterSpacing: '-0.025em' }}
-          >
-            {meta.title}
-          </h1>
-          {meta.hint && (
-            <p className="text-[0.82rem] leading-relaxed" style={{ color: 'rgba(255,255,255,0.38)' }}>
-              {meta.hint}
-            </p>
-          )}
-        </div>
-      </FadeStep>
+        <FadeStep id={state.currentStep}>
+          <div className="mb-8 relative z-[1]">{stepContent}</div>
+        </FadeStep>
 
-      {/* Step content — fades independently */}
-      <FadeStep id={state.currentStep}>
-        <div className="mb-8">{stepContent}</div>
-      </FadeStep>
+        {showNav && (
+          <div className="flex items-center gap-3 relative z-[1]">
+            {showBack ? (
+              <button
+                type="button"
+                onClick={calc.back}
+                className="font-sans cursor-pointer bg-transparent rounded-2xl transition-all text-[0.85rem] flex items-center gap-2 py-3 px-4 min-h-[48px] border active:scale-[0.98]"
+                style={{
+                  color: 'rgba(255,255,255,0.62)',
+                  borderColor: 'rgba(255,255,255,0.08)',
+                  background: 'rgba(255,255,255,0.02)',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.color = 'rgba(255,255,255,0.9)'
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.14)'
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.04)'
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.color = 'rgba(255,255,255,0.62)'
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.02)'
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Zurück
+              </button>
+            ) : <div />}
 
-      {/* Nav — stable, no animation */}
-      {showNav && (
-        <div className="flex items-center gap-3">
-          {showBack ? (
             <button
               type="button"
-              onClick={calc.back}
-              className="font-sans cursor-pointer bg-transparent border-none
-                         transition-colors text-[0.85rem] flex items-center gap-1.5
-                         py-3 pl-0 pr-4 min-h-[48px]"
-              style={{ color: 'rgba(255,255,255,0.35)' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.75)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.35)')}
+              onClick={calc.next}
+              className={cn(
+                'ml-auto flex items-center gap-2 font-sans cursor-pointer font-medium text-[0.9rem] px-7 rounded-2xl min-h-[54px] active:scale-[0.97] border-none',
+                'shadow-[0_18px_34px_rgba(0,0,0,0.22)]',
+              )}
+              style={{
+                background: 'linear-gradient(180deg, #dfc28e 0%, #c9aa72 100%)',
+                color: '#1a1400',
+                transition: 'opacity 0.15s ease, transform 0.1s ease, box-shadow 0.18s ease',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.opacity = '0.94'
+                e.currentTarget.style.boxShadow = '0 22px 40px rgba(0,0,0,0.28)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.opacity = '1'
+                e.currentTarget.style.boxShadow = '0 18px 34px rgba(0,0,0,0.22)'
+              }}
             >
+              Weiter
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              Zurück
             </button>
-          ) : <div />}
+          </div>
+        )}
+      </div>
 
-          <button
-            type="button"
-            onClick={calc.next}
-            className="ml-auto flex items-center gap-2 font-sans cursor-pointer border-none
-                       font-medium text-[0.9rem] px-7 rounded-xl min-h-[52px]
-                       active:scale-[0.97]"
-            style={{ background: '#c9aa72', color: '#1a1400', transition: 'opacity 0.15s ease, transform 0.1s ease' }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = '0.88')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-          >
-            Weiter
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
-        </div>
-      )}
-
-      {/* Reset */}
       {isTerminalStep && (
         <div className="text-center mt-8">
           <button
             type="button"
             onClick={calc.reset}
-            className="text-[0.75rem] transition-colors bg-transparent border-none
-                       cursor-pointer font-sans"
+            className="text-[0.75rem] transition-colors bg-transparent border-none cursor-pointer font-sans"
             style={{ color: 'rgba(255,255,255,0.25)' }}
             onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
             onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.25)')}
