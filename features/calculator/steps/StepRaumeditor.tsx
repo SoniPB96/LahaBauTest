@@ -139,15 +139,15 @@ function RoomCard({
           {showLan && (
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-[0.82rem] text-text-2">Netzwerkdosen</p>
-                <p className="text-[0.68rem] text-text-4">Anzahl Datendosen (RJ45)</p>
+                <p className="text-[0.82rem] text-text-2">Netzwerkanschlüsse</p>
+                <p className="text-[0.68rem] text-text-4">Anzahl Punkte (einfach/doppelt wird vor Ort festgelegt)</p>
               </div>
               <Stepper
                 value={rc.lan}
                 onDecrement={() => onUpdate({ lan: Math.max(0, rc.lan - 1) })}
                 onIncrement={() => onUpdate({ lan: rc.lan + 1 })}
                 max={8}
-                label={`Netzwerkdosen in ${rc.label}`}
+                label={`Netzwerkanschlüsse in ${rc.label}`}
               />
             </div>
           )}

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { SectionContainer, SectionHeader } from '@/components/ui/SectionContainer'
 import { AnfrageForm } from './AnfrageForm'
 
@@ -117,7 +118,9 @@ export default function AnfragePage() {
         </div>
 
         {/* Right column – form */}
-        <AnfrageForm />
+        <Suspense fallback={<div className="bg-bg-2 rounded-lg p-8" style={{border:'1px solid rgba(255,255,255,0.06)',minHeight:'400px'}} />}>
+          <AnfrageForm />
+        </Suspense>
       </div>
     </SectionContainer>
   )
