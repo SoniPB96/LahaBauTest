@@ -6,25 +6,30 @@
    ================================================ */
 
 :root {
-  /* Hintergründe */
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #141414;
-  --bg-tertiary: #1a1a1a;
-  --bg-card: #111111;
-  --bg-card-hover: #161616;
+  /* Hintergründe — echte Tiefe, deutliche Abstufung */
+  --bg-primary: #0c0b09;        /* sehr tiefes Warm-Schwarz */
+  --bg-secondary: #131109;      /* leicht warmer Ton, sichtbar abgesetzt */
+  --bg-tertiary: #1c1a13;       /* Inputs, Chips, inaktive Elemente */
+  --bg-card: #181610;           /* Karten-Hintergrund */
+  --bg-card-hover: #221f16;     /* Karten hover — merklich heller */
 
-  /* Rahmen */
-  --border-primary: rgba(255, 255, 255, 0.08);
-  --border-secondary: rgba(255, 255, 255, 0.06);
+  /* Rahmen — sichtbar, nicht versteckt */
+  --border-primary: rgba(245, 158, 11, 0.18);
+  --border-secondary: rgba(245, 158, 11, 0.10);
 
   /* Text */
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
-  --text-tertiary: #707070;
+  --text-primary: #f5f0e8;
+  --text-secondary: #a89880;
+  --text-tertiary: #6b5e4e;
+  --text-soft: #d4c9b8;
 
-  /* Akzente */
-  --accent-primary: #ffffff;
-  --accent-secondary: #f5f5f5;
+  /* Akzente — Amber / elektrisches Gold */
+  --accent-primary: #F59E0B;
+  --accent-secondary: #FBBF24;
+  --accent-deep: #B45309;
+  --accent-glow: rgba(245, 158, 11, 0.35);
+  --accent-subtle: rgba(245, 158, 11, 0.08);
+  --accent-text: #F59E0B;
 
   /* Abstände */
   --spacing-xs: 0.5rem;
@@ -35,15 +40,14 @@
   --spacing-2xl: 4rem;
   --spacing-3xl: 6rem;
 
-  /* Radien */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  /* Radien — moderner, etwas größer */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
 
-  /* Erweiterte Tokens (neues Design-System) */
-  --glass-border: rgba(255, 255, 255, 0.11);
-  --text-soft: #d6d8de;
-  --gold: #bfa166;
+  /* Legacy / Kompatibilität */
+  --glass-border: rgba(245, 158, 11, 0.14);
+  --gold: #F59E0B;
   --silver: #9da8b6;
   --blue: #6d8dff;
   --violet: #8d74ff;

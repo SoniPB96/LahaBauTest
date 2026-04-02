@@ -2,16 +2,6 @@
    LAYOUT
    Strukturelle Klassen: Header, Navigation, Footer,
    Container, App-Wrapper.
-   Sections → sections.css
-   UI-Elemente/Buttons/Cards → components.css
-   Rechner → calculator.css / modern-calculator.css
-   ================================================ */
-
-/* ================================================
-   LAYOUT & KOMPONENTEN
-   Styles für Header, Footer, Hero, alle Sections
-   und wiederverwendbare UI-Elemente.
-   Der Rechner hat seine eigene Datei.
    ================================================ */
 
 /* ===== HEADER ===== */
@@ -19,10 +9,10 @@
   position: sticky;
   top: 0;
   z-index: 60;
-  background: rgba(8, 9, 12, 0.62);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(12, 11, 9, 0.75);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .header-inner {
@@ -68,7 +58,7 @@
   position: absolute;
   bottom: 0;
   width: 2px;
-  background: rgba(255, 255, 255, 0.96);
+  background: var(--accent-primary);
   border-radius: 2px;
 }
 .logo-bar.b1 { left: 2px; height: 20px; }
@@ -80,7 +70,7 @@
   position: absolute;
   width: 8px;
   height: 2px;
-  background: rgba(255, 255, 255, 0.96);
+  background: var(--accent-primary);
   transform: rotate(-55deg);
   border-radius: 2px;
   transform-origin: left center;
@@ -92,7 +82,7 @@
 .logo-icon {
   width: 32px;
   height: 32px;
-  background: var(--bg-tertiary);
+  background: var(--accent-subtle);
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -108,7 +98,7 @@
 
 .logo-bars span {
   width: 3px;
-  background: var(--text-primary);
+  background: var(--accent-primary);
   border-radius: 2px;
 }
 .logo-bars span:nth-child(1) { height: 8px; }
@@ -132,10 +122,11 @@
 }
 
 .brand-name {
+  font-family: 'DM Sans', sans-serif;
   font-size: 1.72rem;
   font-weight: 900;
   letter-spacing: 0.06em;
-  color: #ffffff;
+  color: var(--text-primary);
   line-height: 0.95;
   text-transform: uppercase;
 }
@@ -149,17 +140,17 @@
 .brand-sub,
 .logo-subtitle {
   margin-top: 6px;
-  font-size: 0.70rem;
+  font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.28em;
-  color: #8b8f9d;
+  color: var(--text-tertiary);
 }
 
 /* ===== NAVIGATION ===== */
 .nav {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 6px;
 }
 
 .nav button,
@@ -172,20 +163,38 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   text-decoration: none;
 }
 
 .nav button:hover,
 .nav a:hover {
   color: var(--text-primary);
-  background: var(--bg-tertiary);
+  background: var(--accent-subtle);
 }
 
 .nav button.active,
 .nav a.active {
-  color: var(--text-primary);
-  background: var(--bg-tertiary);
+  color: var(--accent-secondary);
+  background: var(--accent-subtle);
+  border: 1px solid var(--border-primary);
+}
+
+/* Header CTA Button */
+.nav .cta-button,
+.desktop-cta .cta-button {
+  background: var(--accent-primary);
+  color: #0c0b09;
+  font-weight: 700;
+  box-shadow: 0 3px 12px var(--accent-glow);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 1.25rem;
+}
+.nav .cta-button:hover,
+.desktop-cta .cta-button:hover {
+  background: var(--accent-secondary);
+  box-shadow: 0 6px 20px var(--accent-glow);
+  transform: translateY(-1px);
 }
 
 .desktop-nav,
@@ -195,13 +204,13 @@
 
 .menu-toggle {
   display: none;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .mobile-menu {
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(8, 9, 12, 0.88);
-  backdrop-filter: blur(18px);
+  border-top: 1px solid var(--border-primary);
+  background: rgba(12, 11, 9, 0.95);
+  backdrop-filter: blur(20px);
 }
 
 .mobile-menu-inner {
@@ -212,7 +221,7 @@
 
 .mobile-menu-inner button {
   text-align: left;
-  color: #fff;
+  color: var(--text-primary);
   padding: 8px 0;
 }
 
@@ -248,10 +257,12 @@
   gap: 2rem;
 }
 .footer-links h4 {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
   margin-bottom: 1rem;
-  color: var(--text-primary);
+  color: var(--accent-text);
 }
 .footer-links button,
 .footer-links a {
@@ -268,14 +279,14 @@
 }
 .footer-links button:hover,
 .footer-links a:hover {
-  color: var(--text-primary);
+  color: var(--accent-secondary);
 }
 
 .footer-bottom {
   max-width: 1400px;
   margin: 0 auto;
   padding-top: var(--spacing-lg);
-  border-top: 1px solid var(--border-primary);
+  border-top: 1px solid var(--border-secondary);
   text-align: center;
 }
 .footer-bottom p {
@@ -313,7 +324,7 @@
   .brand-sub { font-size: 0.62rem; letter-spacing: 0.2em; }
   .hero-copy h1,
   .page-title { font-size: clamp(2rem, 8vw, 3rem); max-width: 100%; }
-  .hero-subheadline { font-size: 1.1rem; }
+  .hero-subheadline { font-size: 1.05rem; }
   .button-row,
   .request-actions { display: grid; grid-template-columns: 1fr; }
 }
