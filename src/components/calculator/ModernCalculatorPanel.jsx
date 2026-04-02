@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import './modern-calculator.css';
 import {
   Home,
   Building2,
@@ -54,6 +55,9 @@ function ModernCalculatorPanel({ onOpenRequestPage, onClose }) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(calculatorConfig.defaults);
   const [stepError, setStepError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const result = useMemo(() => estimatePrice(form), [form]);
   const wizardLabels = useMemo(() => getWizardLabelsForFlow(form), [form]);
@@ -97,6 +101,44 @@ function ModernCalculatorPanel({ onOpenRequestPage, onClose }) {
     if (previous !== step) setStep(previous);
   };
 
+  const handleSubmit = async () => {
+    const error = validateStep(step, form);
+    if (error) {
+      setStepError(error);
+      return;
+    }
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "estimator",
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          city: form.zip,
+          message: form.message,
+          estimator: {
+            objectType: form.objectType,
+            sqm: form.sqm,
+            packageType: form.packageType,
+            low: result.low,
+            high: result.high,
+          },
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Unbekannter Fehler");
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError("Anfrage konnte nicht gesendet werden. Bitte ruf uns direkt an oder schreib per WhatsApp.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const renderBooleanCard = (field) => (
     <button
       key={field.key}
@@ -136,6 +178,25 @@ function ModernCalculatorPanel({ onOpenRequestPage, onClose }) {
       </div>
     </div>
   );
+
+  if (submitted) {
+    return (
+      <div className="modern-calculator">
+        <div className="calc-content" style={{ textAlign: "center", padding: "3rem 1rem" }}>
+          <Check size={48} style={{ color: "var(--green)", margin: "0 auto 1.5rem" }} />
+          <h2 className="calc-step-title">Anfrage gesendet!</h2>
+          <p style={{ color: "var(--text-soft)", marginTop: "1rem" }}>
+            Wir melden uns innerhalb von 24 Stunden bei dir zurück.
+          </p>
+          {onClose && (
+            <button onClick={onClose} className="calc-btn calc-btn-primary" style={{ marginTop: "2rem" }}>
+              Zurück zur Startseite
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="modern-calculator">
@@ -412,20 +473,17 @@ function ModernCalculatorPanel({ onOpenRequestPage, onClose }) {
         </button>
 
         {step === totalSteps ? (
-          <button
-            onClick={() => {
-              const error = validateStep(step, form);
-              if (error) {
-                setStepError(error);
-                return;
-              }
-              onOpenRequestPage();
-            }}
-            className="calc-btn calc-btn-primary"
-          >
-            Anfrage absenden
-            <Check size={18} />
-          </button>
+          <>
+            {submitError && <div className="calc-error" style={{ marginBottom: "0.75rem" }}>{submitError}</div>}
+            <button
+              onClick={handleSubmit}
+              disabled={submitting}
+              className="calc-btn calc-btn-primary"
+            >
+              {submitting ? "Wird gesendet…" : "Anfrage absenden"}
+              {!submitting && <Check size={18} />}
+            </button>
+          </>
         ) : (
           <button onClick={nextStep} className="calc-btn calc-btn-primary">
             Weiter

@@ -1,28 +1,33 @@
 import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { siteConfig } from '../../config/siteConfig';
 import Logo from './Logo';
 
-function Header({ activeSection, scrollToSection }) {
+function Header() {
+  const navigate = useNavigate();
+
   return (
     <header className="header">
       <div className="header-container">
-        <Logo />
+        <NavLink to="/" style={{ textDecoration: 'none' }}>
+          <Logo />
+        </NavLink>
 
         <nav className="nav">
           {siteConfig.navigation.items.map((item) => (
-            <button
+            <NavLink
               key={item.key}
-              onClick={() => scrollToSection(item.key)}
-              className={activeSection === item.key ? 'active' : ''}
+              to={item.path}
+              className={({ isActive }) => isActive ? 'active' : ''}
             >
               {item.label}
-            </button>
+            </NavLink>
           ))}
         </nav>
 
-        <button 
+        <button
           className="cta-button"
-          onClick={() => scrollToSection('anfrage')}
+          onClick={() => navigate('/kontakt')}
         >
           {siteConfig.navigation.ctaLabel}
         </button>

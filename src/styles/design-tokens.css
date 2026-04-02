@@ -1,0 +1,51 @@
+/* ================================================
+   DESIGN TOKENS
+   Alle CSS-Variablen des Projekts.
+   Nur diese Datei muss geändert werden, um
+   Farben, Abstände oder Radien anzupassen.
+   ================================================ */
+
+:root {
+  /* Hintergründe */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #141414;
+  --bg-tertiary: #1a1a1a;
+  --bg-card: #111111;
+  --bg-card-hover: #161616;
+
+  /* Rahmen */
+  --border-primary: rgba(255, 255, 255, 0.08);
+  --border-secondary: rgba(255, 255, 255, 0.06);
+
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-tertiary: #707070;
+
+  /* Akzente */
+  --accent-primary: #ffffff;
+  --accent-secondary: #f5f5f5;
+
+  /* Abstände */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-2xl: 4rem;
+  --spacing-3xl: 6rem;
+
+  /* Radien */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Erweiterte Tokens (neues Design-System) */
+  --glass-border: rgba(255, 255, 255, 0.11);
+  --text-soft: #d6d8de;
+  --gold: #bfa166;
+  --silver: #9da8b6;
+  --blue: #6d8dff;
+  --violet: #8d74ff;
+  --green: #4ba776;
+}

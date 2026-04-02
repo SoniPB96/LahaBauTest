@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ChevronDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { siteConfig } from '../../config/siteConfig';
 import EstimatorCard from '../calculator/EstimatorCard';
-import ModernCalculatorPanel from '../calculator/ModernCalculatorPanel';
-import '../calculator/modern-calculator.css';
 
-function HeroSection({ scrollToSection }) {
-  const [showCalculator, setShowCalculator] = useState(false);
+function HeroSection() {
+  const navigate = useNavigate();
 
   return (
     <section id="start" className="hero">
-      <div className={`hero-container ${showCalculator ? 'calculator-open' : ''}`}>
-        <div className={`hero-content ${showCalculator ? 'hidden' : ''}`}>
+      <div className="hero-container">
+        <div className="hero-content">
           <div className="hero-badge">
             {siteConfig.hero.badge}
           </div>
@@ -29,46 +28,32 @@ function HeroSection({ scrollToSection }) {
           </div>
 
           <div className="hero-cta">
-            <button 
+            <button
               className="cta-primary"
-              onClick={() => scrollToSection('anfrage')}
+              onClick={() => navigate(siteConfig.hero.cta.primary.path)}
             >
-              Projekt anfragen
+              {siteConfig.hero.cta.primary.label}
             </button>
-            <button 
+            <button
               className="cta-secondary"
-              onClick={() => setShowCalculator(true)}
+              onClick={() => navigate(siteConfig.hero.cta.secondary.path)}
             >
-              Kostenrechner öffnen
+              {siteConfig.hero.cta.secondary.label}
             </button>
           </div>
         </div>
 
-        <div className={`hero-estimator ${showCalculator ? 'hidden' : ''}`} id="rechner">
-          <EstimatorCard onOpenCalculator={() => setShowCalculator(true)} />
+        <div className="hero-estimator" id="rechner">
+          <EstimatorCard onOpenCalculator={() => navigate('/rechner')} />
         </div>
-
-        {showCalculator && (
-          <div className="calculator-full">
-            <ModernCalculatorPanel 
-              onOpenRequestPage={() => {
-                setShowCalculator(false);
-                scrollToSection('anfrage');
-              }}
-              onClose={() => setShowCalculator(false)}
-            />
-          </div>
-        )}
       </div>
 
-      {!showCalculator && (
-        <button 
-          className="scroll-indicator"
-          onClick={() => scrollToSection('leistungen')}
-        >
-          <ChevronDown size={24} />
-        </button>
-      )}
+      <button
+        className="scroll-indicator"
+        onClick={() => document.getElementById('leistungen')?.scrollIntoView({ behavior: 'smooth' })}
+      >
+        <ChevronDown size={24} />
+      </button>
     </section>
   );
 }

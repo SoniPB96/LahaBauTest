@@ -1,8 +1,11 @@
 import React from 'react';
 import { Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { siteConfig } from '../../config/siteConfig';
 
-function BegleitungSection({ scrollToSection }) {
+function BegleitungSection() {
+  const navigate = useNavigate();
+
   return (
     <section id="begleitung" className="begleitung">
       <div className="begleitung-container">
@@ -23,9 +26,9 @@ function BegleitungSection({ scrollToSection }) {
                 </li>
               ))}
             </ul>
-            <button 
+            <button
               className="cta-primary"
-              onClick={() => scrollToSection('anfrage')}
+              onClick={() => navigate('/kontakt')}
             >
               Projekt anfragen
             </button>

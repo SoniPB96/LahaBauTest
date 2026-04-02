@@ -1,41 +1,51 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { siteConfig } from '../../config/siteConfig';
 import Logo from './Logo';
 
-function Footer({ scrollToSection }) {
+function Footer() {
+  const { footer, navigation, company, legal } = siteConfig;
+
   return (
     <footer className="footer">
       <div className="footer-container">
+
+        {/* Marken-Spalte */}
         <div className="footer-brand">
           <Logo />
-          <p>Elektroarbeiten & Baubegleitung im Raum Paderborn.</p>
+          <p>{footer.tagline}</p>
         </div>
 
         <div className="footer-links">
+
+          {/* Seiten — automatisch aus navigation.items */}
           <div>
-            <h4>Leistungen</h4>
-            <button onClick={() => scrollToSection('leistungen')}>Elektroinstallation</button>
-            <button onClick={() => scrollToSection('rechner')}>Kostenrechner</button>
-            <button onClick={() => scrollToSection('begleitung')}>Baubegleitung</button>
+            <h4>{footer.columns.pages.heading}</h4>
+            {navigation.items.map((item) => (
+              <NavLink key={item.key} to={item.path}>{item.label}</NavLink>
+            ))}
           </div>
 
+          {/* Kontakt */}
           <div>
-            <h4>Kontakt</h4>
-            <a href={siteConfig.company.phoneLink}>{siteConfig.company.phoneDisplay}</a>
-            <a href={`mailto:${siteConfig.company.email}`}>{siteConfig.company.email}</a>
-            <a href={siteConfig.company.whatsappLink} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <h4>{footer.columns.contact.heading}</h4>
+            <a href={company.phoneLink}>{company.phoneDisplay}</a>
+            <a href={`mailto:${company.email}`}>{company.email}</a>
+            <a href={company.whatsappLink} target="_blank" rel="noopener noreferrer">WhatsApp</a>
           </div>
 
+          {/* Rechtliches — echte NavLinks statt toter Buttons */}
           <div>
-            <h4>Rechtliches</h4>
-            <button>Impressum</button>
-            <button>Datenschutz</button>
+            <h4>{footer.columns.legal.heading}</h4>
+            <NavLink to={legal.impressum.path}>{legal.impressum.label}</NavLink>
+            <NavLink to={legal.datenschutz.path}>{legal.datenschutz.label}</NavLink>
           </div>
+
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p>© 2024 LAHA Baudienstleistungen · Paderborn</p>
+        <p>{footer.copyright}</p>
       </div>
     </footer>
   );
