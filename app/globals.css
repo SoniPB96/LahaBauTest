@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Serif+Display:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Serif+Display:ital@0;1&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -17,13 +17,13 @@
     font-weight: 400;
     line-height: 1.65;
     background-image:
-      radial-gradient(circle at top, rgba(201, 170, 114, 0.08), transparent 26%),
-      linear-gradient(180deg, #09090b 0%, #08090d 100%);
+      radial-gradient(circle at top, rgba(201, 170, 114, 0.05), transparent 28%),
+      linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0));
   }
 
   ::selection {
     background: rgba(201, 170, 114, 0.2);
-    color: #ededeb;
+    color: #f5f5f3;
   }
 
   :focus-visible {
@@ -42,8 +42,8 @@
   .bg-danger-tint       { background-color: rgba(224,82,82,0.08); }
   .border-danger        { border-color: rgba(224,82,82,0.25); }
   .bg-success-tint      { background-color: rgba(76,175,130,0.08); }
-  .bg-nav               { background-color: rgba(9,9,11,0.90); }
-  .bg-drawer            { background-color: rgba(9,9,11,0.97); }
+  .bg-nav               { background-color: rgba(7,7,9,0.94); }
+  .bg-drawer            { background-color: rgba(7,7,9,0.98); }
   .hover\:border-subtle:hover { border-color: rgba(255,255,255,0.06); }
   .hover\:border-muted:hover  { border-color: rgba(255,255,255,0.11); }
   .hover\:border-strong:hover { border-color: rgba(255,255,255,0.18); }
