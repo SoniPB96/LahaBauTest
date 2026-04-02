@@ -1,7 +1,6 @@
 'use client'
 
 import { ADD_ON_MODULES } from '@/config/pricing'
-import { cn } from '@/lib/utils'
 
 interface Props {
   selected: string[]
@@ -42,7 +41,7 @@ const ICONS: Record<string, React.ReactNode> = {
 export function StepZusatzmodule({ selected, onToggle }: Props) {
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3">
         {ADD_ON_MODULES.map((mod) => {
           const sel = selected.includes(mod.id)
           return (
@@ -51,59 +50,52 @@ export function StepZusatzmodule({ selected, onToggle }: Props) {
               type="button"
               onClick={() => onToggle(mod.id)}
               aria-pressed={sel}
-              className={cn(
-                'calc-choice-card min-h-[176px] px-4 py-4 md:px-5 md:py-5 flex flex-col items-start text-left justify-between active:scale-[0.985]',
-                sel && 'calc-choice-card-selected',
-              )}
+              className="flex flex-col items-start text-left rounded-2xl p-4
+                         transition-all duration-200 relative"
+              style={{
+                border: sel ? '2px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.08)',
+                background: sel ? 'rgba(201,170,114,0.07)' : 'rgba(255,255,255,0.02)',
+              }}
             >
-              <div className="w-full flex items-start justify-between gap-3 relative z-[1]">
-                <span className={cn('calc-icon-chip', sel && 'calc-icon-chip-active')}>
-                  {ICONS[mod.id]}
-                </span>
-
-                <span
-                  className={cn(
-                    'calc-choice-indicator calc-check-indicator',
-                    sel && 'calc-check-indicator-selected',
-                  )}
-                  aria-hidden="true"
-                >
-                  {sel && (
-                    <svg width="8" height="6" viewBox="0 0 8 6" fill="none" aria-hidden="true">
-                      <path d="M1 3l2 2 4-4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  )}
-                </span>
-              </div>
-
-              <div className="w-full relative z-[1]">
-                <div className="flex items-start justify-between gap-2 w-full mb-2 flex-wrap">
-                  <p className="text-[0.92rem] text-text-1 leading-snug pr-2">{mod.label}</p>
-                  <span className={cn('calc-choice-badge', sel && 'calc-choice-badge-active')}>
-                    {sel ? 'Aktiv' : 'Optional'}
-                  </span>
-                </div>
-
-                {mod.price > 0 && (
-                  <p className="text-[0.72rem]" style={{ color: sel ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.42)' }}>
-                    + ca. {mod.price.toLocaleString('de-DE')} €
-                  </p>
+              {/* Checkmark top-right */}
+              <span
+                className="absolute top-3 right-3 w-4 h-4 rounded flex items-center justify-center transition-all duration-200"
+                style={{
+                  border: sel ? '1.5px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.15)',
+                  background: sel ? '#c9aa72' : 'transparent',
+                }}
+              >
+                {sel && (
+                  <svg width="8" height="6" viewBox="0 0 8 6" fill="none" aria-hidden="true">
+                    <path d="M1 3l2 2 4-4" stroke="#1a1400" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 )}
-              </div>
+              </span>
+
+              {/* Icon */}
+              <span
+                className="mb-3 transition-colors duration-200"
+                style={{ color: sel ? '#c9aa72' : 'rgba(255,255,255,0.35)' }}
+              >
+                {ICONS[mod.id]}
+              </span>
+
+              {/* Label */}
+              <p className="text-[0.85rem] text-text-1 leading-snug mb-1 pr-4">{mod.label}</p>
+
+              {/* Price */}
+              {mod.price > 0 && (
+                <p className="text-[0.7rem]" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                  + ca. {mod.price.toLocaleString('de-DE')} €
+                </p>
+              )}
             </button>
           )
         })}
       </div>
-
-      <div className="calc-hint-box">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="calc-hint-icon" aria-hidden="true">
-          <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.2"/>
-          <path d="M8 7v4M8 5.5v.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-        </svg>
-        <p className="calc-hint-text">
-          <strong>Mehrfachauswahl möglich:</strong> Wählen Sie nur, was zusätzlich gewünscht ist. Nicht ausgewählte Punkte werden nicht mitgerechnet.
-        </p>
-      </div>
+      <p className="text-[0.72rem] px-1 mt-1 leading-relaxed" style={{ color: 'rgba(255,255,255,0.28)' }}>
+        Mehrfachauswahl möglich. Nichts auswählen ist auch in Ordnung.
+      </p>
     </div>
   )
 }

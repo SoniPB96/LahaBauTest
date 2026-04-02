@@ -21,7 +21,7 @@ const CONTACT_METHODS = [
     iconColor: '#25d366',
     label: 'WhatsApp',
     sub: 'Schnell & unkompliziert',
-    href: 'https://wa.me/4917682067106',
+    href: 'https://wa.me/4915200000000',
     external: true,
   },
   {

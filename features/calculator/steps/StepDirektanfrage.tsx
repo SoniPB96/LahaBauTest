@@ -10,33 +10,39 @@ interface Props {
 }
 
 export function StepDirektanfrage({ projekt, onBack }: Props) {
-  const label = projekt ? PROJEKT_LABELS[projekt as ProjektType] : ''
+  const label  = projekt ? PROJEKT_LABELS[projekt as ProjektType] : ''
   const reason = projekt ? (DIRECT_ANFRAGE_REASONS[projekt] ?? '') : ''
 
   return (
     <div className="flex flex-col gap-5 text-center py-2">
+      {/* Icon */}
       <div
-        className="w-14 h-14 rounded-full flex items-center justify-center mx-auto"
-        style={{ background: 'rgba(201,170,114,0.09)', border: '1px solid rgba(201,170,114,0.22)' }}
+        className="w-12 h-12 rounded-full flex items-center justify-center mx-auto"
+        style={{ background: 'rgba(201,170,114,0.08)', border: '1px solid rgba(201,170,114,0.22)' }}
         aria-hidden="true"
       >
-        <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
           <path d="M10 6v5M10 13.5v.5" stroke="#c9aa72" strokeWidth="1.6" strokeLinecap="round"/>
           <circle cx="10" cy="10" r="8.5" stroke="#c9aa72" strokeWidth="1.3"/>
         </svg>
       </div>
 
+      {/* Message */}
       <div className="text-left">
         <p className="text-[0.68rem] tracking-[0.12em] uppercase text-gold font-normal mb-2">
           {label}
         </p>
-        <h3 className="font-serif text-[1.35rem] text-text-1 tracking-[-0.02em] mb-3 leading-snug">
+        <h3 className="font-serif text-[1.25rem] text-text-1 tracking-[-0.02em] mb-3 leading-snug">
           Für dieses Vorhaben erstellen wir Ihnen ein individuelles Angebot.
         </h3>
         <p className="text-[0.85rem] text-text-2 leading-[1.75]">{reason}</p>
       </div>
 
-      <div className="calc-soft-panel text-left px-4 py-4">
+      {/* What to expect */}
+      <div
+        className="text-left rounded-lg px-4 py-4"
+        style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
+      >
         <p className="text-[0.72rem] tracking-[0.1em] uppercase text-text-4 mb-3 font-normal">
           So geht es weiter
         </p>
@@ -52,17 +58,22 @@ export function StepDirektanfrage({ projekt, onBack }: Props) {
         ))}
       </div>
 
+      {/* CTAs */}
       <div className="flex flex-col sm:flex-row gap-3 pt-1">
         <Link
           href="/anfrage"
-          className="calc-nav-button calc-nav-button-primary flex-1 no-underline text-[0.9rem] font-medium"
+          className="flex-1 flex items-center justify-center py-3.5 rounded text-[0.9rem]
+                     font-medium no-underline transition-opacity hover:opacity-85"
+          style={{ background: '#c9aa72', color: '#1a1400' }}
         >
           Zur Anfrage →
         </Link>
         <button
           type="button"
           onClick={onBack}
-          className="calc-nav-button flex-1 text-[0.88rem] font-normal bg-transparent font-sans cursor-pointer"
+          className="flex-1 py-3.5 rounded text-[0.88rem] text-text-2 font-normal
+                     transition-colors hover:text-text-1 bg-transparent font-sans cursor-pointer"
+          style={{ border: '1px solid rgba(255,255,255,0.11)' }}
         >
           ← Anderen Typ wählen
         </button>

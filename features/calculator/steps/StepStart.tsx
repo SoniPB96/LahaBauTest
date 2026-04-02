@@ -1,6 +1,5 @@
 'use client'
 
-import { cn } from '@/lib/utils'
 import type { StartMode } from '../types'
 
 interface Props {
@@ -13,13 +12,13 @@ const OPTIONS: { id: StartMode; label: string; sub: string; tag: string }[] = [
   {
     id: 'schnell',
     label: 'Schnell orientieren',
-    sub: 'Ich möchte wissen, ob das Projekt in mein Budget passt.',
+    sub: 'Ich möchte wissen, ob das Projekt in meinem Budget liegt.',
     tag: '~1 min',
   },
   {
     id: 'genauer',
     label: 'Genauer planen',
-    sub: 'Ich kenne mein Objekt bereits und möchte jeden Raum gezielter einrichten.',
+    sub: 'Ich kenne mein Objekt bereits und möchte jeden Raum einrichten.',
     tag: '~3 min',
   },
 ]
@@ -28,15 +27,12 @@ export function StepStart({ value, onChange, error }: Props) {
   return (
     <div className="flex flex-col gap-3">
       {error && (
-        <p
-          className="text-[0.78rem] mb-2 px-3 py-2 rounded-lg"
+        <p className="text-[0.78rem] mb-2 px-3 py-2 rounded-lg"
           style={{ color: '#e05252', background: 'rgba(224,82,82,0.08)', border: '1px solid rgba(224,82,82,0.2)' }}
-          role="alert"
-        >
+          role="alert">
           Bitte eine Option auswählen.
         </p>
       )}
-
       {OPTIONS.map(({ id, label, sub, tag }) => {
         const sel = value === id
         return (
@@ -45,33 +41,39 @@ export function StepStart({ value, onChange, error }: Props) {
             type="button"
             onClick={() => onChange(id)}
             aria-pressed={sel}
-            className={cn(
-              'calc-choice-card w-full text-left px-5 py-5 md:px-6 md:py-5 flex items-center gap-4 md:gap-5 active:scale-[0.985]',
-              sel && 'calc-choice-card-selected',
-            )}
+            className="group flex items-center gap-5 text-left w-full rounded-2xl
+                       transition-all duration-200"
+            style={{
+              padding: '1.25rem 1.5rem',
+              border: sel ? '2px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.08)',
+              background: sel ? 'rgba(201,170,114,0.07)' : 'rgba(255,255,255,0.02)',
+            }}
           >
+            {/* Radio dot */}
             <span
-              className={cn(
-                'calc-choice-indicator calc-radio-indicator relative z-[1]',
-                sel && 'calc-radio-indicator-selected',
-              )}
-              aria-hidden="true"
-            />
+              className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-all duration-200"
+              style={{
+                border: sel ? '2px solid #c9aa72' : '2px solid rgba(255,255,255,0.2)',
+                background: sel ? '#c9aa72' : 'transparent',
+              }}
+            >
+              {sel && <span className="block w-2 h-2 rounded-full" style={{ background: '#1a1400' }} />}
+            </span>
 
-            <div className="flex-1 min-w-0 relative z-[1]">
-              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                <p className="text-[1rem] text-text-1 font-normal leading-snug">{label}</p>
-                {sel && <span className="calc-choice-badge calc-choice-badge-active">Ausgewählt</span>}
-              </div>
-              <p
-                className="text-[0.78rem] leading-relaxed transition-colors"
-                style={{ color: sel ? 'rgba(255,255,255,0.76)' : 'rgba(255,255,255,0.44)' }}
-              >
-                {sub}
-              </p>
+            {/* Text */}
+            <div className="flex-1 min-w-0">
+              <p className="text-[0.97rem] text-text-1 font-normal leading-snug mb-0.5">{label}</p>
+              <p className="text-[0.78rem] leading-relaxed" style={{ color: 'rgba(255,255,255,0.38)' }}>{sub}</p>
             </div>
 
-            <span className={cn('calc-choice-badge relative z-[1]', sel && 'calc-choice-badge-active')}>
+            {/* Time tag */}
+            <span
+              className="shrink-0 text-[0.65rem] font-medium tracking-wide rounded-full px-2.5 py-1"
+              style={{
+                color: sel ? '#c9aa72' : 'rgba(255,255,255,0.3)',
+                background: sel ? 'rgba(201,170,114,0.12)' : 'rgba(255,255,255,0.05)',
+              }}
+            >
               {tag}
             </span>
           </button>

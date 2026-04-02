@@ -1,6 +1,5 @@
 'use client'
 
-import { cn } from '@/lib/utils'
 import type { QualitaetType } from '../types'
 
 interface Props {
@@ -23,7 +22,7 @@ const OPTIONS: {
     tag: '−15 %',
     steckdosen: '4 pro Raum',
     schalter: '1 pro Raum',
-    note: 'Solide Grundausstattung – alles, was man braucht.',
+    note: 'Solide Grundausstattung – alles was man braucht.',
   },
   {
     id: 'standard',
@@ -31,7 +30,7 @@ const OPTIONS: {
     tag: 'Standardpreis',
     steckdosen: '6 pro Raum',
     schalter: '1–2 pro Raum',
-    note: 'Mehr Steckdosen, bessere Verteilung und die häufigste Wahl.',
+    note: 'Mehr Steckdosen, durchdachte Platzierung. Die häufigste Wahl.',
     popular: true,
   },
   {
@@ -40,7 +39,7 @@ const OPTIONS: {
     tag: '+25 %',
     steckdosen: '8+ pro Raum',
     schalter: '2 pro Raum',
-    note: 'Maximaler Komfort mit großzügiger Ausstattung in jedem Bereich.',
+    note: 'Maximaler Komfort, großzügige Ausstattung in jedem Bereich.',
   },
 ]
 
@@ -55,62 +54,65 @@ export function StepQualitaet({ value, onChange }: Props) {
             type="button"
             onClick={() => onChange(id)}
             aria-pressed={sel}
-            className={cn(
-              'calc-choice-card w-full px-5 py-5 flex items-start gap-4 text-left active:scale-[0.985]',
-              sel && 'calc-choice-card-selected',
-            )}
+            className="flex items-start gap-4 text-left w-full rounded-2xl transition-all duration-200"
+            style={{
+              padding: '1.1rem 1.4rem',
+              border: sel ? '2px solid #c9aa72' : '1.5px solid rgba(255,255,255,0.08)',
+              background: sel ? 'rgba(201,170,114,0.07)' : 'rgba(255,255,255,0.02)',
+            }}
           >
+            {/* Radio */}
             <span
-              className={cn(
-                'calc-choice-indicator calc-radio-indicator mt-1 relative z-[1]',
-                sel && 'calc-radio-indicator-selected',
-              )}
-              aria-hidden="true"
-            />
+              className="mt-0.5 shrink-0 w-4 h-4 rounded-full flex items-center justify-center transition-all duration-200"
+              style={{
+                border: sel ? '2px solid #c9aa72' : '2px solid rgba(255,255,255,0.18)',
+                background: sel ? '#c9aa72' : 'transparent',
+              }}
+            >
+              {sel && <span className="block w-[5px] h-[5px] rounded-full" style={{ background: '#1a1400' }} />}
+            </span>
 
-            <div className="flex-1 min-w-0 relative z-[1]">
-              <div className="flex items-center gap-2 mb-2 flex-wrap">
-                <span className="text-[1rem] text-text-1 font-normal">{label}</span>
-                {popular && <span className="calc-choice-badge calc-choice-badge-active">Beliebt</span>}
-                {sel && <span className="calc-choice-badge calc-choice-badge-active">Ausgewählt</span>}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                <span className="text-[0.97rem] text-text-1 font-normal">{label}</span>
+                {popular && (
+                  <span
+                    className="text-[0.6rem] font-medium tracking-wide rounded-full px-2 py-0.5"
+                    style={{ background: 'rgba(201,170,114,0.12)', color: '#c9aa72', border: '1px solid rgba(201,170,114,0.2)' }}
+                  >
+                    Beliebt
+                  </span>
+                )}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2.5">
-                <div className="calc-data-box">
-                  <span className="calc-data-box-label">Steckdosen</span>
-                  <div className="calc-data-box-value" style={{ color: sel ? '#e5c995' : 'rgba(255,255,255,0.68)' }}>
-                    {steckdosen}
-                  </div>
+              {/* Fittings display */}
+              <div className="flex gap-4 mb-1.5">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[0.65rem] uppercase tracking-wide" style={{ color: 'rgba(255,255,255,0.3)' }}>Steckdosen</span>
+                  <span className="text-[0.78rem]" style={{ color: sel ? 'rgba(201,170,114,0.9)' : 'rgba(255,255,255,0.55)' }}>{steckdosen}</span>
                 </div>
-                <div className="calc-data-box">
-                  <span className="calc-data-box-label">Schalter</span>
-                  <div className="calc-data-box-value" style={{ color: sel ? '#e5c995' : 'rgba(255,255,255,0.68)' }}>
-                    {schalter}
-                  </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[0.65rem] uppercase tracking-wide" style={{ color: 'rgba(255,255,255,0.3)' }}>Schalter</span>
+                  <span className="text-[0.78rem]" style={{ color: sel ? 'rgba(201,170,114,0.9)' : 'rgba(255,255,255,0.55)' }}>{schalter}</span>
                 </div>
               </div>
 
-              <p className="text-[0.74rem] leading-relaxed" style={{ color: sel ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.42)' }}>
-                {note}
-              </p>
+              <p className="text-[0.72rem] leading-snug" style={{ color: 'rgba(255,255,255,0.32)' }}>{note}</p>
             </div>
 
-            <span className={cn('calc-choice-badge self-start relative z-[1]', sel && 'calc-choice-badge-active')}>
+            <span
+              className="shrink-0 text-[0.72rem] font-medium self-start mt-0.5 whitespace-nowrap"
+              style={{ color: sel ? '#c9aa72' : 'rgba(255,255,255,0.28)' }}
+            >
               {tag}
             </span>
           </button>
         )
       })}
 
-      <div className="calc-hint-box">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="calc-hint-icon" aria-hidden="true">
-          <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.2"/>
-          <path d="M8 7v4M8 5.5v.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-        </svg>
-        <p className="calc-hint-text">
-          <strong>Ausführung:</strong> Alle Varianten werden mit Gira System 55 ausgeführt. Detailabstimmung erfolgt vor Ort.
-        </p>
-      </div>
+      <p className="text-[0.7rem] px-1 mt-0.5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.22)' }}>
+        Alle Varianten werden mit Gira System 55 ausgeführt. Detailabstimmung erfolgt vor Ort.
+      </p>
     </div>
   )
 }
