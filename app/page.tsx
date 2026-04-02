@@ -10,23 +10,23 @@ export const metadata: Metadata = {
 const SERVICES = [
   {
     title: 'Sanierung & Renovierung',
-    desc: 'Erneuerung veralteter Elektroinstallationen im Bestand. Sauber geplant, normgerecht umgesetzt und auf lange Nutzbarkeit ausgelegt.',
-    tags: ['Bestand', 'Unterputz', 'Modernisierung'],
+    desc: 'Vollständige oder teilweise Erneuerung veralteter Elektroinstallationen. Sicherheit und Normkonformität nach aktuellem Standard.',
+    tags: ['Unterputz', 'Verteilungen', 'Sicherungskästen'],
   },
   {
-    title: 'Schalter, Steckdosen & Licht',
-    desc: 'Klar strukturierte Elektroarbeiten für Wohnräume, Küchen und Bäder. Funktional, sauber ausgeführt und optisch stimmig eingebunden.',
-    tags: ['Beleuchtung', 'Schalterprogramme', 'Nachrüstung'],
+    title: 'Modernisierung',
+    desc: 'Schalter, Steckdosen, Beleuchtung, Fußbodenheizung. Ihr Zuhause zeitgemäß und komfortabel ausgestattet.',
+    tags: ['LED-Systeme', 'Fußbodenheizung', 'LAN/Netzwerk'],
   },
   {
-    title: 'Zählerschrank & Unterverteilung',
-    desc: 'Erneuerung und Aufrüstung von Zählerschränken, Absicherung und Verteilungen. Dokumentiert und nach aktuellem Stand ausgeführt.',
-    tags: ['Zählerschrank', 'FI/LS', 'Dokumentation'],
+    title: 'Zählerschrank & Absicherung',
+    desc: 'Erneuerung und Aufrüstung von Zählerschränken, Unterverteilungen und Überspannungsschutz. Normgerecht und dokumentiert.',
+    tags: ['FI-Schutz', 'Überspannungsschutz', 'Dokumentation'],
   },
   {
     title: 'Baubegleitung & Koordination',
-    desc: 'Ein Ansprechpartner für saubere Projektabläufe. Gewerke, Termine und Ausführung werden nachvollziehbar koordiniert.',
-    tags: ['Koordination', 'Partnerbetriebe', 'Abläufe'],
+    desc: 'Strukturierte Projektabwicklung mit zuverlässigen Partnerbetrieben. Ein Ansprechpartner für alle Gewerke.',
+    tags: ['Terminkoordination', 'Partnerhandwerker', 'Transparenz'],
   },
 ]
 
@@ -38,120 +38,123 @@ const TRUST_ITEMS = [
   'Zuverlässige Partnerbetriebe',
 ]
 
+const CALC_STEPS = [
+  'Objekt auswählen',
+  'Projekttyp festlegen',
+  'Optionen & Ausstattung',
+  'Material & Qualität',
+  'Erste Einschätzung erhalten',
+]
+
 const PROOF = [
   { num: '48h', label: 'Rückmeldung garantiert' },
   { num: '100%', label: 'Festpreisangebote' },
   { num: 'OWL', label: 'Paderborn & Umgebung' },
 ]
 
-const PROCESS = [
-  'Objekt und Vorhaben aufnehmen',
-  'Elektroumfang sinnvoll eingrenzen',
-  'Klare Ersteinschätzung erhalten',
-]
-
 export default function HomePage() {
   return (
     <>
-      <section className="relative overflow-hidden border-b border-subtle">
-        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top,rgba(201,170,114,0.10),transparent_36%)]" />
-        <div className="max-w-site mx-auto px-6 md:px-7 pt-16 md:pt-24 pb-16 md:pb-20 relative">
-          <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 md:gap-12 items-start">
-            <div className="max-w-[640px]">
-              <div className="mb-6 flex flex-wrap items-center gap-3 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-text-2">
-                <span className="rounded-full border border-[rgba(201,170,114,0.28)] bg-[rgba(201,170,114,0.08)] px-3 py-1 text-gold">
-                  Laha Baudienstleistungen
-                </span>
-                <span>Elektroinstallation · Paderborn</span>
-              </div>
+      {/* ── HERO ── */}
+      <div className="max-w-site mx-auto px-6 md:px-7 pt-20 md:pt-24 pb-16 md:pb-20">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-14 items-center">
+          <div>
+            <p className="text-[0.68rem] tracking-[0.16em] uppercase text-gold font-normal mb-5">
+              Elektroinstallation · Paderborn
+            </p>
+            <h1 className="font-serif text-[clamp(1.9rem,3.5vw,3rem)] leading-[1.12]
+                           tracking-[-0.025em] text-text-1 mb-5">
+              Saubere Elektroarbeiten mit klarer Kommunikation und{' '}
+              <em className="text-gold" style={{ fontStyle: 'italic' }}>verlässlicher</em>{' '}
+              Ausführung.
+            </h1>
+            <p className="text-text-2 text-[0.92rem] leading-[1.8] max-w-[400px] mb-8">
+              Für private Hauseigentümer in Paderborn und Umgebung. Renovierung,
+              Modernisierung, Erweiterung – strukturiert begleitet, transparent kommuniziert.
+            </p>
+            <div className="flex gap-3 flex-wrap">
+              <ButtonLink href="/anfrage">Anfrage stellen →</ButtonLink>
+              <ButtonLink href="/kosteneinschaetzung" variant="ghost">
+                Kosten einschätzen
+              </ButtonLink>
+            </div>
+          </div>
 
-              <h1 className="max-w-[10ch] text-[clamp(2.8rem,7vw,5.3rem)] font-sans font-semibold leading-[0.96] tracking-[-0.055em] text-white mb-6">
-                Elektroarbeiten mit Substanz und Struktur.
-              </h1>
+          {/* Preview card – desktop only */}
+          <div className="hidden md:block" aria-hidden="true">
+            <div
+              className="rounded-2xl p-6 relative overflow-hidden"
+              style={{ background: '#111115', border: '1px solid rgba(255,255,255,0.08)' }}
+            >
+              {/* Gold accent line */}
+              <div
+                className="absolute top-0 left-0 right-0 h-[2px]"
+                style={{ background: 'linear-gradient(90deg,transparent 10%,rgba(201,170,114,0.5) 50%,transparent 90%)' }}
+              />
 
-              <p className="max-w-[580px] text-[1rem] md:text-[1.04rem] text-text-2 leading-[1.8] mb-8">
-                Für Eigentümer, Sanierungen und Modernisierungen im Privatbereich.
-                Klare Kommunikation, saubere Ausführung und ein Auftritt, der Ihr Projekt ernst nimmt.
+              {/* Label */}
+              <p className="text-[0.6rem] tracking-[0.18em] uppercase mb-5 font-normal"
+                style={{ color: 'rgba(255,255,255,0.3)' }}>
+                Beispielrechnung
               </p>
 
-              <div className="flex flex-wrap gap-3 mb-10">
-                <ButtonLink href="/anfrage">Anfrage stellen →</ButtonLink>
-                <ButtonLink href="/kosteneinschaetzung" variant="ghost">
-                  Kosteneinschätzung starten
-                </ButtonLink>
-              </div>
-
-              <div className="grid sm:grid-cols-3 gap-3 max-w-[720px]">
-                {PROOF.map(({ num, label }) => (
-                  <div
-                    key={label}
-                    className="rounded-2xl border border-subtle bg-[rgba(255,255,255,0.02)] px-5 py-5"
+              {/* Example spec pills */}
+              <div className="flex flex-wrap gap-2 mb-5">
+                {['Altbau', 'Haus', '120 m²', '5 Zimmer', 'Standard'].map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-[0.7rem] px-2.5 py-1 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)' }}
                   >
-                    <div className="text-[2rem] leading-none font-semibold tracking-[-0.04em] text-white mb-3">
-                      {num}
-                    </div>
-                    <div className="text-[0.72rem] uppercase tracking-[0.12em] text-text-2">
-                      {label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-6 md:p-7 shadow-[0_24px_80px_rgba(0,0,0,0.28)]">
-              <div className="mb-5 flex items-center justify-between gap-4">
-                <p className="text-[0.68rem] font-medium uppercase tracking-[0.18em] text-text-2">
-                  Leistungsschwerpunkte
-                </p>
-                <p className="text-[0.68rem] font-medium uppercase tracking-[0.18em] text-gold">
-                  Privatbereich
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                {SERVICES.slice(0, 3).map(({ title, desc }, index) => (
-                  <div
-                    key={title}
-                    className="rounded-[22px] border border-strong bg-[rgba(12,12,14,0.55)] p-5"
-                  >
-                    <div className="mb-3 text-[0.64rem] font-semibold uppercase tracking-[0.18em] text-gold">
-                      0{index + 1}
-                    </div>
-                    <h3 className="mb-2 text-[1rem] font-semibold tracking-[-0.02em] text-white">
-                      {title}
-                    </h3>
-                    <p className="text-[0.86rem] leading-[1.75] text-text-2">{desc}</p>
-                  </div>
+                    {tag}
+                  </span>
                 ))}
               </div>
 
-              <div className="mt-6 rounded-[22px] border border-subtle bg-[rgba(255,255,255,0.02)] p-5">
-                <p className="mb-3 text-[0.68rem] font-medium uppercase tracking-[0.18em] text-text-2">
-                  So starten viele Projekte
-                </p>
-                <div className="space-y-3">
-                  {PROCESS.map((item, index) => (
-                    <div key={item} className="flex items-start gap-3 text-[0.86rem] leading-[1.65] text-text-2">
-                      <span className="mt-[1px] flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[rgba(201,170,114,0.3)] bg-[rgba(201,170,114,0.08)] text-[0.7rem] font-semibold text-gold">
-                        {index + 1}
-                      </span>
-                      <span>{item}</span>
-                    </div>
-                  ))}
+              {/* Price range */}
+              <div className="mb-5">
+                <p className="text-[0.68rem] mb-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Erste Einschätzung</p>
+                <div className="flex items-baseline gap-2">
+                  <span
+                    className="font-serif tracking-tight"
+                    style={{ fontSize: '2rem', color: '#ededeb', letterSpacing: '-0.03em' }}
+                  >
+                    9.500 –
+                  </span>
+                  <span
+                    className="font-serif tracking-tight"
+                    style={{ fontSize: '2rem', color: '#ededeb', letterSpacing: '-0.03em' }}
+                  >
+                    12.900 €
+                  </span>
                 </div>
-                <Link
-                  href="/kosteneinschaetzung"
-                  className="mt-5 inline-flex items-center gap-2 text-[0.82rem] font-semibold text-white no-underline transition-opacity hover:opacity-80"
-                >
-                  Zum Rechner
-                  <span aria-hidden="true">→</span>
-                </Link>
+                <p className="text-[0.65rem] mt-0.5" style={{ color: 'rgba(255,255,255,0.25)' }}>
+                  Netto · Orientierungswert
+                </p>
               </div>
+
+              {/* CTA */}
+              <Link
+                href="/kosteneinschaetzung"
+                className="flex items-center justify-between rounded-xl no-underline
+                           transition-all hover:opacity-90 active:scale-[0.98]"
+                style={{
+                  padding: '0.85rem 1.1rem',
+                  background: '#c9aa72',
+                  color: '#1a1400',
+                }}
+              >
+                <span className="text-[0.85rem] font-medium">Ihr Projekt berechnen</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </Link>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
+      {/* ── TRUST BAR ── */}
       <div
         className="bg-bg-2 py-3.5"
         style={{ borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
@@ -160,7 +163,8 @@ export default function HomePage() {
           {TRUST_ITEMS.map((item) => (
             <span
               key={item}
-              className="flex items-center gap-2 text-[0.72rem] text-text-3 tracking-[0.07em] uppercase font-normal whitespace-nowrap"
+              className="flex items-center gap-2 text-[0.72rem] text-text-3
+                         tracking-[0.07em] uppercase font-normal whitespace-nowrap"
             >
               <span className="w-[3px] h-[3px] rounded-full bg-gold shrink-0" />
               {item}
@@ -169,27 +173,30 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* ── SERVICES ── */}
       <SectionContainer>
         <SectionHeader
           eyebrow="Leistungen"
-          title="Was wir im Privatbereich konkret umsetzen"
-          subtitle="Klar abgegrenzte Elektroarbeiten statt unklarer Sammelbegriff. Damit sofort erkennbar wird, wofür Laha Baudienstleistungen steht."
+          title="Was wir für Sie umsetzen"
+          subtitle="Spezialisiert auf moderne Elektroinstallation im Privatbereich – strukturiert, sauber ausgeführt."
         />
         <div className="grid sm:grid-cols-2 gap-5">
           {SERVICES.map(({ title, desc, tags }) => (
             <div
               key={title}
-              className="rounded-[22px] border border-subtle bg-[rgba(255,255,255,0.02)] p-6 transition-all duration-200 hover:border-strong hover:bg-[rgba(255,255,255,0.03)]"
+              className="bg-bg-2 rounded-lg p-7 transition-colors hover:bg-bg-3"
+              style={{ border: '1px solid rgba(255,255,255,0.06)' }}
             >
-              <h3 className="text-[1rem] font-semibold text-white mb-2 tracking-[-0.02em]">
+              <h3 className="text-[0.92rem] font-medium text-text-1 mb-2 tracking-[-0.01em]">
                 {title}
               </h3>
-              <p className="text-[0.88rem] text-text-2 leading-[1.75] mb-4">{desc}</p>
-              <div className="flex flex-wrap gap-2">
+              <p className="text-[0.82rem] text-text-2 leading-[1.7] mb-4">{desc}</p>
+              <div className="flex flex-wrap gap-1.5">
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-subtle px-3 py-1 text-[0.68rem] uppercase tracking-[0.08em] text-text-2"
+                    className="text-[0.65rem] text-text-4 rounded px-2 py-0.5 tracking-[0.04em]"
+                    style={{ border: '1px solid rgba(255,255,255,0.06)' }}
                   >
                     {tag}
                   </span>
@@ -197,6 +204,74 @@ export default function HomePage() {
               </div>
             </div>
           ))}
+        </div>
+      </SectionContainer>
+
+      {/* ── SOCIAL PROOF ── */}
+      <div
+        className="bg-bg-2"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+      >
+        <div className="max-w-site mx-auto px-6 md:px-7 py-12 grid grid-cols-1 sm:grid-cols-3">
+          {PROOF.map(({ num, label }, i) => (
+            <div
+              key={label}
+              className="py-8 sm:py-0 sm:px-10 text-center"
+              style={
+                i < PROOF.length - 1
+                  ? { borderBottom: '1px solid rgba(255,255,255,0.06)' }
+                  : undefined
+              }
+            >
+              <span className="font-serif text-[2.2rem] text-text-1 tracking-[-0.03em] block mb-1">
+                {num}
+              </span>
+              <span className="text-[0.75rem] text-text-3 tracking-[0.07em] uppercase">
+                {label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── CALC TEASER ── */}
+      <SectionContainer size="sm">
+        <SectionHeader
+          eyebrow="Kosteneinschätzung"
+          title="Was kostet Ihr Projekt?"
+          subtitle="In wenigen Schritten zur ersten Orientierung – ohne Anmeldung, ohne Verpflichtung."
+        />
+        <div
+          className="rounded-xl p-8 md:p-10 grid md:grid-cols-2 gap-10 items-center bg-bg-2"
+          style={{ border: '1px solid rgba(255,255,255,0.06)' }}
+        >
+          <div className="flex flex-col gap-2.5">
+            {CALC_STEPS.map((label, i) => (
+              <div key={label} className="flex items-center gap-3">
+                <div
+                  className="w-5 h-5 rounded-full flex items-center justify-center text-[0.62rem] shrink-0"
+                  style={{
+                    border: i < 2 ? '1px solid #c9aa72' : '1px solid rgba(255,255,255,0.11)',
+                    background: i < 2 ? '#c9aa72' : 'transparent',
+                    color: i < 2 ? '#1a1400' : 'rgba(255,255,255,0.4)',
+                    fontWeight: i < 2 ? 500 : 300,
+                  }}
+                >
+                  {i + 1}
+                </div>
+                <span className={`text-[0.82rem] ${i < 2 ? 'text-text-2' : 'text-text-3'}`}>
+                  {label}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div>
+            <p className="text-[0.88rem] text-text-2 leading-[1.75] mb-6">
+              Unser Kalkulator gibt Ihnen eine realistische erste Einschätzung für Ihr
+              Elektroprojekt. Kein Verkaufsgespräch, keine Verpflichtung – nur Orientierung.
+            </p>
+            <ButtonLink href="/kosteneinschaetzung">Kalkulator starten →</ButtonLink>
+          </div>
         </div>
       </SectionContainer>
     </>
