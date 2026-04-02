@@ -14,9 +14,9 @@ interface Props {
   onUpdate: (roomId: string, patch: Partial<Omit<RoomConfig, 'id' | 'kind' | 'label'>>) => void
 }
 
-const hasLan          = (addOns: string[]) => addOns.includes('lan')
-const hasJalousien    = (addOns: string[]) => addOns.includes('jalousien')
-const hasFbh          = (addOns: string[]) => addOns.includes('fussbodenheizung')
+const hasLan = (addOns: string[]) => addOns.includes('lan')
+const hasJalousien = (addOns: string[]) => addOns.includes('jalousien')
+const hasFbh = (addOns: string[]) => addOns.includes('fussbodenheizung')
 
 function Stepper({
   value,
@@ -40,14 +40,11 @@ function Stepper({
         onClick={onDecrement}
         disabled={value <= min}
         aria-label={`${label} verringern`}
-        className="w-8 h-8 rounded-full flex items-center justify-center text-text-2
-                   transition-colors hover:text-text-1 disabled:opacity-30
-                   disabled:cursor-not-allowed bg-transparent text-base"
-        style={{ border: '1px solid rgba(255,255,255,0.11)' }}
+        className="calc-stepper-button w-8 h-8 rounded-full text-base"
       >
         −
       </button>
-      <span className="text-[0.92rem] text-text-1 min-w-[20px] text-center tabular-nums">
+      <span className="text-[0.92rem] text-text-1 min-w-[22px] text-center tabular-nums">
         {value}
       </span>
       <button
@@ -55,10 +52,7 @@ function Stepper({
         onClick={onIncrement}
         disabled={value >= max}
         aria-label={`${label} erhöhen`}
-        className="w-8 h-8 rounded-full flex items-center justify-center text-text-2
-                   transition-colors hover:text-text-1 disabled:opacity-30
-                   disabled:cursor-not-allowed bg-transparent text-base"
-        style={{ border: '1px solid rgba(255,255,255,0.11)' }}
+        className="calc-stepper-button w-8 h-8 rounded-full text-base"
       >
         +
       </button>
@@ -82,13 +76,15 @@ function Toggle({
       aria-checked={value}
       aria-label={label}
       onClick={() => onChange(!value)}
-      className="relative w-10 h-6 rounded-full transition-colors shrink-0"
-      style={{ background: value ? '#c9aa72' : 'rgba(255,255,255,0.12)' }}
+      className="relative w-11 h-6 rounded-full transition-all shrink-0"
+      style={{
+        background: value ? 'linear-gradient(180deg, #dfc28e 0%, #c9aa72 100%)' : 'rgba(255,255,255,0.12)',
+        boxShadow: value ? '0 10px 18px rgba(0,0,0,0.18)' : 'none',
+      }}
     >
       <span
-        className="absolute top-[3px] left-[3px] w-[18px] h-[18px] rounded-full bg-white
-                   transition-transform"
-        style={{ transform: value ? 'translateX(16px)' : 'translateX(0)' }}
+        className="absolute top-[3px] left-[3px] w-[18px] h-[18px] rounded-full bg-white transition-transform"
+        style={{ transform: value ? 'translateX(20px)' : 'translateX(0)' }}
       />
     </button>
   )
@@ -112,35 +108,27 @@ function RoomCard({
       ? BASE_FITTINGS_KITCHEN[qualitaet]
       : BASE_FITTINGS_ROOM[qualitaet]
 
-  const showLan       = hasLan(addOns)
+  const showLan = hasLan(addOns)
   const showJalousien = hasJalousien(addOns)
-  const showFbh       = hasFbh(addOns)
-  const hasAnyExtra   = showLan || showJalousien || showFbh
+  const showFbh = hasFbh(addOns)
+  const hasAnyExtra = showLan || showJalousien || showFbh
 
   return (
-    <div
-      className="rounded-lg overflow-hidden"
-      style={{ border: '1px solid rgba(255,255,255,0.08)' }}
-    >
-      {/* Room header */}
-      <div
-        className="px-4 py-3 flex items-center justify-between"
-        style={{ background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
-      >
-        <span className="text-[0.88rem] text-text-1 font-normal">{rc.label}</span>
-        <span className="text-[0.72rem] text-text-4">
+    <div className="calc-room-card">
+      <div className="calc-room-header">
+        <span className="text-[0.9rem] text-text-1 font-normal">{rc.label}</span>
+        <span className="calc-choice-badge calc-choice-badge-active">
           {fittings.sockets} Steckdosen · {fittings.switches} Schalter
         </span>
       </div>
 
-      {/* Extras */}
       {hasAnyExtra ? (
-        <div className="px-4 py-3 flex flex-col gap-3">
+        <div className="px-4 py-4 flex flex-col gap-3">
           {showLan && (
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-[0.82rem] text-text-2">Netzwerkanschlüsse</p>
-                <p className="text-[0.68rem] text-text-4">Anzahl Punkte (einfach/doppelt wird vor Ort festgelegt)</p>
+                <p className="text-[0.68rem] text-text-4">Anzahl Punkte, Detailausführung erfolgt vor Ort</p>
               </div>
               <Stepper
                 value={rc.lan}
@@ -151,10 +139,11 @@ function RoomCard({
               />
             </div>
           )}
+
           {showJalousien && (
             <div
               className="flex items-center justify-between gap-3"
-              style={showLan ? { borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.75rem' } : undefined}
+              style={showLan ? { borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.9rem' } : undefined}
             >
               <div>
                 <p className="text-[0.82rem] text-text-2">Jalousien / Rollläden</p>
@@ -169,14 +158,11 @@ function RoomCard({
               />
             </div>
           )}
+
           {showFbh && (
             <div
               className="flex items-center justify-between gap-3"
-              style={
-                showLan || showJalousien
-                  ? { borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.75rem' }
-                  : undefined
-              }
+              style={showLan || showJalousien ? { borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.9rem' } : undefined}
             >
               <div>
                 <p className="text-[0.82rem] text-text-2">Fußbodenheizung</p>
@@ -191,7 +177,7 @@ function RoomCard({
           )}
         </div>
       ) : (
-        <div className="px-4 py-3">
+        <div className="px-4 py-4">
           <p className="text-[0.75rem] text-text-4 italic">Keine Extras ausgewählt</p>
         </div>
       )}
@@ -204,8 +190,7 @@ export function StepRaumeditor({ roomConfigs, addOns, qualitaet, onUpdate }: Pro
     <div className="flex flex-col gap-3">
       <div className="mb-1">
         <p className="text-[0.82rem] text-text-2 leading-relaxed">
-          Hier sehen Sie jeden Raum einzeln. Die Basisausstattung ist bereits nach Ihrer
-          Qualitätswahl voreingestellt. Passen Sie die Extras pro Raum nach Bedarf an.
+          Hier sehen Sie jeden Raum einzeln. Die Basisausstattung ist bereits nach Ihrer Qualitätswahl voreingestellt. Passen Sie die Extras pro Raum nach Bedarf an.
         </p>
         {addOns.includes('lan') || addOns.includes('jalousien') || addOns.includes('fussbodenheizung') ? null : (
           <p className="text-[0.75rem] text-text-4 mt-1">
@@ -214,11 +199,14 @@ export function StepRaumeditor({ roomConfigs, addOns, qualitaet, onUpdate }: Pro
         )}
       </div>
 
-      <div
-        className="text-[0.72rem] text-text-3 px-3 py-2 rounded"
-        style={{ background: 'rgba(201,170,114,0.06)', border: '1px solid rgba(201,170,114,0.15)' }}
-      >
-        Die Küche ist automatisch enthalten und wurde nicht in Ihrer Zimmerzahl gezählt.
+      <div className="calc-hint-box">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="calc-hint-icon" aria-hidden="true">
+          <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.2"/>
+          <path d="M8 7v4M8 5.5v.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+        </svg>
+        <p className="calc-hint-text">
+          <strong>Hinweis:</strong> Die Küche ist automatisch enthalten und wurde nicht in Ihrer Zimmerzahl gezählt.
+        </p>
       </div>
 
       {roomConfigs.map((rc) => (

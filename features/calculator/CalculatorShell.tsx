@@ -80,32 +80,28 @@ function FadeStep({ id, children }: { id: string; children: React.ReactNode }) {
 
 function ProgressBar({ steps, currentIndex }: { steps: typeof STEPS; currentIndex: number }) {
   return (
-    <div className="mb-8">
-      <div className="flex gap-1.5 mb-2">
+    <div className="calc-progress-shell mb-8">
+      <div className="calc-progress-rail">
         {steps.map((s) => (
           <div
             key={s.id}
-            className="flex-1 h-[3px] rounded-full"
-            style={{
-              background: s.index < currentIndex
-                ? '#c9aa72'
-                : s.index === currentIndex
-                ? 'rgba(201,170,114,0.45)'
-                : 'rgba(255,255,255,0.07)',
-              transition: 'background 0.5s ease',
-            }}
+            className={cn(
+              'calc-progress-segment',
+              s.index < currentIndex && 'calc-progress-segment-done',
+              s.index === currentIndex && 'calc-progress-segment-current',
+            )}
           />
         ))}
       </div>
-      <div className="flex justify-between px-0.5">
+
+      <div className="calc-progress-labels">
         {steps.map((s) => (
           <span
             key={s.id}
-            className="text-[0.5rem] uppercase tracking-widest hidden sm:block"
-            style={{
-              color: s.index === currentIndex ? '#c9aa72' : 'rgba(255,255,255,0.18)',
-              transition: 'color 0.3s ease',
-            }}
+            className={cn(
+              'calc-progress-label hidden sm:block',
+              s.index === currentIndex && 'calc-progress-label-current',
+            )}
           >
             {s.label}
           </span>
@@ -169,27 +165,34 @@ export function CalculatorShell() {
   )
 
   return (
-    <div className="max-w-[640px] mx-auto px-4 md:px-0 py-12 md:py-20">
+    <div className="max-w-[676px] mx-auto px-4 md:px-0 py-12 md:py-20">
       {!isDirektanfrage && <ProgressBar steps={STEPS} currentIndex={currentStepMeta.index} />}
 
-      <div className="calc-shell-panel rounded-[28px] px-4 py-5 md:px-6 md:py-6">
+      <div className="calc-shell-panel rounded-[30px] px-5 py-5 md:px-7 md:py-7">
         <FadeStep id={`title-${state.currentStep}`}>
           <div className="mb-7 relative z-[1]">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="calc-choice-badge calc-choice-badge-active">Schritt {currentStepMeta.index + 1}</span>
-              {!isDirektanfrage && <span className="calc-choice-badge">Kostenrechner</span>}
+            <div className="flex flex-wrap items-center gap-2.5 mb-4">
+              <span className="calc-title-kicker calc-title-kicker-active">Schritt {currentStepMeta.index + 1}</span>
+              {!isDirektanfrage && <span className="calc-title-kicker">Kostenrechner</span>}
             </div>
+
             <h1
               className="font-serif text-text-1 leading-tight mb-2"
-              style={{ fontSize: 'clamp(1.55rem, 4vw, 2.2rem)', letterSpacing: '-0.03em' }}
+              style={{ fontSize: 'clamp(1.7rem, 4vw, 2.35rem)', letterSpacing: '-0.035em' }}
             >
               {meta.title}
             </h1>
+
             {meta.hint && (
-              <p className="text-[0.84rem] leading-relaxed max-w-[48ch]" style={{ color: 'rgba(255,255,255,0.46)' }}>
+              <p
+                className="text-[0.86rem] leading-relaxed max-w-[50ch]"
+                style={{ color: 'rgba(255,255,255,0.5)' }}
+              >
                 {meta.hint}
               </p>
             )}
+
+            <div className="calc-header-divider" />
           </div>
         </FadeStep>
 
@@ -198,27 +201,12 @@ export function CalculatorShell() {
         </FadeStep>
 
         {showNav && (
-          <div className="flex items-center gap-3 relative z-[1]">
+          <div className="flex items-center gap-3 relative z-[1] pt-1">
             {showBack ? (
               <button
                 type="button"
                 onClick={calc.back}
-                className="font-sans cursor-pointer bg-transparent rounded-2xl transition-all text-[0.85rem] flex items-center gap-2 py-3 px-4 min-h-[48px] border active:scale-[0.98]"
-                style={{
-                  color: 'rgba(255,255,255,0.62)',
-                  borderColor: 'rgba(255,255,255,0.08)',
-                  background: 'rgba(255,255,255,0.02)',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.color = 'rgba(255,255,255,0.9)'
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.14)'
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.04)'
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.color = 'rgba(255,255,255,0.62)'
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.02)'
-                }}
+                className="calc-nav-button font-sans cursor-pointer text-[0.85rem] active:scale-[0.98]"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                   <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -231,22 +219,8 @@ export function CalculatorShell() {
               type="button"
               onClick={calc.next}
               className={cn(
-                'ml-auto flex items-center gap-2 font-sans cursor-pointer font-medium text-[0.9rem] px-7 rounded-2xl min-h-[54px] active:scale-[0.97] border-none',
-                'shadow-[0_18px_34px_rgba(0,0,0,0.22)]',
+                'calc-nav-button calc-nav-button-primary ml-auto font-sans cursor-pointer font-medium text-[0.9rem] px-7 active:scale-[0.97]',
               )}
-              style={{
-                background: 'linear-gradient(180deg, #dfc28e 0%, #c9aa72 100%)',
-                color: '#1a1400',
-                transition: 'opacity 0.15s ease, transform 0.1s ease, box-shadow 0.18s ease',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.opacity = '0.94'
-                e.currentTarget.style.boxShadow = '0 22px 40px rgba(0,0,0,0.28)'
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.opacity = '1'
-                e.currentTarget.style.boxShadow = '0 18px 34px rgba(0,0,0,0.22)'
-              }}
             >
               Weiter
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">

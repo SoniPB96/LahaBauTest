@@ -42,7 +42,7 @@ const ICONS: Record<string, React.ReactNode> = {
 export function StepZusatzmodule({ selected, onToggle }: Props) {
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {ADD_ON_MODULES.map((mod) => {
           const sel = selected.includes(mod.id)
           return (
@@ -52,20 +52,12 @@ export function StepZusatzmodule({ selected, onToggle }: Props) {
               onClick={() => onToggle(mod.id)}
               aria-pressed={sel}
               className={cn(
-                'calc-choice-card min-h-[172px] px-4 py-4 flex flex-col items-start text-left justify-between active:scale-[0.985]',
+                'calc-choice-card min-h-[176px] px-4 py-4 md:px-5 md:py-5 flex flex-col items-start text-left justify-between active:scale-[0.985]',
                 sel && 'calc-choice-card-selected',
               )}
             >
               <div className="w-full flex items-start justify-between gap-3 relative z-[1]">
-                <span
-                  className="w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-200"
-                  style={{
-                    background: sel ? 'rgba(201,170,114,0.14)' : 'rgba(255,255,255,0.04)',
-                    border: sel ? '1px solid rgba(201,170,114,0.22)' : '1px solid rgba(255,255,255,0.05)',
-                    color: sel ? '#dfc28e' : 'rgba(255,255,255,0.4)',
-                    boxShadow: sel ? '0 12px 26px rgba(0,0,0,0.18)' : 'none',
-                  }}
-                >
+                <span className={cn('calc-icon-chip', sel && 'calc-icon-chip-active')}>
                   {ICONS[mod.id]}
                 </span>
 
@@ -86,14 +78,14 @@ export function StepZusatzmodule({ selected, onToggle }: Props) {
 
               <div className="w-full relative z-[1]">
                 <div className="flex items-start justify-between gap-2 w-full mb-2 flex-wrap">
-                  <p className="text-[0.9rem] text-text-1 leading-snug pr-2">{mod.label}</p>
+                  <p className="text-[0.92rem] text-text-1 leading-snug pr-2">{mod.label}</p>
                   <span className={cn('calc-choice-badge', sel && 'calc-choice-badge-active')}>
                     {sel ? 'Aktiv' : 'Optional'}
                   </span>
                 </div>
 
                 {mod.price > 0 && (
-                  <p className="text-[0.72rem]" style={{ color: sel ? 'rgba(255,255,255,0.66)' : 'rgba(255,255,255,0.38)' }}>
+                  <p className="text-[0.72rem]" style={{ color: sel ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.42)' }}>
                     + ca. {mod.price.toLocaleString('de-DE')} €
                   </p>
                 )}

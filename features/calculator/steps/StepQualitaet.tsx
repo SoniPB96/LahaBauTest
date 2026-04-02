@@ -23,7 +23,7 @@ const OPTIONS: {
     tag: '−15 %',
     steckdosen: '4 pro Raum',
     schalter: '1 pro Raum',
-    note: 'Solide Grundausstattung – alles was man braucht.',
+    note: 'Solide Grundausstattung – alles, was man braucht.',
   },
   {
     id: 'standard',
@@ -31,7 +31,7 @@ const OPTIONS: {
     tag: 'Standardpreis',
     steckdosen: '6 pro Raum',
     schalter: '1–2 pro Raum',
-    note: 'Mehr Steckdosen, durchdachte Platzierung. Die häufigste Wahl.',
+    note: 'Mehr Steckdosen, bessere Verteilung und die häufigste Wahl.',
     popular: true,
   },
   {
@@ -40,7 +40,7 @@ const OPTIONS: {
     tag: '+25 %',
     steckdosen: '8+ pro Raum',
     schalter: '2 pro Raum',
-    note: 'Maximaler Komfort, großzügige Ausstattung in jedem Bereich.',
+    note: 'Maximaler Komfort mit großzügiger Ausstattung in jedem Bereich.',
   },
 ]
 
@@ -76,17 +76,21 @@ export function StepQualitaet({ value, onChange }: Props) {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2.5">
-                <div className="rounded-xl px-3 py-2" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <span className="text-[0.62rem] uppercase tracking-[0.16em]" style={{ color: 'rgba(255,255,255,0.34)' }}>Steckdosen</span>
-                  <div className="text-[0.8rem] mt-1" style={{ color: sel ? '#e5c995' : 'rgba(255,255,255,0.58)' }}>{steckdosen}</div>
+                <div className="calc-data-box">
+                  <span className="calc-data-box-label">Steckdosen</span>
+                  <div className="calc-data-box-value" style={{ color: sel ? '#e5c995' : 'rgba(255,255,255,0.68)' }}>
+                    {steckdosen}
+                  </div>
                 </div>
-                <div className="rounded-xl px-3 py-2" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <span className="text-[0.62rem] uppercase tracking-[0.16em]" style={{ color: 'rgba(255,255,255,0.34)' }}>Schalter</span>
-                  <div className="text-[0.8rem] mt-1" style={{ color: sel ? '#e5c995' : 'rgba(255,255,255,0.58)' }}>{schalter}</div>
+                <div className="calc-data-box">
+                  <span className="calc-data-box-label">Schalter</span>
+                  <div className="calc-data-box-value" style={{ color: sel ? '#e5c995' : 'rgba(255,255,255,0.68)' }}>
+                    {schalter}
+                  </div>
                 </div>
               </div>
 
-              <p className="text-[0.74rem] leading-relaxed" style={{ color: sel ? 'rgba(255,255,255,0.66)' : 'rgba(255,255,255,0.38)' }}>
+              <p className="text-[0.74rem] leading-relaxed" style={{ color: sel ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.42)' }}>
                 {note}
               </p>
             </div>
