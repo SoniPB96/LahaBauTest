@@ -1,151 +1,129 @@
-# Laha Baudienstleistungen
+# 🚀 NEUER MODERNER RECHNER - Innovativ & Smooth
 
-Production website for Laha Baudienstleistungen, Paderborn — built with Next.js 14 App Router, TypeScript, and Tailwind CSS.
+## Was ist neu?
 
-## Stack
+### Komplett neuer Calculator
+- ✅ Modernes, innovatives Design
+- ✅ Smooth Animations
+- ✅ Bessere UX
+- ✅ Klare visuelle Hierarchie
+- ✅ Responsive & Touch-optimiert
 
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript (strict)
-- **Styling:** Tailwind CSS
-- **Forms:** React Hook Form + Zod
-- **Deployment:** Vercel
+## Geänderte/Neue Dateien
 
----
+### 3 Dateien:
 
-## Local Development
+1. **src/components/sections/HeroSection.jsx** - Nutzt neuen Calculator
+2. **src/components/calculator/ModernCalculatorPanel.jsx** - NEUER Rechner ✨
+3. **src/components/calculator/modern-calculator.css** - NEUE Styles ✨
+
+## Was ist besser?
+
+### 🎨 Design
+- **Moderne Card-Designs** mit subtilen Hover-Effects
+- **Smooth Progress Bar** mit Shimmer-Animation
+- **Minimalistische Step-Dots** statt klobiger Chips
+- **Große, klickbare Bereiche** für bessere Usability
+- **Consistent Spacing** wie auf der Website
+
+### ⚡ Animationen
+- **Slide-in Effects** bei Step-Wechsel
+- **Smooth Transitions** auf allen interaktiven Elementen
+- **Progress Bar Animation** zeigt Fortschritt flüssig
+- **Hover States** geben direktes Feedback
+
+### 🎯 UX-Verbesserungen
+- **Klarere Fragen** statt technischer Labels
+- **Visual Hierarchy** - Wichtiges ist prominent
+- **Touch-friendly** - Große Buttons & Inputs
+- **Error Messages** weniger aggressiv
+- **Info-Boxen** mit Icons für Kontext
+
+### 📱 Responsive
+- **Mobile-First** Design
+- **Stack-Layout** auf kleinen Screens
+- **Große Touch-Targets**
+- **Lesbare Schriftgrößen**
+
+## Highlights
+
+### Step 1: Objektart
+- Große Icon-Cards
+- Hover-Effect mit Lift
+- Checkmark bei Selection
+- Input mit Unit-Label (m²)
+
+### Step 2: Projektart
+- Clean List-Design
+- Side-by-side Layout
+- Hints für Details
+- Info-Box bei "Individuelle Anfrage"
+
+### Step 3: Material
+- Premium/Gehoben/Standard klar differenziert
+- Beispiel-Marken als Tags
+- "Beliebt"-Badge
+- Ausführliche Descriptions
+
+### Step 4: Komponenten
+- +/- Stepper statt nacktem Input
+- Visuelle Gruppierung
+- Hints pro Component
+- Background zeigt Gruppierung
+
+### Step 5: Optionen
+- Checkbox-Cards
+- Preis direkt sichtbar
+- Optional & klar beschrieben
+- Einfaches Toggle
+
+### Step 6: Ergebnis
+- Große Preis-Anzeige mit Icon
+- Material/Arbeit Breakdown
+- Info-Note zur Einordnung
+- Summary aller Eingaben
+
+### Step 7: Kontakt
+- 2-Spalten auf Desktop
+- Auto-stacking auf Mobile
+- Optionale Felder klar markiert
+- Reassuring Info-Box
+
+## Installation
+
+### Kopiere alle 3 Dateien:
+
+```
+src/
+└── components/
+    ├── sections/
+    │   └── HeroSection.jsx                    # ERSETZEN
+    └── calculator/
+        ├── ModernCalculatorPanel.jsx          # NEU
+        └── modern-calculator.css              # NEU
+```
+
+### Auf GitHub:
+1. HeroSection.jsx → Edit → Paste → Commit
+2. "Add file" → "Create new file" → Filename: `src/components/calculator/ModernCalculatorPanel.jsx` → Paste → Commit
+3. "Add file" → "Create new file" → Filename: `src/components/calculator/modern-calculator.css` → Paste → Commit
+
+## Vergleich Alt vs. Neu
+
+| Feature | Alt | Neu |
+|---------|-----|-----|
+| Design | Klobig, happig | Smooth, modern |
+| Progress | Simple Bar | Animated mit Shimmer |
+| Steps | Chips | Minimalistische Dots |
+| Inputs | Standard | Styled mit Icons |
+| Animations | Keine | Smooth transitions |
+| Touch | OK | Optimiert |
+| Innovation | ❌ | ✅ |
+
+## Jetzt testen!
 
 ```bash
-# 1. Install dependencies
-npm install
-
-# 2. Start dev server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
-
----
-
-## Project Structure
-
-```
-app/                          # Next.js App Router pages
-  layout.tsx                  # Root layout (Header, Footer, metadata, JSON-LD)
-  page.tsx                    # Homepage /
-  baubegleitung/page.tsx      # /baubegleitung
-  anfrage/
-    page.tsx                  # /anfrage
-    AnfrageForm.tsx           # Client form component (RHF + Zod)
-  kosteneinschaetzung/
-    page.tsx                  # /kosteneinschaetzung
-  impressum/page.tsx          # /impressum
-  datenschutz/page.tsx        # /datenschutz
-
-components/
-  layout/
-    Header.tsx                # Sticky nav, mobile drawer
-    Footer.tsx                # Footer with legal links
-  ui/
-    Button.tsx                # ButtonLink + Button (primary / ghost)
-    SectionContainer.tsx      # Section wrapper + SectionHeader
-
-features/
-  calculator/
-    CalculatorShell.tsx       # Orchestrator: progress, step routing, nav
-    types.ts                  # StepId, CalculatorState, STEPS, INITIAL_STATE
-    hooks/
-      useCalculator.ts        # All state logic, next/back, validation
-    steps/
-      StepObjekt.tsx          # Step 1 – object type + m²
-      StepProjekt.tsx         # Step 2 – project type
-      StepOptionen.tsx        # Step 3 – flat-rate options
-      StepAusstattung.tsx     # Step 4 – quantities (conditional)
-      StepMaterial.tsx        # Step 5 – material grade
-      StepErgebnis.tsx        # Step 6 – result + breakdown
-      StepAnfrage.tsx         # Step 7 – next-step CTA
-
-config/
-  pricing.ts                  # Single source of truth for all prices and logic
-
-lib/
-  utils.ts                    # cn() utility
-```
-
----
-
-## Before Launch – Required Changes
-
-### 1. Contact details
-Update the following placeholder values across the project:
-
-| File | What to update |
-|---|---|
-| `app/impressum/page.tsx` | Legal name, address, responsible person |
-| `app/datenschutz/page.tsx` | Contact details |
-| `app/anfrage/page.tsx` | WhatsApp link (`wa.me/…`), phone number, email |
-| `app/layout.tsx` (JSON-LD) | telephone, email |
-
-### 2. Form submission
-`app/anfrage/AnfrageForm.tsx` contains a placeholder `await new Promise(…)` where the real API call belongs.
-
-Options:
-- **Resend** (recommended): Create `app/api/anfrage/route.ts`, call Resend API, send email
-- **Formspree**: Replace the fetch with `https://formspree.io/f/{your-id}`
-- **Custom backend**: POST to your own endpoint
-
-### 3. Legal review
-`/impressum` and `/datenschutz` are structurally complete but must be reviewed and completed by a German legal professional before going live.
-
-### 4. Pricing calibration
-All prices live in `config/pricing.ts`. Adjust `BASE_PRICES`, `PRICE_PER_SQM_ABOVE_BASELINE`, and `QUANTITY_ITEMS[].pricePerUnit` to match actual cost structures. No UI changes required.
-
----
-
-## Deploy to Vercel
-
-### Option A – GitHub + Vercel (recommended)
-
-```bash
-# 1. Create a new GitHub repository, then:
-git init
-git add .
-git commit -m "feat: initial production build"
-git remote add origin https://github.com/YOUR_USERNAME/laha-baudienstleistungen.git
-git push -u origin main
-```
-
-Then go to [vercel.com](https://vercel.com):
-1. Click **Add New Project**
-2. Import your GitHub repository
-3. Leave all settings as default (Next.js auto-detected)
-4. Click **Deploy**
-
-### Option B – Vercel CLI
-
-```bash
-npm install -g vercel
-vercel
-```
-
----
-
-## Environment Variables
-
-No environment variables are required for the foundation build.
-
-When wiring the contact form to a real email provider, add:
-
-```env
-# .env.local (never commit this file)
-RESEND_API_KEY=re_...
-CONTACT_EMAIL=info@laha-bau.de
-```
-
----
-
-## Build & Type Check
-
-```bash
-npm run build     # Production build
-npm run lint      # ESLint
-```
+Öffne den Rechner und genieße das neue Feeling! 🎉
