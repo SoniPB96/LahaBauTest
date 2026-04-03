@@ -1,35 +1,32 @@
 /* ================================================
-   DESIGN TOKENS
-   Alle CSS-Variablen des Projekts.
-   Nur diese Datei muss geändert werden, um
-   Farben, Abstände oder Radien anzupassen.
+   DESIGN TOKENS — Monochrome Architektur
    ================================================ */
 
 :root {
-  /* Hintergründe — echte Tiefe, deutliche Abstufung */
-  --bg-primary: #0c0b09;        /* sehr tiefes Warm-Schwarz */
-  --bg-secondary: #131109;      /* leicht warmer Ton, sichtbar abgesetzt */
-  --bg-tertiary: #1c1a13;       /* Inputs, Chips, inaktive Elemente */
-  --bg-card: #181610;           /* Karten-Hintergrund */
-  --bg-card-hover: #221f16;     /* Karten hover — merklich heller */
+  /* Hintergründe — warmes Charcoal, echte Abstufung */
+  --bg-primary: #111110;
+  --bg-secondary: #161614;
+  --bg-tertiary: #1e1d1b;
+  --bg-card: #1a1917;
+  --bg-card-hover: #222120;
 
-  /* Rahmen — sichtbar, nicht versteckt */
-  --border-primary: rgba(245, 158, 11, 0.18);
-  --border-secondary: rgba(245, 158, 11, 0.10);
+  /* Rahmen — subtil aber sichtbar */
+  --border-primary: rgba(240, 237, 232, 0.10);
+  --border-secondary: rgba(240, 237, 232, 0.06);
 
   /* Text */
-  --text-primary: #f5f0e8;
-  --text-secondary: #a89880;
-  --text-tertiary: #6b5e4e;
-  --text-soft: #d4c9b8;
+  --text-primary: #F0EDE8;
+  --text-secondary: #8a8680;
+  --text-tertiary: #555250;
+  --text-soft: #c4bfb8;
 
-  /* Akzente — Amber / elektrisches Gold */
-  --accent-primary: #F59E0B;
-  --accent-secondary: #FBBF24;
-  --accent-deep: #B45309;
-  --accent-glow: rgba(245, 158, 11, 0.35);
-  --accent-subtle: rgba(245, 158, 11, 0.08);
-  --accent-text: #F59E0B;
+  /* Akzent — Off-White, kein Bunt */
+  --accent-primary: #F0EDE8;
+  --accent-secondary: #ffffff;
+  --accent-deep: #c4bfb8;
+  --accent-glow: rgba(240, 237, 232, 0.08);
+  --accent-subtle: rgba(240, 237, 232, 0.05);
+  --accent-text: #F0EDE8;
 
   /* Abstände */
   --spacing-xs: 0.5rem;
@@ -40,15 +37,15 @@
   --spacing-2xl: 4rem;
   --spacing-3xl: 6rem;
 
-  /* Radien — moderner, etwas größer */
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 22px;
+  /* Radien — architektonisch, keine runden Pillen */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
 
-  /* Legacy / Kompatibilität */
-  --glass-border: rgba(245, 158, 11, 0.14);
-  --gold: #F59E0B;
-  --silver: #9da8b6;
+  /* Legacy */
+  --glass-border: rgba(240, 237, 232, 0.08);
+  --gold: #F0EDE8;
+  --silver: #8a8680;
   --blue: #6d8dff;
   --violet: #8d74ff;
   --green: #4ba776;
