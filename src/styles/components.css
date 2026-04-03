@@ -586,3 +586,177 @@
 
 .hero-price { font-family: 'Instrument Serif', serif; }
 .hero-mini-boxes { display: grid; gap: 10px; margin: 12px 0; }
+
+/* ================================================
+   HERO V2 — Elektroplan Hintergrund
+   ================================================ */
+
+.hero-v2 {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: #080C12;
+}
+
+.hero-plan-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  object-fit: cover;
+}
+
+.hero-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    rgba(6,9,14,0.97) 0%,
+    rgba(6,9,14,0.90) 28%,
+    rgba(6,9,14,0.60) 52%,
+    rgba(6,9,14,0.22) 75%,
+    rgba(6,9,14,0.30) 100%
+  );
+  pointer-events: none;
+}
+
+.hero-vignette-top {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(6,9,14,0.55) 0%,
+    transparent 20%,
+    transparent 75%,
+    rgba(6,9,14,0.85) 100%
+  );
+  pointer-events: none;
+}
+
+.hero-bg-word {
+  position: absolute;
+  bottom: 52px;
+  right: -0.01em;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 28vw;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(160,200,255,0.07);
+  z-index: 2;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hero-v2-content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 40px 40px 0;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.hero-v2-tag {
+  font-size: 0.55rem;
+  letter-spacing: 2.5px;
+  color: rgba(160,190,220,0.35);
+  text-transform: uppercase;
+  margin-bottom: 40px;
+}
+
+.hero-v2-headline {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-v2-spacer {
+  flex: 1;
+  min-height: 40px;
+}
+
+/* Bottom Bar */
+.hero-bottom-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 0;
+}
+
+.hero-bottom-cell {
+  padding: 20px 0 24px;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+.hero-bottom-cell:nth-child(2) { padding-left: 28px; }
+.hero-bottom-cell:last-child {
+  border-right: none;
+  padding-left: 28px;
+}
+.hero-bottom-cell--cta {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  justify-content: center;
+}
+
+.hero-v2-trust {
+  font-size: 0.68rem;
+  color: rgba(200,196,188,0.28);
+  line-height: 2.1;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-v2-trust-sub {
+  margin-top: 10px;
+  font-size: 0.58rem;
+  color: rgba(200,196,188,0.14);
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+}
+
+/* Headline-Farben im dunklen Hero */
+.hero-v2 .hero-headline {
+  color: #D8D4CC;
+}
+.hero-v2 .hero-headline-italic {
+  color: rgba(180,200,220,0.32);
+}
+.hero-v2 .hero-subheadline {
+  color: rgba(200,196,188,0.42);
+  font-size: 0.82rem;
+}
+
+/* Buttons im dunklen Hero */
+.hero-v2 .cta-primary {
+  background: #D8D4CC;
+  color: #080C12;
+}
+.hero-v2 .cta-secondary {
+  border-color: rgba(255,255,255,0.1);
+  color: rgba(200,196,188,0.35);
+}
+.hero-v2 .cta-secondary:hover {
+  color: rgba(200,196,188,0.7);
+  border-color: rgba(255,255,255,0.18);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .hero-v2-content { padding: 28px 20px 0; }
+  .hero-bottom-bar { grid-template-columns: 1fr; }
+  .hero-bottom-cell { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 16px 0; }
+  .hero-bottom-cell:nth-child(2),
+  .hero-bottom-cell:last-child { padding-left: 0; }
+  .hero-bg-word { font-size: 45vw; bottom: 20px; }
+}
