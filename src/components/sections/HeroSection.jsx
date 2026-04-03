@@ -43,7 +43,7 @@ function HeroSection() {
           </div>
         </div>
 
-        <div className="hero-estimator" id="rechner">
+        <div className="hero-estimator hero-estimator-desktop">
           <EstimatorCard onOpenCalculator={() => navigate('/rechner')} />
         </div>
       </div>
@@ -52,7 +52,7 @@ function HeroSection() {
         className="scroll-indicator"
         onClick={() => document.getElementById('leistungen')?.scrollIntoView({ behavior: 'smooth' })}
       >
-        <ChevronDown size={24} />
+        <ChevronDown size={20} />
       </button>
     </section>
   );
