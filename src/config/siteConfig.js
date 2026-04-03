@@ -21,12 +21,12 @@ export const siteConfig = {
 
   hero: {
     badge: "Elektroarbeiten in Paderborn und Umgebung",
-    headline: "Saubere Elektroarbeiten ohne Chaos auf der Baustelle.",
-    subheadline: "Ein Ansprechpartner. Klare Planung. Saubere Umsetzung.",
-    trustLine: "Planung und Ausführung in Zusammenarbeit mit Meisterbetrieb.",
+    headline: "Handwerk, das hält — was es verspricht.",
+    subheadline: "Beratung, als wäre es mein eigenes Objekt. Umsetzung, die ich selbst unterschreiben würde.",
+    trustLine: "Ausführung in Zusammenarbeit mit zugelassenem Meisterbetrieb.",
     cta: {
-      primary:   { label: "Projekt anfragen",      path: "/kontakt" },
-      secondary: { label: "Kostenrechner öffnen",  path: "/rechner" },
+      primary:   { label: "Projekt anfragen",     path: "/kontakt" },
+      secondary: { label: "Kostenrechner öffnen", path: "/rechner" },
     },
   },
 
@@ -34,29 +34,29 @@ export const siteConfig = {
     eyebrow: "Leistungen",
     title: "Leistungen für Privatkunden",
     items: [
-			{ key: "installation", icon: "zap",        title: "Elektroinstallation",      text: "Neuinstallation und Modernisierung für Wohnung und Haus." },
-			{ key: "distribution", icon: "wrench",     title: "Vollsanierung",            text: "Umfangreiche Sanierungen in Zusammenarbeit mit lokalen Partnerbetrieben." },
-			{ key: "lighting",     icon: "sun",        title: "Beleuchtungskonzept",      text: "Individuelle Innen- und Außenbeleuchtung nach Ihren Vorstellungen." },
-			{ key: "network",      icon: "network",    title: "Netzwerk & Datenleitungen",text: "Strukturierte Verkabelung für Homeoffice und Haustechnik." },
-			{ key: "estimator",    icon: "calculator", title: "Digitale Ersteinschätzung",text: "Realistische Preisspanne statt ungenauem Angebot." },
-			{ key: "quality",      icon: "check",      title: "Transparente Kosten",      text: "Nachvollziehbare Abrechnung, faire Preise — kein versteckter Nachschlag." },
+      { key: "installation", icon: "zap",        title: "Elektroinstallation",       text: "Neuinstallation und Modernisierung für Wohnung und Haus." },
+      { key: "distribution", icon: "wrench",     title: "Vollsanierung",             text: "Umfangreiche Sanierungen in Zusammenarbeit mit lokalen Partnerbetrieben." },
+      { key: "lighting",     icon: "sun",        title: "Beleuchtungskonzept",       text: "Individuelle Innen- und Außenbeleuchtung nach Ihren Vorstellungen." },
+      { key: "network",      icon: "network",    title: "Netzwerk & Datenleitungen", text: "Strukturierte Verkabelung für Homeoffice und Haustechnik." },
+      { key: "estimator",    icon: "calculator", title: "Digitale Ersteinschätzung", text: "Realistische Preisspanne statt ungenauem Angebot." },
+      { key: "quality",      icon: "check",      title: "Transparente Kosten",       text: "Nachvollziehbare Abrechnung, faire Preise — kein versteckter Nachschlag." },
     ],
   },
 
   begleitung: {
     eyebrow: "Baubegleitung",
     title: "Baubegleitung mit lokalen Partnern",
-    text: "Für umfangreichere Sanierungen: technische Begleitung und Koordination mit lokalen Partnerbetrieben.",
+    text: "Ob selbst bewohnt oder zur Vermietung: Ich begleite Ihr Projekt so, als wäre es meins — mit einem Ansprechpartner für alle Gewerke.",
     points: [
-      "Koordination mit lokalen Sanierungspartnern",
+      "Abstimmung mit lokalen Fachbetrieben",
       "Ein fester Ansprechpartner als Bauleiter",
       "Für einfache bis hochwertige Sanierungsstandards",
-      "Abgestimmte Umsetzung aller Gewerke",
+      "Geordnete Umsetzung aller Gewerke",
     ],
     cards: [
-      { title: "Zweckmäßige Sanierung",    text: "Kostenfokus mit sauberer, funktionaler Umsetzung." },
-      { title: "Gehobene Modernisierung",  text: "Bessere Materialien und koordinierte Umsetzung." },
-      { title: "Hochwertige Sanierung",    text: "Hoher Qualitätsanspruch mit feiner Materialauswahl." },
+      { title: "Zweckmäßige Sanierung",   text: "Funktionale Umsetzung mit klarem Kostenfokus." },
+      { title: "Gehobene Modernisierung", text: "Bessere Materialien, koordinierter Ablauf." },
+      { title: "Hochwertige Sanierung",   text: "Anspruchsvolle Ausführung mit sorgfältiger Materialwahl." },
     ],
   },
 
@@ -114,15 +114,15 @@ export const siteConfig = {
   requestPage: {
     eyebrow: "Anfrage",
     title: "Projekt anfragen",
-    text: "Wähle den passenden Kontaktweg: schnell per WhatsApp oder strukturiert per Formular.",
+    text: "Kein Formular-Ping-Pong. Kurze Beschreibung, ehrliche Einschätzung — dann entscheiden wir gemeinsam, wie es weitergeht.",
     quickTitle: "Direkte Kontaktwege",
-    quickText: "Für schnelle Abstimmung eignet sich WhatsApp am besten.",
-    listTitle: "So läuft die Anfrage ab",
+    quickText: "Locker starten, strukturiert umsetzen: Schreiben Sie einfach, wie es Ihnen passt.",
+    listTitle: "So läuft eine Anfrage ab",
     listItems: [
       "Kurze Beschreibung des Projekts",
-      "Optional Grundriss oder Fotos mitsenden",
-      "Erste Rückmeldung zur Einordnung",
-      "Termin oder Besichtigung falls sinnvoll",
+      "Optional: Grundriss oder Fotos mitsenden",
+      "Ehrliche Einschätzung — kein Verkaufsgespräch",
+      "Termin oder Besichtigung, wenn sinnvoll",
     ],
   },
 };
