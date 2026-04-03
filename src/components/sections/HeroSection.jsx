@@ -7,6 +7,12 @@ import EstimatorCard from '../calculator/EstimatorCard';
 function HeroSection() {
   const navigate = useNavigate();
 
+  const subline = siteConfig.hero.subheadline.startsWith('—')
+    ? siteConfig.hero.subheadline
+    : `— ${siteConfig.hero.subheadline}`;
+
+  const sublineClean = siteConfig.hero.subheadline.replace(/^—\s*/, '');
+
   return (
     <>
       <section id="start" className="hero">
@@ -16,39 +22,38 @@ function HeroSection() {
         {/* Meta-Zeile oben */}
         <div className="hero-meta-row">
           <div className="hero-badge">{siteConfig.hero.badge}</div>
-          <div className="hero-badge" style={{ opacity: 0.4 }}>Est. 2024</div>
+          <div className="hero-badge" style={{ opacity: 0.35 }}>Est. 2024</div>
         </div>
 
-        {/* Headline */}
-        <div style={{ position: 'relative', zIndex: 1 }}>
+        {/* Headline — oben links, nicht mittig */}
+        <div style={{ position: 'relative', zIndex: 1, marginTop: '56px' }}>
           <h1 className="hero-headline">
             Handwerk,<br />das hält.
           </h1>
-          <span className="hero-headline-italic">
-            {siteConfig.hero.subheadline.startsWith('—')
-              ? siteConfig.hero.subheadline
-              : `— ${siteConfig.hero.subheadline}`}
-          </span>
+          <span className="hero-headline-italic">{subline}</span>
         </div>
+
+        {/* Spacer drückt Bottom-Bar ans Ende */}
+        <div style={{ flex: 1 }} />
 
         {/* Dreigeteilte Bottom-Bar */}
         <div className="hero-bottom-bar">
           <div className="hero-bottom-cell">
             <p className="hero-subheadline" style={{ marginTop: 0 }}>
-              {siteConfig.hero.subheadline.replace(/^—\s*/, '')}
+              {sublineClean}
             </p>
           </div>
           <div className="hero-bottom-cell">
-            <div className="hero-trust" style={{ borderTop: 'none', marginTop: 0, paddingTop: 0 }}>
+            <div style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', lineHeight: 2 }}>
               Ein Ansprechpartner.<br />
               Kein Pfuschen.<br />
-              Keine versteckten Kosten.<br /><br />
-              <span style={{ color: 'var(--text-muted)' }}>
+              Keine versteckten Kosten.
+              <div style={{ color: 'var(--text-muted)', marginTop: '10px', fontSize: '0.62px', letterSpacing: '0.5px' }}>
                 {siteConfig.hero.trustLine}
-              </span>
+              </div>
             </div>
           </div>
-          <div className="hero-bottom-cell" style={{ display: 'flex', flexDirection: 'column', gap: '8px', justifyContent: 'flex-end' }}>
+          <div className="hero-bottom-cell" style={{ display: 'flex', flexDirection: 'column', gap: '8px', justifyContent: 'flex-end', paddingBottom: '28px' }}>
             <button
               className="cta-primary"
               style={{ width: '100%' }}

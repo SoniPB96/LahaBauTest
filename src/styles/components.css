@@ -163,11 +163,10 @@
 /* ===== HERO ===== */
 .hero {
   position: relative;
-  padding: var(--spacing-2xl) 2rem var(--spacing-xl);
+  padding: 48px 2rem 0;
   min-height: 90vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   overflow: hidden;
   border-bottom: 1px solid var(--border-primary);
   z-index: 1;
@@ -176,10 +175,10 @@
 /* BG-Wort — das LAHA Outline im Hintergrund */
 .hero-bg-word {
   position: absolute;
-  bottom: -0.1em;
+  bottom: 60px;
   right: -0.02em;
   font-family: 'Instrument Serif', Georgia, serif;
-  font-size: clamp(18rem, 30vw, 36rem);
+  font-size: 28vw;
   line-height: 1;
   color: transparent;
   -webkit-text-stroke: 1px #1C1C1C;
@@ -187,6 +186,7 @@
   user-select: none;
   z-index: 0;
   white-space: nowrap;
+  letter-spacing: -0.02em;
 }
 
 .hero-container {
