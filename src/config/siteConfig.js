@@ -34,12 +34,12 @@ export const siteConfig = {
     eyebrow: "Leistungen",
     title: "Leistungen für Privatkunden",
     items: [
-      { key: "installation", icon: "zap",        title: "Elektroinstallation",       text: "Neuinstallation und Modernisierung für Wohnung und Haus." },
-      { key: "distribution", icon: "wrench",     title: "Unterverteilungen",          text: "Erweiterung und Erneuerung bestehender Sicherungstechnik." },
-      { key: "lighting",     icon: "sun",        title: "Beleuchtung",                text: "Innen- und Außenbeleuchtung mit sauberer Leitungsführung." },
-      { key: "network",      icon: "network",    title: "Netzwerk & Datenleitungen",  text: "Strukturierte Verkabelung für Homeoffice und Haustechnik." },
-      { key: "estimator",    icon: "calculator", title: "Digitale Ersteinschätzung",  text: "Realistische Preisspanne statt ungenauem Festpreis." },
-      { key: "quality",      icon: "check",      title: "Saubere Ausführung",         text: "Klare Abstimmung und nachvollziehbare Umsetzung." },
+			{ key: "installation", icon: "zap",        title: "Elektroinstallation",      text: "Neuinstallation und Modernisierung für Wohnung und Haus." },
+			{ key: "distribution", icon: "wrench",     title: "Vollsanierung",            text: "Umfangreiche Sanierungen in Zusammenarbeit mit lokalen Partnerbetrieben." },
+			{ key: "lighting",     icon: "sun",        title: "Beleuchtungskonzept",      text: "Individuelle Innen- und Außenbeleuchtung nach Ihren Vorstellungen." },
+			{ key: "network",      icon: "network",    title: "Netzwerk & Datenleitungen",text: "Strukturierte Verkabelung für Homeoffice und Haustechnik." },
+			{ key: "estimator",    icon: "calculator", title: "Digitale Ersteinschätzung",text: "Realistische Preisspanne statt ungenauem Angebot." },
+			{ key: "quality",      icon: "check",      title: "Transparente Kosten",      text: "Nachvollziehbare Abrechnung, faire Preise — kein versteckter Nachschlag." },
     ],
   },
 
